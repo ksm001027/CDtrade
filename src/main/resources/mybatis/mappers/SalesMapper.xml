@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.SalesMapper">
+<insert id="insertSale" parameterType="Sales">
+	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+		select SEQ_SALE_NO.nextval from dual
+	</selectKey>
+	
+	insert into Sales
+	(sale_no
+   , sale_check_list
+   , sale_description
+   , sale_photo_path
+   , sale_price
+   , sale_is_opened
+   , sale_is_sold 
+   , view_count
+   , sale_updated_at
+   , sale_created_at
+   , album_no
+   , user_no
+    )
+</insert>
+
+<insert id="insertSaleItem" parameterType="Sale">
+	insert into Sales
+	(opt_no
+   , sale_no)
+	values
+	(#{opt_no}
+   , #{sale_no})
+</insert>
+	
+	
+</mapper>
