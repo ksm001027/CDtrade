@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.AlbumMapper">
+
+	<!-- 
+		void insertAlbum(Album album);
+	 -->
+	<insert id="insertAlbum">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select seq_album_no.nextval from dual
+		</selectKey>
+		
+		insert into albums
+		(album_no, album_title, artist_name, release_date, cover_image_url, release_price)
+		values
+		(#{no}, #{title}, #{artistName}, #{releaseDate}, #{coverImageUrl}, #{releasePrice})
+	</insert>
+	
+</mapper>
