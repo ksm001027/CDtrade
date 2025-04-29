@@ -11,7 +11,6 @@
 	
 	insert into Sales
 	(sale_no
-   , sale_check_list
    , sale_description
    , sale_photo_path
    , sale_price
@@ -23,16 +22,38 @@
    , album_no
    , user_no
     )
-</insert>
-
-<insert id="insertSaleItem" parameterType="Sale">
-	insert into Sales
-	(opt_no
-   , sale_no)
-	values
-	(#{opt_no}
-   , #{sale_no})
+    values 
+    (SEQ_SALE_NO.nextval
+  , #{description}
+  , #{photoPath}
+  , #{price}
+  , #{isOpened}
+  , #{isSold}
+  , #{viewCount}
+  , #{updatedAt}
+  , #{createdAt}
+  , #{album.no}
+  , #{user.no}
+    )
 </insert>
 	
+<select id="getSaleBySaleNo" resultType="Album">
+	select sale_no					as no
+  		 , sale_description			as description
+   		 , sale_photo_path			as photoPath
+   		 , sale_price				as price
+   		 , sale_is_opened			as isOpened
+   		 , sale_is_sold 			as isSold
+   		 , view_count				as viewCount
+   		 , sale_updated_at			as updatedAt
+   		 , sale_created_at			as createdAt
+   		 , album_no					as albumNo
+  		 , user_no					as userNo
+	from
+		sales
+	where
+		sale_no = #{saleNo}
+	
+</select>
 	
 </mapper>

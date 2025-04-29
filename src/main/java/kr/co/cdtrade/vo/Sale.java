@@ -18,13 +18,23 @@ public class Sale {
 	private String description;
 	private String photoPath;
 	private int price;
-	private String isOpend;
+	private String isOpened;
 	private String isSold;
 	private int viewCount;
-	private User user;
-	private Album album;
 	private Date createdAt;
 	private Date updatedAt;
+	private User user;
+	private Album album;
 
+	public void setUserNo(int userNo) {
+		User user = new User();
+		user.setNo(userNo);
+		this.user = user;
+	}
+	public void setAlbumNo(int albumNo) {
+		Album album = new Album();
+		album.setNo(albumNo);
+		this.album = album;
+	}
 }
 	
