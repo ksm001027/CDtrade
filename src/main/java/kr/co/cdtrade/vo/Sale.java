@@ -18,7 +18,7 @@ public class Sale {
 	private String description;
 	private String photoPath;
 	private int price;
-	private String isOpend;
+	private String isOpened;
 	private String isSold;
 	private int viewCount;
 	private User user;

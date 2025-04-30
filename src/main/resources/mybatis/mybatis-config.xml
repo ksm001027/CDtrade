@@ -33,5 +33,6 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/AlbumMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumGenreMapper.xml" />
+		<mapper resource="mybatis/mappers/OrderMapper.xml" />
 	</mappers>
 </configuration>

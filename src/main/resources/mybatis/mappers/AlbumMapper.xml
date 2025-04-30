@@ -19,4 +19,26 @@
 		(#{no}, #{title}, #{artistName}, #{releaseDate}, #{coverImageUrl}, #{releasePrice})
 	</insert>
 	
+	<!-- 
+		Album getAlbumByNo(int albumNo);
+	 -->
+	<select id="getAlbumByNo" resultType="Album">
+		select album_no as no
+			 , album_title as title
+	         , artist_name as artistName
+	         , release_date as releaseDate
+	         , cover_image_url as coverImageUrl
+	         , avg_rating as avgRating
+	         , review_count as reviewCount
+	         , stock_quantity as stockQuantity
+	         , avg_order_price as avgOrderPrice
+	         , avg_sale_price as avgSalePrice
+	         , album_created_at as createdAt
+	         , album_updated_at as updatedAt
+	         , release_price as releasePrice
+	         , recent_order_price as recentOrderPrice
+		from albums
+		where album_no = #{albumNo}
+	</select>
+		
 </mapper>

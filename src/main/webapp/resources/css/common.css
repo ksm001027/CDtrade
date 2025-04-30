@@ -160,6 +160,7 @@ hr {
 .star {
     font-size: 1.2rem;
     margin-right: 2px;
+    color: #ccc;
 }
 
 .star.filled {
@@ -3000,4 +3001,20 @@ hr {
         justify-content: flex-end;
         width: 100%;
     }
+}
+
+.star.half {
+    background: linear-gradient(90deg, #ffd700 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-link {
+    text-decoration: none;     /* 밑줄 제거 */
+    color: #000;               /* 기본 검정색 */
+    transition: color 0.2s ease; /* 부드럽게 색상 전환 */
+}
+
+.text-link:hover {
+    color: var(--main-color);
 }

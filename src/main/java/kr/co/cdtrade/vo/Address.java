@@ -16,7 +16,7 @@ public class Address {
 
 	private int no;
 	private String name;
-	private String reveiverName;
+	private String receiverName;
 	private String receiverTel;
 	private String addrBasic;
 	private String addrDetail;

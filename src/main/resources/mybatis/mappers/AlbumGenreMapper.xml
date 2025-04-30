@@ -15,4 +15,13 @@
 		(#{albumNo}, #{genreNo})
 	</insert>
 	
+	<!-- 
+		List<Integer> getGenreNosByAlbumNo(int albumNo); 
+	 -->
+	<select id="getGenreNosByAlbumNo" resultType="Int">
+		select genre_no 
+		from albums_genres
+		where album_no = #{albumNo}
+	</select>
+	
 </mapper>
