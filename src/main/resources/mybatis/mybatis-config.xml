@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
 	<!-- mybatis의 동작에 영향을 미치는 값 설정 -->
 	<settings>
-		<!-- null허용되는 컬럼에 null값이 추가될 수 있도록 한다. -->
 		<setting name="jdbcTypeForNull" value="NULL" />
+		<!-- 로깅 설정 추가 -->
+		<setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
 
 	<typeAliases>
 		<!-- parameterType, resultType에 사용된 자바타입의 별칭을 지정 -->
-		<!-- <typeAlias alias="Board" type="kr.co.jhta.vo.Board"/> -->
 		<package name="kr.co.cdtrade.vo" />
 	</typeAliases>
+
 	<!-- 데이터베이스 연결정보 및 트랜잭션 정보 설정 -->
 	<environments default="development">
 		<environment id="development">
@@ -33,5 +34,9 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/AlbumMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumGenreMapper.xml" />
+
+		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
+		<mapper resource="mybatis/mappers/GenreMapper.xml" />
+
 	</mappers>
 </configuration>

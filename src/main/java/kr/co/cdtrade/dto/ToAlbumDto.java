@@ -42,6 +42,11 @@ public class ToAlbumDto {
 		
 		Album album = new Album();
 		album.setTitle(title);
+
+
+		if(author == null || author.trim().isEmpty()) {
+	        author = "Unknown Artist";
+	    }
 		album.setArtistName(author);
 		album.setReleaseDate(releaseDate);
 		album.setCoverImageUrl(cover);
