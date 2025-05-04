@@ -26,5 +26,17 @@ public class Sale {
 	private Date createdAt;
 	private Date updatedAt;
 
+	public String getAlbumTitle() {
+		return album.getTitle();
+	}
+	public String getArtistName() {
+		return album.getArtistName();
+	}
+	public int getAlbumNo() {
+		return album.getNo();
+	}
+	public int getUserNo() {
+		return user.getNo();
+	}
+
 }
-	

@@ -14,6 +14,6 @@ public class SaleOption {
 
 	private Sale sale;
 	private Option option;
-	
-	
+
+
 }

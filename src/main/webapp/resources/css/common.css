@@ -1884,11 +1884,11 @@ hr {
     color: #444;
 }
 
-.order-agree-item input[type="checkbox"] {
+/* .order-agree-item input[type="checkbox"] {
     margin-top: 0.2rem;
     width: 18px;
     height: 18px;
-}
+} */
 
 .order-agree-item strong {
     font-weight: bold;

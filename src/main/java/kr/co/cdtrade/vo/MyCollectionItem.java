@@ -15,8 +15,8 @@ import lombok.Setter;
 public class MyCollectionItem {
     private int no;
     private User user;
-    private Review review;   
-    private Album album;    
+    private Review review;
+    private Album album;
     private Date createdAt;
     private Date updatedAt;
 }

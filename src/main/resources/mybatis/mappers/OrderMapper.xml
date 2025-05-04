@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.OrderMapper">
+	<!-- 
+		Sales getOrderByNo(int no);
+	 -->
+	 <select id="getOrderByNo" resultType="Order">
+	 	select
+	 		O.order_no as no
+	 		, O.order_price as price
+	 		, O.order_delivery_fee as deliveryFee
+	 		, A.album_title as "ALBUM.title"
+	 		, A.artist_name as "ALBUM.artistName"
+	 		, A.cover_image_url as "ALBUM.coverImageUrl"
+	 		, D.addr_basic as "ADDRESS.addrBasic"
+	 		, D.addr_detail as "ADDRESS.addrDetail"
+	 		, D.receiver_name as "ADDRESS.receiverName"
+	 		, D.receiver_tel as "ADDRESS.receiverTel"
+	 	from
+	 		orders O, albums A, addresses D
+	 	where
+	 		order_no = #{no}
+	 		and O.album_no = A.album_no
+	 		and O.addr_no = D.addr_no
+	 		
+	 
+	 </select>
+
+
+
+
+
+
+
+	<!-- 
+		void insertOrder(Order order);
+	 -->
+	 <insert id="insertOrder" parameterType="Order">
+	 	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+	 		select SEQ_ORDER_NO.nextval from dual
+	 	</selectKey>
+	 	
+	 	insert into ORDERS
+	 	(order_no
+	 	, order_price
+	 	, order_delivery_fee
+	 	, order_payment_method
+	 	, order_status
+	 	, addr_no
+	 	, sale_no
+	 	, album_no
+	 	, user_no)
+	 	values
+	 	(#{no}
+	 	, #{price}
+	 	, #{deliveryFee}
+	 	, #{paymentMethod}
+	 	, #{status}
+	 	, #{address.no}
+	 	, #{sale.no}  
+	 	, #{album.no}
+	 	, #{user.no})
+	 
+	 </insert>
+
+	
+</mapper>

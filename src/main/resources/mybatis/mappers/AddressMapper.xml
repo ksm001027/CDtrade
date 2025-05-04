@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.cdtrade.mapper.AddressMapper">
+
+	<select id="getBasicAddressByUserNo" resultType="Address">
+		select
+		    a.addr_no              as no,
+		    a.addr_name            as name,
+		    a.receiver_name        as receiverName,
+		    a.receiver_tel         as receiverTel,
+		    a.addr_basic           as addrBasic,
+		    a.addr_detail          as addrDetail,
+		    a.addr_zipcode         as zipCode,
+		    a.is_default_address   as isDefaultAddress,
+		    a.addr_created_at      as createdAt,
+		    a.addr_updated_at      as updatedAt,
+		    a.user_no              as "user.no"
+		from 
+		    addresses a
+		    join users u on a.user_no = u.user_no
+		where
+		    a.user_no = #{userNo}
+			and is_default_address = 't'   
+	</select>
+	
+	<select id="getAllAddressByUserNo" resultType="Address">
+		select
+		    a.addr_no              as no,
+		    a.addr_name            as name,
+		    a.receiver_name        as receiverName,
+		    a.receiver_tel         as receiverTel,
+		    a.addr_basic           as addrBasic,
+		    a.addr_detail          as addrDetail,
+		    a.addr_zipcode         as zipCode,
+		    a.is_default_address   as isDefaultAddress,
+		    a.addr_created_at      as createdAt,
+		    a.addr_updated_at      as updatedAt,
+		    a.user_no              as "user.no"
+		from 
+		    addresses a
+		    join users u on a.user_no = u.user_no
+		where
+		    a.user_no = #{userNo}
+	</select>
+	
+	<insert id="insertAddress" parameterType="Address">
+		insert into address
+		(addr_no
+		, addr_name
+		, receiver_name
+		, receiver_tel
+		, addr_basic
+		, addr_detail
+		, addr_zipcode
+		, is_default_address
+		, addr_created_at
+		, addr_updated_at
+		, user_no)
+		values
+		(USER_SEQ.NEXTVAL
+		, #{name}
+		, #{receiverName}
+		, #{receiverTel}
+		, #{addrBasic}
+		, #{addrDetail}
+		, #{zipCode}
+		, #{isDefaultAddress}
+		, sysdate
+		, sysdate
+		, #{user.no})
+	</insert>
+</mapper>
