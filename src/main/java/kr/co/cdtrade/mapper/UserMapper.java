@@ -11,4 +11,6 @@ public interface UserMapper {
 	User getUserByNickname(String nickname);
 	
 	User getUserByTel(String tel);
+	
+	User getUserByNo(int no);
 }

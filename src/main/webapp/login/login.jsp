@@ -25,5 +25,5 @@
 	
 	session.setAttribute("LOGINED_USER_NO", savedUser.getNo());
 	
-	response.sendRedirect("index.jsp");
+	response.sendRedirect("../mypage/mypage.jsp");
 %>

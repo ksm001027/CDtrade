@@ -39,7 +39,7 @@
 <%
 	} else {
 %>
-                <a href="#" class="navbar-action">로그인</a>
+                <a href="../login/login-form.jsp" class="navbar-action">로그인</a>
 <%
 	}
 %>

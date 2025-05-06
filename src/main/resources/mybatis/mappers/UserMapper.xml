@@ -68,4 +68,21 @@
     	from users
     	where user_tel = #{tel}
 	</select>
+	
+	<select id="getUserByNo" resultType="User">
+		select user_no          as no
+           , user_email         as email
+           , user_password      as password
+           , user_name          as name
+           , user_nickname      as nickname
+           , user_tel           as tel
+           , user_is_active     as isActive
+           , user_created_at    as createdAt
+           , user_updated_at    as updatedAt
+           , account_number     as accountNumber
+      from
+         users
+      where
+         user_no = #{no}
+	</select>
 </mapper>
