@@ -30,13 +30,18 @@
     
     <%
 		String fail = request.getParameter("fail");
-		boolean showModal = "true".equals(fail);
+		boolean showModal = fail != null;
+		
+		String message = "이메일 또는 비밀번호가 잘못되었습니다.";
+		if ("withdrawn".equals(fail)) {
+			message = "이미 탈퇴한 계정입니다. 다시 회원가입 해주세요.";
+		}
 	%>
 
 	<div id="loginFailModal" class="modal-backdrop <%= showModal ? "show" : "" %>">
 	  <div class="modal-content">
 	    <div class="modal-title">로그인 실패</div>
-	    <div class="modal-desc">이메일 또는 비밀번호가 잘못되었습니다.</div>
+	    <div class="modal-desc"><%= message %></div>
 	    <a href="login-form.jsp" class="modal-btn">확인</a>
 	  </div>
 	</div>

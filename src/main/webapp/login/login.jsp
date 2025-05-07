@@ -4,6 +4,7 @@
 <%@page import="kr.co.cdtrade.mapper.UserMapper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%
 	String email = request.getParameter("email");
 	String password = request.getParameter("password");
@@ -12,14 +13,19 @@
 	
 	User savedUser = userMapper.getUserByEmail(email);
 	
-	if (savedUser == null || "f".equals(savedUser.getIsActive())) {
-		response.sendRedirect("login-form.jsp?fail=true");
+	if (savedUser == null) {
+		response.sendRedirect("login-form.jsp?fail=invalid");
+		return;
+	}
+	
+	if ("f".equals(savedUser.getIsActive())) {
+		response.sendRedirect("login-form.jsp?fail=withdrawn");
 		return;
 	}
 	
 	String secretPassword = DigestUtils.sha256Hex(password);
 	if (!secretPassword.equals(savedUser.getPassword())) {
-		response.sendRedirect("login-form.jsp?fail=true");
+		response.sendRedirect("login-form.jsp?fail=invalid");
 		return;
 	}
 	
