@@ -13,4 +13,6 @@ public interface UserMapper {
 	User getUserByTel(String tel);
 	
 	User getUserByNo(int no);
+	
+	int deactivateUserByNo(int no);
 }

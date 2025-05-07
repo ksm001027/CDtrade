@@ -13,9 +13,6 @@
 		, user_name
 		, user_nickname
 		, user_tel
-		, user_is_active
-		, user_created_at
-		, user_updated_at
 		, account_number)
 		values  
 		(SEQ_USER_NO.NEXTVAL   
@@ -24,9 +21,6 @@
 		, #{name}
 		, #{nickname}
 		, #{tel}
-		, #{isActive}
-		, sysdate
-		, sysdate
 		, #{accountNumber})
 	</insert>
 	
@@ -85,4 +79,11 @@
       where
          user_no = #{no}
 	</select>
+	
+	<update id="deactivateUserByNo" parameterType="int">
+		update users
+		set user_is_active = 'f'
+			, user_updated_at = SYSDATE
+		where user_no = #{no}
+	</update>
 </mapper>
