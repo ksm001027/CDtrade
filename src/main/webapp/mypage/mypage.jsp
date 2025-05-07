@@ -80,6 +80,38 @@
         </main>
     </div>
     
+	<!-- jQuery 불러오기 -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+	<!-- 회원탈퇴 모달 스크립트 -->
+	<script>
+		$(function() {
+			// 회원탈퇴 버튼 클릭 시 모달 열기
+			$('#deleteModalOpen').click(function() {
+				$('#deleteModal').addClass('show');
+			});
+	
+			// '아니요' 버튼 클릭 시 모달 닫기
+			$('#deleteModalNo').click(function() {
+				$('#deleteModal').removeClass('show');
+			});
+	
+			// '예' 버튼 클릭 시 회원탈퇴 처리
+			$('#deleteModalYes').click(function() {
+				$.ajax({
+					type: 'POST',
+					url: 'delete-user.jsp',
+					success: function() {
+						alert('회원탈퇴가 완료되었습니다.');
+						window.location.href = '../login/logout.jsp'; // 세션 정리하고 index로 가게끔
+					},
+					error: function() {
+						alert('회원탈퇴 중 오류가 발생했습니다.');
+					}
+				});
+			});
+		});
+	</script>
 </body>
 
 </html>

@@ -34,7 +34,7 @@
         <ul class="mypage-menu-list">
             <li><a href="#">회원정보 수정</a></li>
             <li><a href="#">배송지 관리</a></li>
-            <li><a href="#">정산 계좌 관리</a></li>
+            <li><a href="#">계좌번호 관리</a></li>
         </ul>
     </div>
 
@@ -49,26 +49,19 @@
 
 <!-- 회원탈퇴 모달 -->
 <div class="modal-backdrop" id="deleteModal">
-    <div class="modal">
-        <div class="modal-title">회원탈퇴</div>
-        <div class="modal-desc">
-            회원탈퇴 시 기존에 저장된 정보가 모두 소멸하게 되며 복구할 수 없습니다.<br><br>
-            <strong>해당 계정으로 재가입이 불가합니다.</strong><br><br>
-            정말 탈퇴하시겠습니까?
-        </div>
-        <div class="modal-btns">
-            <button class="modal-btn" id="deleteModalNo">아니오</button>
-            <button class="modal-btn" id="deleteModalYes">예</button>
-        </div>
-    </div>
+	<div class="modal show">
+		<div>
+			<h2 class="modal-title">두익이네</h2>
+			<p class="modal-desc">회원탈퇴시 기존에 저장된 정보가<br>모두 소멸하게 되며 복구할 수 없게 됩니다.</p>
+			<p class="modal-desc"><strong>해당 계정으로 재가입이 불가능합니다.</strong></p>
+			<p class="modal-desc">그래도 탈퇴하시겠습니까?</p>
+		</div>
+
+		<div class="modal-btns">
+			<button class="modal-btn" id="deleteModalNo">아니요</button>
+			<button class="modal-btn" id="deleteModalYes">예</button>
+		</div>
+	</div>
 </div>
 
-<!-- 탈퇴 모달 스크립트 -->
-<script>
-    document.getElementById('deleteModalOpen').onclick = function () {
-        document.getElementById('deleteModal').classList.add('show');
-    };
-    document.getElementById('deleteModalNo').onclick = function () {
-        document.getElementById('deleteModal').classList.remove('show');
-    };
-</script>
+
