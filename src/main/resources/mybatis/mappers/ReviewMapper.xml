@@ -18,6 +18,7 @@
             <id property="no" column="ALBUM_NO" />
             <result property="title" column="ALBUM_TITLE" />
             <result property="artistName" column="ARTIST_NAME" />
+            <result property="coverImageUrl" column="COVER_IMAGE_URL" />
         </association>
     </resultMap>
 
@@ -57,7 +58,8 @@
             U.USER_NICKNAME,
             A.ALBUM_NO,
             A.ALBUM_TITLE,
-            A.ARTIST_NAME
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
         FROM REVIEWS R
         JOIN USERS U ON R.USER_NO = U.USER_NO
         JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
@@ -78,7 +80,8 @@
             U.USER_NICKNAME,
             A.ALBUM_NO,
             A.ALBUM_TITLE,
-            A.ARTIST_NAME
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
         FROM REVIEWS R
         JOIN USERS U ON R.USER_NO = U.USER_NO
         JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
@@ -101,7 +104,8 @@
             U.USER_NICKNAME,
             A.ALBUM_NO,
             A.ALBUM_TITLE,
-            A.ARTIST_NAME
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
         FROM REVIEWS R
         JOIN USERS U ON R.USER_NO = U.USER_NO
         JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
