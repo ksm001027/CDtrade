@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.cdtrade.mapper.MyCollectionMapper">
+
+    <!-- 결과 매핑 설정 -->
+    <resultMap id="MyCollectionItemMap" type="MyCollectionItem">
+        <id property="no" column="COL_NO" />
+        <result property="createdAt" column="COL_CREATED_AT" />
+        <result property="updatedAt" column="COL_UPDATED_AT" />
+        
+        <association property="user" javaType="User">
+            <id property="no" column="USER_NO" />
+            <result property="name" column="USER_NAME" />
+            <result property="nickname" column="USER_NICKNAME" />
+        </association>
+        
+        <association property="album" javaType="Album">
+            <id property="no" column="ALBUM_NO" />
+            <result property="title" column="ALBUM_TITLE" />
+            <result property="artistName" column="ARTIST_NAME" />
+            <result property="coverImageUrl" column="COVER_IMAGE_URL" />
+            <result property="releaseDate" column="RELEASE_DATE" />
+            <result property="avgRating" column="AVG_RATING" />
+        </association>
+        
+        <association property="review" javaType="Review">
+            <id property="no" column="REVIEW_NO" />
+            <result property="rating" column="REVIEW_RATING" />
+            <result property="content" column="REVIEW_CONTENT" />
+        </association>
+    </resultMap>
+    
+    <!-- 사용자 ID로 마이컬렉션 아이템 조회 -->
+    <select id="getItemsByUserId" resultMap="MyCollectionItemMap">
+        SELECT 
+            c.COL_NO, c.COL_CREATED_AT, c.COL_UPDATED_AT,
+            u.USER_NO, u.USER_NAME, u.USER_NICKNAME,
+            a.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE, a.AVG_RATING,
+            r.REVIEW_NO, r.REVIEW_RATING, r.REVIEW_CONTENT
+        FROM 
+            MYCOLLECTION_ITEMS c
+        JOIN 
+            USERS u ON c.USER_NO = u.USER_NO
+        JOIN 
+            ALBUMS a ON c.ALBUM_NO = a.ALBUM_NO
+        LEFT JOIN 
+            REVIEWS r ON c.REVIEW_NO = r.REVIEW_NO
+        WHERE 
+            c.USER_NO = #{userNo}
+        ORDER BY 
+            c.COL_CREATED_AT DESC
+    </select>
+    
+    <!-- 마이컬렉션 아이템 추가 -->
+    <insert id="addCollectionItem" parameterType="MyCollectionItem">
+        INSERT INTO MYCOLLECTION_ITEMS (
+            COL_NO, COL_CREATED_AT, COL_UPDATED_AT, USER_NO, ALBUM_NO, REVIEW_NO
+        ) VALUES (
+            SEQ_COL_NO.NEXTVAL, SYSDATE, SYSDATE, 
+            #{user.no}, #{album.no}, #{review.no}
+        )
+    </insert>
+    
+    <!-- 마이컬렉션 아이템 삭제 -->
+    <delete id="deleteCollectionItem">
+        DELETE FROM MYCOLLECTION_ITEMS 
+        WHERE COL_NO = #{colNo}
+    </delete>
+    
+    <!-- 특정 앨범이 사용자의 컬렉션에 있는지 확인 -->
+    <select id="findByUserAndAlbum" resultMap="MyCollectionItemMap">
+        SELECT 
+            COL_NO, COL_CREATED_AT, COL_UPDATED_AT, USER_NO, ALBUM_NO, REVIEW_NO
+        FROM 
+            MYCOLLECTION_ITEMS
+        WHERE 
+            USER_NO = #{userNo} AND ALBUM_NO = #{albumNo}
+    </select>
+    
+    <!-- 정렬 옵션에 따른 마이컬렉션 아이템 조회 -->
+    <select id="getItemsByUserIdSorted" resultMap="MyCollectionItemMap">
+        SELECT 
+            c.COL_NO, c.COL_CREATED_AT, c.COL_UPDATED_AT,
+            u.USER_NO, u.USER_NAME, u.USER_NICKNAME,
+            a.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE, a.AVG_RATING,
+            r.REVIEW_NO, r.REVIEW_RATING, r.REVIEW_CONTENT
+        FROM 
+            MYCOLLECTION_ITEMS c
+        JOIN 
+            USERS u ON c.USER_NO = u.USER_NO
+        JOIN 
+            ALBUMS a ON c.ALBUM_NO = a.ALBUM_NO
+        LEFT JOIN 
+            REVIEWS r ON c.REVIEW_NO = r.REVIEW_NO
+        WHERE 
+            c.USER_NO = #{userNo}
+        <choose>
+            <when test="sortOption == 'newest'">
+                ORDER BY c.COL_CREATED_AT DESC
+            </when>
+            <when test="sortOption == 'popular'">
+                ORDER BY a.AVG_RATING DESC, a.REVIEW_COUNT DESC
+            </when>
+            <when test="sortOption == 'priceHigh'">
+                ORDER BY a.AVG_SALE_PRICE DESC
+            </when>
+            <when test="sortOption == 'priceLow'">
+                ORDER BY a.AVG_SALE_PRICE ASC
+            </when>
+            <otherwise>
+                ORDER BY c.COL_CREATED_AT DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <!-- 총 컬렉션 아이템 개수 조회 -->
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*) 
+        FROM MYCOLLECTION_ITEMS 
+        WHERE USER_NO = #{userNo}
+    </select>
+    
+</mapper>
