@@ -788,6 +788,7 @@ hr {
     width: 90%;
     max-width: 320px;
     overflow: hidden;
+    margin: auto;
 }
 
 .modal-header {
@@ -2223,11 +2224,12 @@ hr {
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1.1;
     font-weight: bold;
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background 0.2s;
+    text-decoration: none;
 }
 
 .auth-btn:hover {
@@ -2806,10 +2808,10 @@ hr {
 .modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0%;
+    left: 0%;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
@@ -2828,6 +2830,7 @@ hr {
     max-width: 380px;
     text-align: left;
     line-height: 1.6;
+    
 }
 
 .modal-content button {
@@ -2839,10 +2842,12 @@ hr {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    
 }
 
 .modal-content button:hover {
     background-color: #5cae70;
+    
 }
 
 /* 네비게이션 바 스타일 */
@@ -2896,7 +2901,7 @@ hr {
 
 .navbar-menu li a {
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.15s;
@@ -2940,7 +2945,7 @@ hr {
 
 .navbar-action {
     color: #fff;
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     text-decoration: none;
     font-weight: 500;
     padding: 0.3rem 0.7rem;
@@ -3000,4 +3005,46 @@ hr {
         justify-content: flex-end;
         width: 100%;
     }
+    
+    .alert {
+	    padding: 15px;
+	    background-color: #f44336; /* 빨간색 */
+	    color: white;
+	    margin-bottom: 20px;
+	    border-radius: 5px;
+	}
+
+	.alert-dismissible .btn-close {
+	    float: right;
+	    background: none;
+	    border: none;
+	    font-size: 20px;
+	    color: white;
+	}
+	
+	.alert {
+	    padding: 15px;
+	    background-color: #f44336; /* 빨간 배경 */
+	    color: white;
+	    margin-bottom: 20px;
+	    border-radius: 5px;
+	    position: relative;
+	    font-family: Arial, sans-serif;
+	    font-size: 15px;
+	}
+	
+	.alert-dismissible .btn-close {
+	    position: absolute;
+	    top: 10px;
+	    right: 15px;
+	    background: none;
+	    border: none;
+	    font-size: 20px;
+	    color: white;
+	    cursor: pointer;
+	}
+	
+    .alert-dismissible .btn-close:hover {
+    color: #ddd;
+	}
 }
