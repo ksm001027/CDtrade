@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.AlbumGenreMapper">
+
+	<!-- 
+		void insertAlbumGenre();
+	 -->
+	<insert id="insertAlbumGenre">
+		insert into albums_genres
+		(album_no, genre_no)
+		values
+		(#{albumNo}, #{genreNo})
+	</insert>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.cdtrade.mapper.GenreMapper">
+
+    <!-- 모든 장르 가져오기 -->
+    <select id="getAllGenres" resultType="genre">
+        SELECT GENRE_NO AS no, GENRE_NAME AS name
+        FROM GENRES
+        ORDER BY GENRE_NO
+    </select>
+
+    <!-- 장르 ID로 장르 가져오기 -->
+    <select id="getGenreById" parameterType="int" resultType="genre">
+        SELECT GENRE_NO AS no, GENRE_NAME AS name
+        FROM GENRES
+        WHERE GENRE_NO = #{genreNo}
+    </select>
+
+    <!-- 장르별 리뷰 수 가져오기 -->
+    <select id="getReviewCountByGenre" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEWS r
+        JOIN ALBUMS a ON r.ALBUM_NO = a.ALBUM_NO
+        JOIN ALBUMS_GENRES ag ON a.ALBUM_NO = ag.ALBUM_NO
+        WHERE ag.GENRE_NO = #{genreNo}
+    </select>
+
+    <!-- 전체 리뷰 수 가져오기 -->
+    <select id="getTotalReviewCount" resultType="int">
+        SELECT COUNT(*) FROM REVIEWS
+    </select>
+
+</mapper>
