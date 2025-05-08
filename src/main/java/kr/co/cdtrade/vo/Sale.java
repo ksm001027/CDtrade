@@ -1,6 +1,7 @@
 package kr.co.cdtrade.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -21,10 +22,19 @@ public class Sale {
 	private String isOpened;
 	private String isSold;
 	private int viewCount;
-	private User user;
-	private Album album;
 	private Date createdAt;
 	private Date updatedAt;
+	private User user;
+	private Album album;
+	private List<Genre> genres;
 
+	public String getAlbumTitle() {
+		return album.getTitle(); 
+	}
+	public String getArtistName() {
+		return album.getArtistName();
+	}
+	public Date getReleaseDate() {
+		return album.getReleaseDate();
+	}
 }
-	
