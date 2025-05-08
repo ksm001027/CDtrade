@@ -32,14 +32,14 @@
 <%
 	if (loginedUserNo != null) {
 %>
-                <a href="../login/login-form.jsp" class="navbar-profile">
+                <a href="../CDtrade/login/login-form.jsp" class="navbar-profile">
                     <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="profile">
                 </a>
                 <a href="../login/logout.jsp" class="navbar-action">로그아웃</a>
 <%
 	} else {
 %>
-                <a href="../login/login-form.jsp" class="navbar-action">로그인</a>
+                <a href="/CDtrade/login/login-form.jsp" class="navbar-action">로그인</a>
 <%
 	}
 %>

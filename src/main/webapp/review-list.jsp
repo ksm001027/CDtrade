@@ -7,7 +7,8 @@
 <%@ page import="kr.co.cdtrade.vo.Genre"%>
 <%@ page import="kr.co.cdtrade.vo.Review"%>
 <%@ page import="java.util.List"%>
-
+<!-- 네비게이션 바 -->
+<%@include file="common/nav.jsp" %>
 <%
 // AJAX 요청인지 확인
 String ajaxParam = request.getParameter("ajax");
@@ -242,81 +243,98 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 	</div>
 
 	<script>
-    $(document).ready(function() {
-        let currentPage = 1;
-        let loading = false;
-        let allLoaded = false;
-        const totalRows = <%=totalRows%>;
-        const rowsPerPage = 10;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        const genreNo = <%=genreNo != 0 ? genreNo : "null"%>;
-        const keyword = '<%=keyword != null ? keyword : ""%>
-		';
+$(document).ready(function() {
+    let currentPage = 1;
+    let loading = false;
+    let allLoaded = false;
+    const totalRows = <%=totalRows%>;
+    const rowsPerPage = 10;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+    const genreNo = <%=genreNo != 0 ? genreNo : "null"%>;
+    const keyword = '<%=keyword != null ? keyword : ""%>';
 
-					// 무한 스크롤 이벤트
-					$(window)
-							.scroll(
-									function() {
-										if ($(window).scrollTop()
-												+ $(window).height() >= $(
-												document).height() - 500
-												&& !loading && !allLoaded) {
-											loadMoreReviews();
-										}
-									});
+    // 무한 스크롤 이벤트
+    $(window).scroll(function() {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500 && !loading && !allLoaded) {
+            loadMoreReviews();
+        }
+    });
 
-					function loadMoreReviews() {
-						loading = true;
-						currentPage++;
+    function loadMoreReviews() {
+        loading = true;
+        currentPage++;
 
-						if (currentPage > totalPages) {
-							allLoaded = true;
-							return;
-						}
+        if (currentPage > totalPages) {
+            allLoaded = true;
+            return;
+        }
 
-						$('.loading').show();
+        $('.loading').show();
 
-						$.ajax({
-							url : 'review-list.jsp',
-							type : 'GET',
-							data : {
-								page : currentPage,
-								genreNo : genreNo,
-								keyword : keyword,
-								ajax : 'true' // AJAX 요청임을 구분하기 위한 파라미터
-							},
-							success : function(response) {
-								if (response.trim() === '') {
-									allLoaded = true;
-								} else {
-									$('#review-container').append(response);
-								}
-								loading = false;
-								$('.loading').hide();
-							},
-							error : function() {
-								console.log('Error loading more reviews');
-								loading = false;
-								$('.loading').hide();
-							}
-						});
-					}
+        $.ajax({
+            url: 'review-list.jsp',
+            type: 'GET',
+            data: {
+                page: currentPage,
+                genreNo: genreNo,
+                keyword: keyword,
+                ajax: 'true' // AJAX 요청임을 구분하기 위한 파라미터
+            },
+            success: function(response) {
+                if (response.trim() === '') {
+                    allLoaded = true;
+                } else {
+                    $('#review-container').append(response);
+                }
+                loading = false;
+                $('.loading').hide();
+            },
+            error: function() {
+                console.log('Error loading more reviews');
+                loading = false;
+                $('.loading').hide();
+            }
+        });
+    }
 
-					// 장르 선택 모달 제어
-					$("#genre-selector").click(function() {
-						$("#genre-modal").addClass("show");
-					});
+    // 장르 선택 모달 제어
+    $("#genre-selector").click(function() {
+        $("#genre-modal").addClass("show");
+    });
 
-					$(".genre-modal-close").click(function() {
-						$("#genre-modal").removeClass("show");
-					});
+    $(".genre-modal-close").click(function() {
+        $("#genre-modal").removeClass("show");
+    });
 
-					$(window).click(function(event) {
-						if ($(event.target).is("#genre-modal")) {
-							$("#genre-modal").removeClass("show");
-						}
-					});
-				});
-	</script>
+    $(window).click(function(event) {
+        if ($(event.target).is("#genre-modal")) {
+            $("#genre-modal").removeClass("show");
+        }
+    });
+    
+    // 장르 항목 클릭 이벤트 처리 추가
+    $(".genre-item").click(function(e) {
+        // 모달 닫기
+        $("#genre-modal").removeClass("show");
+        
+        // 기본 이벤트는 그대로 실행 (링크 이동)
+        // 여기서는 명시적으로 아무것도 할 필요 없음, 링크 클릭 이벤트가 실행됨
+    });
+    
+    // 모바일에서 클릭 이벤트가 제대로 작동하지 않을 수 있어, 터치 이벤트도 추가
+    $(".genre-item").on("touchend", function(e) {
+        // 모달 닫기
+        $("#genre-modal").removeClass("show");
+        
+        // 지연 시간을 두어 모달이 먼저 닫히고 페이지 이동하도록 함
+        setTimeout(function() {
+            window.location.href = e.target.href;
+        }, 100);
+        
+        // 기본 이벤트 중지 (두 번 실행되는 것 방지)
+        e.preventDefault();
+    });
+});
+</script>
 </body>
 </html>
