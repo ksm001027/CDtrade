@@ -138,7 +138,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 						</div>
 						<div class="genre-modal-body">
 							<ul class="genre-list">
-								<li><a href="review-list.jsp"
+								<li><a href="review-list.jsp" id="genre-all"
 									class="genre-item <%=genreNo == 0 ? "active" : ""%>">전체</a></li>
 								<%
 								for (Genre genre : genres) {
@@ -250,73 +250,81 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
         const rowsPerPage = 10;
         const totalPages = Math.ceil(totalRows / rowsPerPage);
         const genreNo = <%=genreNo != 0 ? genreNo : "null"%>;
-        const keyword = '<%=keyword != null ? keyword : ""%>
-		';
+        const keyword = '<%=keyword != null ? keyword : ""%>';
 
-					// 무한 스크롤 이벤트
-					$(window)
-							.scroll(
-									function() {
-										if ($(window).scrollTop()
-												+ $(window).height() >= $(
-												document).height() - 500
-												&& !loading && !allLoaded) {
-											loadMoreReviews();
-										}
-									});
+        // 무한 스크롤 이벤트
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500 && !loading && !allLoaded) {
+                loadMoreReviews();
+            }
+        });
 
-					function loadMoreReviews() {
-						loading = true;
-						currentPage++;
+        function loadMoreReviews() {
+            loading = true;
+            currentPage++;
 
-						if (currentPage > totalPages) {
-							allLoaded = true;
-							return;
-						}
+            if (currentPage > totalPages) {
+                allLoaded = true;
+                return;
+            }
 
-						$('.loading').show();
+            $('.loading').show();
 
-						$.ajax({
-							url : 'review-list.jsp',
-							type : 'GET',
-							data : {
-								page : currentPage,
-								genreNo : genreNo,
-								keyword : keyword,
-								ajax : 'true' // AJAX 요청임을 구분하기 위한 파라미터
-							},
-							success : function(response) {
-								if (response.trim() === '') {
-									allLoaded = true;
-								} else {
-									$('#review-container').append(response);
-								}
-								loading = false;
-								$('.loading').hide();
-							},
-							error : function() {
-								console.log('Error loading more reviews');
-								loading = false;
-								$('.loading').hide();
-							}
-						});
-					}
-
-					// 장르 선택 모달 제어
-					$("#genre-selector").click(function() {
-						$("#genre-modal").addClass("show");
-					});
-
-					$(".genre-modal-close").click(function() {
-						$("#genre-modal").removeClass("show");
-					});
-
-					$(window).click(function(event) {
-						if ($(event.target).is("#genre-modal")) {
-							$("#genre-modal").removeClass("show");
-						}
-					});
-				});
+            $.ajax({
+                url: 'review-list.jsp',
+                type: 'GET',
+                data: {
+                    page: currentPage,
+                    genreNo: genreNo,
+                    keyword: keyword,
+                    ajax: 'true'  // AJAX 요청임을 구분하기 위한 파라미터
+                },
+                success: function(response) {
+                    if (response.trim() === '') {
+                        allLoaded = true;
+                    } else {
+                        $('#review-container').append(response);
+                    }
+                    loading = false;
+                    $('.loading').hide();
+                },
+                error: function() {
+                    console.log('Error loading more reviews');
+                    loading = false;
+                    $('.loading').hide();
+                }
+            });
+        }
+        
+        // 장르 선택 모달 제어
+        $("#genre-selector").click(function() {
+            $("#genre-modal").addClass("show");
+        });
+        
+        $(".genre-modal-close").click(function() {
+            $("#genre-modal").removeClass("show");
+        });
+        
+        $(window).click(function(event) {
+            if ($(event.target).is("#genre-modal")) {
+                $("#genre-modal").removeClass("show");
+            }
+        });
+        
+        // 장르 항목 클릭 이벤트 추가 - 명시적으로 링크 동작 처리
+        $(".genre-item").click(function(e) {
+            // 기본 동작 유지 (링크 이동)
+            // 모달 닫기
+            $("#genre-modal").removeClass("show");
+        });
+        
+        // 전체 장르 선택 시 명시적 처리 (추가 보장용)
+        $("#genre-all").click(function() {
+            window.location.href = "review-list.jsp";
+            $("#genre-modal").removeClass("show");
+            return false;  // 기본 이벤트 중지 (중복 방지)
+        });
+    });
 	</script>
 </body>
 </html>
