@@ -144,6 +144,7 @@
             R.ALBUM_NO as "album.no"
         FROM REVIEWS R
         JOIN USERS U ON R.USER_NO = U.USER_NO
+        WHERE R.ALBUM_NO = #{albumNo}
         ORDER BY R.REVIEW_CREATED_AT DESC
         OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
 	 </select>

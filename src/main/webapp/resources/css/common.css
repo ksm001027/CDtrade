@@ -3033,10 +3033,16 @@ hr {
     background-color: #ffffff;
     border: none;
     color: #666;
+    cursor: pointer;
 }
 
 .product-pagination-btn:hover {
 	background-color: #f8f9fa;
+}
+
+.product-pagination-btn:disabled {
+	 opacity: 0.5;
+	 cursor: default;
 }
     
 .alert {
@@ -3080,3 +3086,28 @@ hr {
    .alert-dismissible .btn-close:hover {
    color: #ddd;
 }
+
+.sort-select {
+	appearance: none; /* 브라우저 기본 스타일 제거 */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    width: 120px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23222222' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    cursor: pointer;
+    color: #666;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+

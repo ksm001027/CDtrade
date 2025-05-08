@@ -1,3 +1,5 @@
+<%@page import="kr.co.cdtrade.vo.Sale"%>
+<%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.vo.Review"%>
 <%@page import="kr.co.cdtrade.mapper.ReviewMapper"%>
 <%@page import="java.util.HashMap"%>
@@ -28,9 +30,9 @@
 			- 응답으로 받은 json데이터 파싱 후 테이블에 append 
 			- 마지막요소까지 보여졌으면 더보기 버튼 보이지 않도록 설정하기 
 				orderRowsByAlbumNo 로 전체 주문수 구하고, 리스트에 표현된 주문 데이터가 전체주문수와 같으면 더보기 버튼 보이지 않도록 설정하기? 
-		3. albumNo로 sale의 목록을 조회 및 표현 00000000000000000000
+		3. albumNo로 sale의 목록을 조회 및 표현 
 			- 정렬 조건이 변경되면 sale 목록 다시 가져오기 -> AJAX로 처리 
-			- 페이지네이션도 처리해야함 -> 고민해보기
+			- 페이지네이션도 처리해야함 -> AJAX로 처리 
 		4. albumNo로 리뷰 목록 조회 및 표현
 			- 사용자 본인이 이미 별점을 남겼다면 남긴 별점 화면에 표시되도록
 			- 사용자 본인의 댓글이면 수정, 삭제버튼 추가 
@@ -41,15 +43,16 @@
 					=> reviewRowsByAlbumNo 로 전체 리뷰수 구하고, 리스트에 표현된 주문 데이터가 전체주문수와 같으면 더보기 버튼 보이지 않도록 설정하기? 
 		5. 리뷰 등록 시 review-add.jsp로 요청 폼 보내기 
 			- 마이컬렉션에 해당 앨범을 추가할건지 묻는 모달창 띄우기 000000000000000000000
+				ㄴ detail.jsp에 reviewAdd 상태로 돌아오면, 모달창 띄우도록 섧정
 		6. 위시리스트 테이블에 해당 albumNo, 해당 사용자의 userNo를 가진 행이 존재유무에 따라 위시리스트 버튼 스타일 설정 000000000000000000
+		7. 클릭 시 이동해야하는 페이징 처리
 		
 		++ 위시리스트 찜 개수 표현할지 말지 결정 
-		++ 절반 하트 구현하기 
 		++ 장르 클릭하면 장르별 앨범 목록 페이지로 이동 
+		++ 판매상품이 몇일전에 올라온건지 표시 (하루전, 2일전, ... 일주일전, 몇개월 전 ...)
 	*/
 	
-	// int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
-	int albumNo = 100;
+	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
 	// int userNo = (int) session.getAttribute("LOGINED_USER_NO");
 	int userNo = 1;
 	
@@ -71,9 +74,9 @@
 	int nowOrderRows = orders.size();
 	
 	// 앨범 거래 내역 전체 행 개수 조회 
-	Map<String, Object> condition = new HashMap<>();
-	condition.put("albumNo", albumNo);
-	int totalOrderRows = orderMapper.getTotalRows(condition);
+	Map<String, Object> orderCondition = new HashMap<>();
+	orderCondition.put("albumNo", albumNo);
+	int totalOrderRows = orderMapper.getTotalRows(orderCondition);
 	
 	// 전체 거래내역 행 개수와 조회된 거래내역 행 개수를 비교해서, 모든 데이터가 조회된건지 식별하는 변수 정의하기 
 	boolean hasMoreOrders = (nowOrderRows == totalOrderRows) ? false : true;
@@ -105,6 +108,26 @@
 	// 본인이 해당 앨범에 남긴 리뷰 조회 
 	Review myReview = reviewMapper.getReviewByAlbumNoAndUserNo(albumNo, userNo);
 	
+	/*
+		-----------------------
+		판매 상품 목록
+	*/
+	
+	// 앨범번호로 상품 목록 조회 
+	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
+	Map<String, Object> saleCondition = new HashMap<>();
+	saleCondition.put("albumNo", albumNo);
+	saleCondition.put("sort", "newest");
+	saleCondition.put("offset", 0);
+	saleCondition.put("rows", 8);
+	List<Sale> sales = salesMapper.getSales(saleCondition);
+	
+	// 전체 판매 상품 개수 조회 
+	Map<String, Object> saleRowsCondition = new HashMap<>();
+	saleRowsCondition.put("albumNo", albumNo);
+	int totalSaleRows = salesMapper.getTotalRows(saleRowsCondition);
+	
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -126,7 +149,8 @@
 		data-order-rows="<%=orderRows %>"
 		data-total-review-rows="<%=totalReviewRows%>"
 		data-review-rows="<%=reviewRows %>"
-		data-user-no="<%=userNo%>"></div>
+		data-user-no="<%=userNo%>"
+		data-total-sale-rows="<%=totalSaleRows%>"></div>
     <div class="container">
         <div class="detail-container">
             <!-- 왼쪽: 앨범 이미지 -->
@@ -263,77 +287,63 @@
             </div>
         </div>
 
-        <!-- 추천 상품 목록 -->
+        <!-- 
+        	판매 상품 목록 
+        -->
         <div class="recommended-products">
             <h2 class="section-title">판매 상품 목록</h2>
-            <div class="section-header">
-                <div class="product-count">전체 앨범 120개</div>
-                <button class="sort-button">
-                    정렬
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </button>
+<%
+	if (sales.isEmpty()){
+%>
+					<div style="text-align: center; height: 100px;">
+					등록된 판매 상품이 없습니다 
+					</div>
+					
+<%
+	} else {
+ %>
+ 			<div class="section-header">
+                <div class="product-count">전체 상품 <%=totalSaleRows %>개</div>
+                   <select class="sort-select" id="sale-sort-btn">
+					  <option value="newest">최신순</option>
+					  <option value="price-desc">높은가격순</option>
+					  <option value="price-asc">낮은가격순</option>
+					</select>
             </div>
 			<div class="section-product-list">
-				<button class="product-pagination-btn">
+				<button class="product-pagination-btn" id="sales-prev-btn">
 					 <svg width="24" height="48" viewBox="0 0 24 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 			            <path d="M15 41L7 24L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 			        </svg>
 				</button>
-	            <div class="product-grid">
-	                <!-- 상품 1 -->
+	            <div class="product-grid" id="sales-list">				
+<%
+		for (Sale sale : sales) {
+%>
+	                <!-- 판매상품 블록 -->
 	                <div class="product-card">
+	                	<a href="../sale/sale-detail.jsp?sno=<%=sale.getNo()%>">
 	                    <div class="product-image">
-	                        <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK Album">
+	                        <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle() %>">
 	                    </div>
-	                    <h3 class="card-title">BLACKPINK 2nd VINYL LP (BORN PINK)</h3>
-	                    <p class="card-price">95,000원</p>
+	                    </a>
+	                    <h3 class="card-title"><%=sale.getAlbumTitle() %></h3>
+	                    <p class="card-price"><%= StringUtils.commaWithNumber(sale.getPrice()) %>원</p>
+	                    
 	                </div>
-	
-	                <!-- 상품 2 -->
-	                <div class="product-card">
-	                    <div class="product-image">
-	                        <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK Album">
-	                    </div>
-	                    <h3 class="card-title">BLACKPINK 2nd VINYL LP (BORN PINK)</h3>
-	                    <p class="card-price">90,000원</p>
-	                </div>
-	
-	                <!-- 상품 3 -->
-	                <div class="product-card">
-	                    <div class="product-image">
-	                        <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK Album">
-	                    </div>
-	                    <h3 class="card-title">BLACKPINK 2nd VINYL LP (BORN PINK)</h3>
-	                    <p class="card-price">92,000원</p>
-	                </div>
-	
-	                <!-- 상품 4 -->
-	                <div class="product-card">
-	                    <div class="product-image">
-	                        <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK Album">
-	                    </div>
-	                    <h3 class="card-title">BLACKPINK 2nd VINYL LP (BORN PINK)</h3>
-	                    <p class="card-price">88,000원</p>
-	                </div>
-	                
-	                <!-- 상품 4 -->
-	                <div class="product-card">
-	                    <div class="product-image">
-	                        <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK Album">
-	                    </div>
-	                    <h3 class="card-title">BLACKPINK 2nd VINYL LP (BORN PINK)</h3>
-	                    <p class="card-price">88,000원</p>
-	                </div>
+<%
+		}
+%>
 	            </div>
-	            <button class="product-pagination-btn">
+	            <button class="product-pagination-btn" id="sales-next-btn">
 	            	 <svg width="24" height="48" viewBox="0 0 24 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 			            <path d="M9 7L17 24L9 41" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 			         </svg>
 	            </button>
             </div>
+<%
+	}
+%>
         </div>
 
         <!-- 앨범 리뷰 섹션 -->
@@ -496,22 +506,6 @@
     	let totalOrderRows = $("#album-info").attr("data-total-order-rows");
     	let orderRows = $("#album-info").attr("data-order-rows");
     	let nowOrderRows = parseInt(orderRows); // 이 변수는 버튼클릭이벤트에서만 사용함 -> 버튼클릭이벤트는 첫 로딩시점에 조회된 구매데이터가 5개여야만 발생할 수 있는 이벤트임 (5개 미만이면 더보기버튼이 없음)
-    	
-    	
-    	/* - 추후삭제 -> 그냥 jsp에서 자바스크립트로 속성을 통해 넘겨줄 수 있음 @@@@@@@@@@@@@@@
-    	$.ajax({
-			type: 'get',
-			url: 'order-history-total-rows.jsp',
-			data: {albumNo: albumNo},
-			dataType: 'text',
-			success: function(totalRows){
-				console.log("totalRows" + totalRows);
-				totalOrderRows = parseInt(totalRows);
-				console.log("totalOrderRows" + totalOrderRows);
-				
-			}
-		});
-    	*/
     	
     	/*
     		최근거래내역에서 더보기 버튼을 클릭했을 때 발생하는 이벤트 함수 정의 
@@ -758,6 +752,165 @@
     		}
     		
     	})
+    	
+    	/*
+    		---------------
+    		판매상품과 관련된 이밴트 
+    	*/
+    	
+    	// 마지막 페이지인지 여부 확인하는 변수들
+    	const totalSaleRows = parseInt($("#album-info").attr("data-total-sale-rows"));
+    	let nowPage = 1;
+    	const totalPages = Math.ceil(totalSaleRows/8);
+    	
+    	disabledBtn();
+    	
+    	const saleRows = 8;
+    	let saleSort= "newest";
+    	
+    	// 버튼의 비활성 여부를 체크해서 설정해주는 함수 
+    	function disabledBtn(){
+    		if(totalPages == nowPage){
+        		$("#sales-next-btn").prop("disabled", true);
+        	} else {
+        		$("#sales-next-btn").prop("disabled", false);
+        	} 
+    		if (nowPage == 1){
+        		$("#sales-prev-btn").prop("disabled", true);
+        	} else {
+        		$("#sales-prev-btn").prop("disabled", false);
+        	}
+    	}
+    	
+    	/* 다음 상품 페이지네이션 버튼 클릭시 발생하는 이벤트
+    		- product-grid의 모든 요소 제거하기
+    		- condition의 offset 값을 변경해서 다시 요청 보내기 
+    		- json으로 데이터를 받아서 append하기 
+    		- 마지막페이지면 disabled 처리하기
+    	*/
+    	$("#sales-next-btn").click(function(){
+    		// 마지막 페이지면 동작하지 않도록 설정 
+    		if(nowPage == totalPages) {
+    			return false;
+    		}
+    		// 오프셋 값 수정 
+    		nowPage++;
+    		const saleOffset = (nowPage-1)*saleRows;
+    		
+    		$.ajax({
+				type: 'post',
+				url: 'album-sale-list.jsp',
+				data: {albumNo: albumNo, offset: saleOffset, rows: saleRows, sort: saleSort},
+				dataType: 'json',
+				success: function(sales){
+					const $saleList =  $("#sales-list").empty();
+					
+					for(const sale of sales){
+						const content = `
+			                <div class="product-card">
+			                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
+				                    <div class="product-image">
+				                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+				                    </div>
+			                    </a>
+			                    <h3 class="card-title">\${sale.album.title}</h3>
+			                    <p class="card-price">\${sale.price.toLocaleString()}원</p>
+		                	</div>`
+		                
+		                $saleList.append(content);	
+					}
+				}
+    		});
+    		
+    		disabledBtn();
+    	});
+    	
+   	/* 이전 상품 페이지네이션 버튼 클릭시 발생하는 이벤트
+		- product-grid의 모든 요소 제거하기
+		- condition의 offset 값을 변경해서 다시 요청 보내기 
+		- json으로 데이터를 받아서 append하기 
+		- 첫페이지면 disabled 처리하기
+	*/
+    	$("#sales-prev-btn").click(function(){
+    		// 첫 페이지면 동작하지 않도록 설정 
+    		if(nowPage == 1) {
+    			return false;
+    		}
+    		// 오프셋 값 수정 
+    		nowPage--;
+    		const saleOffset = (nowPage-1)*8;
+    		
+    		$.ajax({
+				type: 'post',
+				url: 'album-sale-list.jsp',
+				data: {albumNo: albumNo, offset: saleOffset, rows: saleRows, sort: saleSort},
+				dataType: 'json',
+				success: function(sales){
+					console.log(sales);
+					const $saleList =  $("#sales-list").empty();
+					
+					for(const sale of sales){
+						const content = `
+			                <div class="product-card">
+			                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
+				                    <div class="product-image">
+				                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+				                    </div>
+			                    </a>
+			                    <h3 class="card-title">\${sale.album.title}</h3>
+			                    <p class="card-price">\${sale.price.toLocaleString()}원</p>
+		                	</div>`
+		                
+		                $saleList.append(content);	
+					}
+				}
+    		});
+    		
+    		disabledBtn();
+    	});
+   	
+   	/*
+   		정렬 select창의 값이 변경되었을 때 발생하는 이벤트 
+   			- saleSort의 값을 변경하여 요청보내기
+   	*/
+   	
+   	$("#sale-sort-btn").change(function(){
+   		saleSort = $(this).val();
+   		
+   		const saleOffset = 0;
+   		nowPage = 1;
+   		
+   		$.ajax({
+			type: 'post',
+			url: 'album-sale-list.jsp',
+			data: {albumNo: albumNo, offset: saleOffset, rows: saleRows, sort: saleSort},
+			dataType: 'json',
+			success: function(sales){
+				console.log(sales);
+				const $saleList =  $("#sales-list").empty();
+				
+				for(const sale of sales){
+					const content = `
+		                <div class="product-card">
+		                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
+			                    <div class="product-image">
+			                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+			                    </div>
+		                    </a>
+		                    <h3 class="card-title">\${sale.album.title}</h3>
+		                    <p class="card-price">\${sale.price.toLocaleString()}원</p>
+	                	</div>`
+	                
+	                $saleList.append(content);	
+				}
+			}
+		});
+   		
+   		disabledBtn();
+   	});
+    	
+    
+    
     	
     </script>
 </body>
