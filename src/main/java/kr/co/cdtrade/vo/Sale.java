@@ -37,4 +37,5 @@ public class Sale {
 	public Date getReleaseDate() {
 		return album.getReleaseDate();
 	}
-}
+	
+	}

@@ -1,3 +1,5 @@
+<%@page import="kr.co.cdtrade.vo.User"%>
+<%@page import="kr.co.cdtrade.mapper.UserMapper"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
 <%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
@@ -8,11 +10,18 @@
     pageEncoding="UTF-8"%>
 <%
 	 int albumNo = StringUtils.strToInt(request.getParameter("ano"));
+	 int userNo = StringUtils.strToInt(request.getParameter("uno"));
 	 
-	
+	 
 	 AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
 	 Album album = albumMapper.getAlbumByAlbumNo(albumNo);
-
+	 
+	 UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
+	 User user = userMapper.getUserByNo(userNo);
+	 
+	 
+	 
+	
 %>
 
    
@@ -132,20 +141,40 @@
                     <!-- 계좌 정보 섹션 -->
                     <div class="form-section">
                         <div class="account-info-header">
+                        <input type="hidden" name="accountNumber" id="accountNumberInput">
                             <h3 class="section-title">계좌 정보</h3>
-                            <button class="account-edit-btn">계좌 변경</button>
+                            <button class="account-edit-btn" onclick="openModal()">계좌 변경</button>
                         </div>
                         <div class="account-info-content">
-                            <p class="no-account-msg">등록된 계좌정보가 없습니다.</p>
-                        </div>
+						    <p>은행: <span id="main-bank"><%=user.getBankName() != null ? user.getBankName() : "신한은행"%></span></p>
+						    <p>예금주: <span id="main-holder"><%=user.getName()%></span></p>
+						    <p>계좌번호: <span id="main-account"><%=user.getAccountNumber() != null ? user.getAccountNumber() : "110-123-456789"%></span></p>
+						</div>
+
                     </div>
                 </div>
                 <div class="vertical-line"></div>
                 <!-- 오른쪽 컬럼 -->
                 <div class="sale-form-right">
+                <!-- 계좌 변경 모달 -->
+					<div id="accountModal"
+						style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, 0); background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+						<h3>계좌 선택</h3>
+						<div id="accountList"></div>
+						<button onclick="openAddAccountForm()">+ 새 계좌 추가</button>
+						<div id="addAccountForm" style="display: none; margin-top: 20px;">
+							<input type="text" id="newBank" placeholder="은행명"><br>
+							<input type="text" id="newAccount" placeholder="계좌번호"><br>
+							<input type="text" id="newHolder" placeholder="예금주"><br>
+							<button onclick="addAccount()">저장</button>
+							<button onclick="closeAddAccountForm()">취소</button>
+						</div>
+						<button onclick="closeModal()">닫기</button>
+					</div>
 
 
-                    <!-- 가격 정보 -->
+
+					<!-- 가격 정보 -->
                     <div class="form-section">
                         <h3 class="section-title">가격 정보</h3>
                         <div class="price-info">
@@ -205,11 +234,26 @@
             </div>
         </div>
     </div>
-    <%@include file="../../common/footer.jsp" %>
+	<!-- 계좌 변경 모달 -->
+	<div id="accountModal"
+		style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, 0); background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+		<h3>계좌 정보 변경</h3>
+		<form method="post" action="update-account.jsp">
+			<input type="hidden" name="userNo" value="<%=user.getNo()%>">
+			<input type="hidden" name="ano" value="<%=albumNo%>"> <input
+				type="text" name="accountNumber" placeholder="새 계좌번호 입력"
+				value="<%=user.getAccountNumber() != null ? user.getAccountNumber() : ""%>">
+			<button type="submit">저장</button>
+			<button type="button" onclick="closeModal()">취소</button>
+		</form>
+	</div>
+
+	<%@include file="../../common/footer.jsp" %>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+    
     	
     	let currentMinPrice = 44000;
     	let currentMaxPrice = 200000;
@@ -323,6 +367,80 @@
         });
         
         
+        document.querySelector('.account-edit-btn').addEventListener('click', function() {
+            document.getElementById('accountModal').style.display = 'block';
+        });
+
+       
+        function openModal() {
+            document.getElementById('accountModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('accountModal').style.display = 'none';
+        }
+
+        let accounts = [
+            { bank: "신한은행", account: "110-123-456789", holder: "홍길동", isMain: true }
+        ];
+
+        function renderMainAccount() {
+            const main = accounts.find(acc => acc.isMain);
+            document.getElementById("main-bank").innerText = main.bank;
+            document.getElementById("main-holder").innerText = main.holder;
+            document.getElementById("main-account").innerText = main.account;
+            document.getElementById("accountNumberInput").value = main.account;
+        }
+
+        function openModal() {
+            document.getElementById("accountModal").style.display = "block";
+            renderAccountList();
+        }
+
+        function closeModal() {
+            document.getElementById("accountModal").style.display = "none";
+        }
+
+        function renderAccountList() {
+            const container = document.getElementById("accountList");
+            container.innerHTML = "";
+            accounts.forEach((acc, i) => {
+                const radio = `<input type="radio" name="selectedAcc" ${acc.isMain ? "checked" : ""} onclick="setMainAccount(${i})">`;
+                const info = `${acc.bank} (${acc.account}) / ${acc.holder}`;
+                container.innerHTML += `<div>${radio} ${info}</div>`;
+            });
+        }
+
+        function setMainAccount(index) {
+            accounts.forEach((acc, i) => acc.isMain = (i === index));
+            renderMainAccount();
+            renderAccountList();
+        }
+
+        function openAddAccountForm() {
+            document.getElementById("addAccountForm").style.display = "block";
+        }
+
+        function closeAddAccountForm() {
+            document.getElementById("addAccountForm").style.display = "none";
+        }
+
+        function addAccount() {
+            const bank = document.getElementById("newBank").value;
+            const acc = document.getElementById("newAccount").value;
+            const holder = document.getElementById("newHolder").value;
+            if (bank && acc && holder) {
+                accounts.push({ bank, account: acc, holder, isMain: false });
+                renderAccountList();
+                closeAddAccountForm();
+            } else {
+                alert("모든 정보를 입력해주세요.");
+            }
+        }
+
+        // 초기 로딩 시 기본 계좌 세팅
+        document.addEventListener("DOMContentLoaded", renderMainAccount);
+
         
     </script>
 </body>

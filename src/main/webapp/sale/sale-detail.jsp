@@ -1,3 +1,6 @@
+<%@page import="lombok.EqualsAndHashCode.Include"%>
+<%@page import="kr.co.cdtrade.vo.Genre"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.utils.StringUtils"%>
@@ -10,6 +13,12 @@
 	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
 	SalesMapper saleMapper = MybatisUtils.getMapper(SalesMapper.class);
 	Sale sale = saleMapper.getSaleBySaleNo(saleNo);
+	
+	List<Genre> genres = saleMapper.getGenresBySaleNo(saleNo);
+	sale.setGenres(genres);
+	
+	Album album = saleMapper.getAlbumBySaleNo(saleNo);
+	sale.setAlbum(album);
 %>    
     
   
@@ -19,6 +28,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@include file="../../common/nav.jsp"%>
     <title><%=sale.getAlbumTitle() %></title>
     <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -63,7 +73,7 @@
 
                 <!-- 상태 뱃지 -->
                 <div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
-                <div class="condition-info">음반 NM / 커버 NM</div>
+                
 
                 <!-- 상품 설명 -->
                 <div class="product-description">
@@ -76,27 +86,49 @@
                     <table class="info-table">
                         <tr>
                             <th>발매일</th>
-                            <td><%=sale.getReleaseDate() %></td>
+                            <td><%=album.getReleaseDate() %></td>
                         </tr>
                         <tr>
-                            <th>발매사</th>
-                            <td>카카오M</td>
+                            <th>전체평점</th>
+                            <td><%=album.getAvgRating() %></td>
                         </tr>
                         <tr>
                             <th>장르</th>
-                            <td>Korean,Indie</td>
+                            <td>
+								<%
+						            if (sale.getGenres() != null && !sale.getGenres().isEmpty()) {
+						                for (int i = 0; i < sale.getGenres().size(); i++) {
+						                    out.print(sale.getGenres().get(i).getName());
+						                    if (i < sale.getGenres().size() - 1) out.print(", ");
+						                }
+						            } else {
+						                out.print("장르 정보 없음");
+						            }
+						        %>
+							</td>
                         </tr>
                         <tr>
-                            <th>수입국</th>
-                            <td></td>
+                        	<th>Cat.No / BARCODE</th>
+                            <td>
+								<%
+									if (sale.getGenres() != null && !sale.getGenres().isEmpty()) {
+										for (int i = 0; i < sale.getGenres().size(); i++) {
+											out.print(sale.getGenres().get(i).getNo());
+											if (i < sale.getGenres().size() - 1) out.print(", ");
+										}
+									} else {
+										out.print("장르 번호 없음");
+									}
+								%>
+							</td>
                         </tr>
                         <tr>
-                            <th>Cat.No / BARCODE</th>
-                            <td>L20000193O</td>
+							<th>발매가</th>
+                            <td><%=album.getReleasePrice() %></td>
                         </tr>
                         <tr>
-                            <th>추가정보</th>
-                            <td>그린</td>
+                            <th>판매가</th>
+                            <td><%=sale.getPrice() %></td>
                         </tr>
                     </table>
                 </div>
@@ -108,6 +140,7 @@
             </div>
         </div>
     </div>
+    <%@include file="../../common/footer.jsp" %>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
