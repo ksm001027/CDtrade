@@ -40,5 +40,27 @@
 		from albums
 		where album_no = #{albumNo}
 	</select>
+	
+	<!-- 
+		void updateAlbum(Album album);
+	 -->
+	 <update id="updateAlbum">
+	 	update albums
+		set album_title        = #{title}
+	       , artist_name        = #{artistName}
+	       , release_date       = #{releaseDate}
+	       , cover_image_url    = #{coverImageUrl}
+	       , avg_rating         = #{avgRating}
+	       , review_count       = #{reviewCount}
+	       , stock_quantity     = #{stockQuantity}
+	       , avg_order_price    = #{avgOrderPrice}
+	       , avg_sale_price     = #{avgSalePrice}
+	       , album_created_at   = #{createdAt}
+	       , album_updated_at   = #{updatedAt}
+	       , release_price      = #{releasePrice}
+	       , recent_order_price = #{recentOrderPrice}
+	    where album_no          = #{no}
+	 		
+	 </update>
 		
 </mapper>

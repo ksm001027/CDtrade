@@ -6,4 +6,6 @@ public interface AlbumMapper {
 	void insertAlbum(Album album);
 	
 	Album getAlbumByNo(int albumNo);
+	
+	void updateAlbum(Album album);
 }
