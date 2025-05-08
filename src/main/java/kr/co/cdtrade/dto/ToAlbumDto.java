@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
-import kr.co.cdtrade.utils.StringUtils;
 import kr.co.cdtrade.vo.Album;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,15 +23,15 @@ public class ToAlbumDto {
 
 	@SerializedName("priceStandard")
 	private int priceStandard;
-	
-	
+
+
 	/*
 	 * toalbumDto의 값들을 저장한 album 객체를 반환하는메소드
 	 */
 	public Album toAlbum() {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		// String인 pubDate를 Date로 변환 
+
+		// String인 pubDate를 Date로 변환
 		Date releaseDate = null;
 		try {
 			releaseDate = simpleDateFormat.parse(pubDate);
@@ -45,11 +44,16 @@ public class ToAlbumDto {
 		
 		Album album = new Album();
 		album.setTitle(title);
+
+
+		if(author == null || author.trim().isEmpty()) {
+	        author = "Unknown Artist";
+	    }
 		album.setArtistName(author);
 		album.setReleaseDate(releaseDate);
 		album.setCoverImageUrl(cover);
 		album.setReleasePrice(priceStandard);
-		
+
 		return album;
 	}
 }

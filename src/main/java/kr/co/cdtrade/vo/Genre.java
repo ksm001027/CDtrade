@@ -8,12 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Alias("SaleOption")
 @NoArgsConstructor
-public class SaleOption {
-
-	private Sale sale;
-	private Option option;
-	
-	
+@Alias("Genre")
+public class Genre {
+    private int no;
+    private String name;
 }
