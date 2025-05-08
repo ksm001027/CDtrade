@@ -32,10 +32,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 	<!-- Mapper XML 파일 등록 -->
 	<mappers>
+		<mapper resource="mybatis/mappers/AddressMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumGenreMapper.xml" />
 		<mapper resource="mybatis/mappers/OrderMapper.xml" />
-		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
 		<mapper resource="mybatis/mappers/GenreMapper.xml" />
+		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
+		<mapper resource="mybatis/mappers/SalesMapper.xml" />
+		<mapper resource="mybatis/mappers/UserMapper.xml" />
 	</mappers>
+  
 </configuration>

@@ -15,12 +15,12 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  */
 public class MybatisUtils {
 
-	private static Map<String, Object> map = new HashMap<String, Object>();
-	
+	private static Map<String, Object> map = new HashMap<>();
+
 	// mybatis의 핵심 객체
 	// SqlSession객체를 제공하는 팩토리객체다.
 	private static SqlSessionFactory sqlSessionFactory;
-	
+
 	// mybatis-config.xml(mybatis 환경설정파일)을 로드해서
 	// SqlSessionFactory객체를 생성한다.
 	static {
@@ -32,9 +32,9 @@ public class MybatisUtils {
 			throw new RuntimeException(ex);
 		}
 	}
-	
+
 	/**
-	 * Mapper 인터페이스를 전달받아서 그 인터페이스를 
+	 * Mapper 인터페이스를 전달받아서 그 인터페이스를
 	 * 동적으로 구현한 객체를 반환한다.
 	 * @param <T> Mapper 인터페이스
 	 * @param type Mapper 인터페이스
@@ -52,15 +52,15 @@ public class MybatisUtils {
 			return mapper;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 }

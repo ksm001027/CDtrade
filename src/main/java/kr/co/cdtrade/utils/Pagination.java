@@ -12,7 +12,7 @@ public class Pagination {
 	private int offset;	//
 	private int totalRows;	//모든 페이지에서 데이터 갯수
 	private int totalPages;	//모든 페이지갯수
-	private int totalBlocks;	// 모든 블락갯수 
+	private int totalBlocks;	// 모든 블락갯수
 	private int currentBlock;	// 현재 블락위치
 	private int beginPage;	// 현재 블럭의 첫번째
 	private int endPage;	// 현재블럭의 마지막번째
@@ -23,7 +23,7 @@ public class Pagination {
 
 	/**
 	 * 요청한 페이지번호, 총 데이터갯수를 전달받아서 Pagination을 초기화한다.
-	 * 
+	 *
 	 * @param pageNo    요청한 페이지번호
 	 * @param totalRows 총 데이터 갯수
 	 */
@@ -35,7 +35,7 @@ public class Pagination {
 
 	/**
 	 * 요청한 페이지번호, 총 데이터갯수, 한 페이지당 표시할 행의 갯수를 전달받아서 Pagination을 초기화한다.
-	 * 
+	 *
 	 * @param pageNo
 	 * @param totalRows
 	 * @param rows

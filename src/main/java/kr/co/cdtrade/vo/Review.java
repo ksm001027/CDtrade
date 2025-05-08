@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Alias("Review")
 public class Review {
-	
+
  private int no;
  private double rating;
  private String content;

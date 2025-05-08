@@ -10,10 +10,11 @@
     </select>
 
     <!-- 장르 ID로 장르 가져오기 -->
-    <select id="getGenreById" parameterType="int" resultType="genre">
-        SELECT GENRE_NO AS no, GENRE_NAME AS name
-        FROM GENRES
-        WHERE GENRE_NO = #{genreNo}
+    <select id="getGenreByNo" parameterType="int" resultType="genre">
+        SELECT g.GENRE_NO AS no, g.GENRE_NAME AS name
+        FROM GENRES g, ALBUMS_GENRES ag
+        WHERE g.GENRE_NO = #{genreNo}
+        AND g.GENRE_NO = ag.GENRE_NO
     </select>
 
     <!-- 장르별 리뷰 수 가져오기 -->

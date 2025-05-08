@@ -9,3 +9,4 @@ public interface AlbumGenreMapper {
 	
 	List<Integer> getGenreNosByAlbumNo(int albumNo); 
 }
+
