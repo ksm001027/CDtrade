@@ -30,5 +30,7 @@ public class Album {
 	private int recentOrderPrice; // 판매평균가
 	private Date createdAt;
 	private Date updatedAt;
-	private List<Genre> genres;
+	
+	
+	
 }

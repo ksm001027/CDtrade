@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.co.cdtrade.vo.Album;
 import kr.co.cdtrade.vo.Genre;
+import kr.co.cdtrade.vo.Order;
 
 public interface AlbumMapper {
 	
@@ -36,6 +37,13 @@ public interface AlbumMapper {
 	 * @param albumNo
 	 * @return 장르정보
 	 */
-	List<Genre> getGenreNameByAlbumNo(int albumNo);
+	List<Genre> getGenreByAlbumNo(int albumNo);
+	
+	/**
+	 * 앨범번호를 받아서 구매정보 조회하기
+	 * @param no
+	 * @return 구매정보
+	 */
+	Order getOrderbyAlbumNo(int no);
 }
 
