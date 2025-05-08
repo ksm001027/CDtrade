@@ -1,12 +1,21 @@
+<%@page import="kr.co.cdtrade.vo.Album"%>
+<%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
 <%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.utils.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%
+	 int albumNo = StringUtils.strToInt(request.getParameter("ano"));
+	 
+	
+	 AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
+	 Album album = albumMapper.getAlbumByAlbumNo(albumNo);
 
- 
+%>
+
+   
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -27,8 +36,8 @@
                     <div class="form-section">
                         <div class="product-info">
                             <div>
-                                <img src="https://image.yes24.com/goods/92147169/XL"
-                                    alt="Hyukoh, Sunset Rollercoaster - AAA"
+                                <img src="<%=album.getCoverImageUrl() %>"
+                                    alt="<%=album.getArtistName() %>"
                                     style="width: 200px; height: 200px; object-fit: cover;">
 
                             </div>
@@ -36,8 +45,8 @@
                                 <div>
                                     <div class="badge">미개봉</div>
                                 </div>
-                                <h2>Hyukoh, Sunset Rollercoaster - AAA (Smokey Marble)</h2>
-                                <p>혁오(hyukoh),Sunset Rollercoaster</p>
+                                <h2><%=album.getTitle() %></h2>
+                                <p><%=album.getArtistName() %></p>
                             </div>
                         </div>
                     </div>
@@ -141,18 +150,18 @@
                         <h3 class="section-title">가격 정보</h3>
                         <div class="price-info">
                             <div class="price-row">
-                                <span class="price-label">최저 판매가</span>
+                                <span class="price-label">평균판매가</span>
                                 <span>44,000원</span>
                             </div>
                             <div class="price-row">
-                                <span class="price-label">최고판매가</span>
+                                <span class="price-label">구매평균가</span>
                                 <span>200,000원</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label">수수료</span>
                                 <span id="commission">0</span>원
                             </div>
-                            <form action="register-sale.jsp" method="post">
+                            <form action="register-sale.jsp" method="post" id="saleForm">
                             <div class="price-row">
                                 <span class="price-label">판매희망가</span>
                                 <input type="text" class="price-input" name="price" placeholder="판매희망가 입력"id="price-input">
@@ -239,7 +248,7 @@
 			let allChecked = true;
 			$(".agreement-item input[type='checkbox']").each(function() {
 				if (!$(this).is(":checked")) {
-					allchecked = false;
+					allChecked = false;
 					return false;
 				}
 			})
@@ -278,13 +287,32 @@
     		updateSubmitButtonState();    		
     	});
     	
+    	document.addEventListener("DOMContentLoaded", function(){
+    		const buttons = document.querySelectorAll(".condition-tag");
+    		const textarea = document.querySelector(".description-input");
+    		
+    		for(let i = 0; i < buttons.length; i++) {
+    			buttons[i].addEventListener("click", function(){
+    				const text = buttons[i].textContent.trim();
+    				let lines = textarea.value.split("\n");
+    				
+    				if (buttons[i].classList.contains("selected")) {
+    					buttons[i].classList.remove("selected");
+    					lines = lines.filter(function(line){
+    						return line.trim() !== text;
+    					});
+    					textarea.value = lines.join("\n");
+    				} else {
+    					buttons[i].classList.add("selected");
+    					if (!lines.includes(text)) {
+    						lines.push(text);
+    						textarea.value = lines.join("\n");
+    					}
+    				}
+    			});
+    		}
+    	});
     	
-        // 상태 태그 선택 기능
-        document.querySelectorAll('.condition-tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                tag.classList.toggle('selected');
-            });
-        });
 
         // 탭 버튼 전환 기능
         document.querySelectorAll('.tab-button').forEach(button => {

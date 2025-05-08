@@ -1,3 +1,5 @@
+<%@page import="kr.co.cdtrade.vo.Album"%>
+<%@page import="kr.co.cdtrade.vo.User"%>
 <%@page import="org.apache.ibatis.session.SqlSession"%>
 <%@page import="java.util.Date"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
@@ -26,12 +28,16 @@
 	}
 	
 	Sale sale = new Sale();
+	User user = new User();
+	Album album = new Album();
 	sale.setNo(no);
 	sale.setPrice(price);
 	sale.setDescription(description);
 	sale.setPhotoPath(photoPath);
-	sale.setUserNo(userNo);
-	sale.setAlbumNo(albumNo);
+	user.setNo(userNo);
+	sale.setUser(user);
+	album.setNo(albumNo);
+	sale.setAlbum(album);
 	sale.setCreatedAt(new Date());
 	sale.setUpdatedAt(new Date());
 	sale.setIsOpened("Y");

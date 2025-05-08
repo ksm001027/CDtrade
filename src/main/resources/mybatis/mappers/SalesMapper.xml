@@ -4,41 +4,42 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.cdtrade.mapper.SalesMapper">
-<insert id="insertSale" parameterType="Sales">
+<insert id="insertSale" parameterType="Sale">
 	<selectKey keyProperty="no" resultType="int" order="BEFORE">
 		select SEQ_SALE_NO.nextval from dual
 	</selectKey>
 	
 	insert into Sales
-	(sale_no
-   , sale_description
-   , sale_photo_path
-   , sale_price
-   , sale_is_opened
-   , sale_is_sold 
-   , view_count
-   , sale_updated_at
-   , sale_created_at
-   , album_no
-   , user_no
-    )
+		(sale_no
+	   , sale_description
+	   , sale_photo_path
+	   , sale_price
+	   , sale_is_opened
+	   , sale_is_sold 
+	   , view_count
+	   , sale_updated_at
+	   , sale_created_at
+	   , album_no
+	   , user_no
+	    )
     values 
-    (SEQ_SALE_NO.nextval
-  , #{description}
-  , #{photoPath}
-  , #{price}
-  , #{isOpened}
-  , #{isSold}
-  , #{viewCount}
-  , #{updatedAt}
-  , #{createdAt}
-  , #{album.no}
-  , #{user.no}
-    )
+	    (SEQ_SALE_NO.nextval
+	  , #{description}
+	  , #{photoPath}
+	  , #{price}
+	  , #{isOpened}
+	  , #{isSold}
+	  , #{viewCount}
+	  , #{updatedAt}
+	  , #{createdAt}
+	  , #{album.no}
+	  , #{user.no}
+	    )
 </insert>
 	
-<select id="getSaleBySaleNo" resultType="Album">
-	select sale_no					as no
+<select id="getSaleBySaleNo" resultType="Sale">
+	select 
+		   sale_no					as no
   		 , sale_description			as description
    		 , sale_photo_path			as photoPath
    		 , sale_price				as price
@@ -47,13 +48,84 @@
    		 , view_count				as viewCount
    		 , sale_updated_at			as updatedAt
    		 , sale_created_at			as createdAt
-   		 , album_no					as albumNo
-  		 , user_no					as userNo
+   		 , a.album_no				as "album.no"
+   		 , a.album_title			as "album.title"
+	     , a.artist_name			as "album.artistName"
+	     , a.release_date			as "albums.releaseDate"
+	     , ag.genre_no				as "albums_genre.genreNo"
+	     , g.genre_name				as "genres.name" 
 	from
-		sales
+		sales s, albums a
 	where
-		sale_no = #{saleNo}
+		sale_no = #{no}
+		and s.album_no = a.album_no
+		
+</select>
+
+
+
+<select id="getSales" parameterType="map" resultType="Sale">
+	select s.sale_no					as no,
+	       s.sale_description			as description,
+	       s.sale_photo_path			as photoPath,
+	       s.sale_price					as price,
+	       s.sale_is_opened				as isOpened,
+	       s.sale_is_sold 				as isSold,
+	       s.view_count					as viewCount,
+	       s.sale_updated_at			as updatedAt,
+	       s.sale_created_at			as createdAt,
+	       a.album_no					as "album.no",
+	       a.album_title				as "album.title",
+	       a.artist_name			as "album.artistName",
+	       a.release_date			as "album.releaseDate"
+	from
+		sales s, albums a, users u
+	where
+		s.album_no = a.album_no 
+		and s.user_no = u.user_no
+	<if test="isOpened != null and isOpened != ''">
+		AND s.sale_is_opened = #{isOpened}
+	</if>
+	<if test="isSold != null and isSold != ''">
+		AND s.sale_is_sold = #{isSold}
+	</if>
+	<if test="keyword != null and keyword != ''">
+	    AND (
+	        a.album_title LIKE #{keyword}
+	        OR a.artist_name LIKE #{keyword}
+	    )
+	</if>
+
+
 	
+	<choose>
+		<when test="sort == 'newest'">
+			order by s.sale_created_at desc
+		</when>
+		<when test="sort == 'price-asc'">
+			order by s.sale_price asc
+		</when>
+		<when test="sort == 'price-desc'">
+			order by s.sale_price desc
+		</when>
+	</choose>
+	offset #{offset} rows
+	fetch next #{rows} rows only
+</select>
+
+<select id="getTotalRows" parameterType="map">
+	 	select
+	 		count(*)
+	 	from
+	 		Sales s
+	 	where
+	 		1=1
+	 	<if test="isOpened != null and isOpened != ''">
+	    	AND s.sale_is_opened = #{isOpened}
+	    </if>
+	    <if test="isSold != null and isSold != ''">
+	   		AND s.sale_is_sold = #{isSold}
+	    </if>
 </select>
 	
 </mapper>

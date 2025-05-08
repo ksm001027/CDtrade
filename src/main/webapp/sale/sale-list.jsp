@@ -1,5 +1,56 @@
+<%@page import="java.util.concurrent.locks.Condition"%>
+<%@page import="kr.co.cdtrade.vo.Sale"%>
+<%@page import="kr.co.cdtrade.vo.Album"%>
+<%@page import="kr.co.cdtrade.utils.Pagination"%>
+<%@page import="kr.co.cdtrade.vo.Genre"%>
+<%@page import="kr.co.cdtrade.mapper.GenreMapper"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
+<%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
+<%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="kr.co.cdtrade.utils.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    
+<%
+	int pageNo = StringUtils.strToInt(request.getParameter("page"), 1);
+	String sort = StringUtils.nullToStr(request.getParameter("sort"), "newest");
+	String isOpened = StringUtils.nullToStr(request.getParameter("isOpened"), "");
+	String isSold = StringUtils.nullToStr(request.getParameter("isSold"), "");
+	String keyword = StringUtils.nullToStr(request.getParameter("keyword"), "");
+
+	Map<String, Object> condition = new HashMap<>();
+	
+	condition.put("page", pageNo);
+	condition.put("sort", sort);
+	
+	if (!keyword.isEmpty()) {
+	    condition.put("keyword", "%" + keyword + "%");  // MyBatis에서 LIKE로 검색하기 위함
+	}
+	if (!isOpened.isEmpty()) {
+		condition.put("isOpened", isOpened);
+	}
+	
+	if (!isSold.isEmpty()) {
+		condition.put("isSold", isSold);
+	}
+	
+	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);		
+	
+	int totalRows = salesMapper.getTotalRows(condition);
+	
+	Pagination pagination = new Pagination(pageNo, totalRows, 4);
+	
+	condition.put("offset", pagination.getOffset());
+	condition.put("rows", 4);
+	
+	List<Sale> sales = salesMapper.getSales(condition);
+	
+	
+%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -7,7 +58,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>판매 목록</title>
-    <link rel="stylesheet" href="resources/css/common.css">
+    <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -16,135 +67,76 @@
         <!-- 검색바 -->
         <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" class="search-input" placeholder="앨범명, 가수명, 소속사명 등">
+           <input type="text" class="search-input" id="search-input" placeholder="앨범명, 가수명, 소속사명 등" value="<%=request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>">
+
         </div>
         <br>
 
         <!-- 필터 버튼 -->
+		<div class="filter-buttons">
+			<button type="button"
+				class="btn btn-outline-primary filter-button  <%= "f".equals(isOpened) ? "active" : "" %>"
+				data-type="isOpened" data-value="f">미개봉</button>
+			<button type="button"
+				class="btn btn-outline-primary filter-button <%= "t".equals(isOpened) ? "active" : "" %>"
+				data-type="isOpened" data-value="t">중고</button>
+			<button type="button"
+				class="btn btn-outline-danger filter-button <%= "f".equals(isSold) ? "active" : "" %>"
+				data-type="isSold" data-value="f">판매완료상품 제외</button>
+		</div>
+
+		<!-- 목록 헤더 -->
+		<div class="list-header">
+		    <div class="total-items">전체 2424개</div>
+		
+		    
+		<!-- 필터 버튼 -->
         <div class="filter-buttons">
-            <button class="filter-button">
-                미개봉
-            </button>
-            <button class="filter-button">
-                중고
-            </button>
-            <button class="filter-button">
-                판매완료상품 제외
-            </button>
-        </div>
+	        <form id="form-filter" method="get" action="sale-list.jsp">
+			  <input type="hidden" name="page" value="1">
+			  <input type="hidden" name="isOpened" id="input-isOpened" value="<%=isOpened%>">
+			  <input type="hidden" name="isSold" id="input-isSold" value="<%=isSold%>">
+			  <input type="hidden" name="sort" id="input-sort" value="<%=sort%>">
+			  <input type="hidden" name="keyword" id="input-keyword" value="<%=request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>">
+			  
+		     <select name="sort" class="form-select" onchange="document.getElementById('form-filter').submit();">
 
-        <!-- 목록 헤더 -->
-        <div class="list-header">
-            <div class="total-items">전체 2424개</div>
-            <button class="sort-button" id="sortButton">
-                <span>신규등록순</span>
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </div>
-
+			  	<option value="newest" <%="newest".equals(sort) ? "selected" : "" %>>신규등록순</option>
+			    <option value="price-desc" <%="price-desc".equals(sort) ? "selected" : "" %>>높은가격순</option>
+			    <option value="price-asc" <%="price-asc".equals(sort) ? "selected" : "" %>>낮은가격순</option>
+		       </select>
+			   
+			</form>
+		        </div>
+		    </div>
+		   
         <!-- 앨범 그리드 -->
         <div class="album-grid">
+<%
+	for(Sale sale : sales){
+%>
             <!-- 앨범 카드 1 -->
-            <div class="album-card">
-                <img src="https://image.yes24.com/goods/92147169/XL" alt="HYBS - Making Steak" class="album-image">
+            <a href="album-detail.jsp?albumNo=<%=sale.getAlbum().getNo() %>" class="album-card">
+                <img src="<%=sale.getPhotoPath() %>" alt="HYBS - Making Steak" class="album-image">
                 <div class="album-info">
-                    <h3 class="album-title">HYBS - Making Steak (2024, Opaque Pink)</h3>
-                    <div class="album-status">개봉</div>
+                    <h3 class="album-title"><%=sale.getAlbumTitle() %></h3>
+                    <div class="album-status"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
                     <div class="album-price-label">구매가</div>
-                    <div class="album-price">65,000원</div>
+                    <div class="album-price"><%=sale.getPrice() %>원</div>
                 </div>
-            </div>
-
-            <!-- 앨범 카드 2 -->
-            <div class="album-card">
-                <img src="https://image.yes24.com/goods/92147169/XL" alt="존박 - 정규 2집 PSST!" class="album-image">
-                <div class="album-info">
-                    <h3 class="album-title">존박 (John Park) - 정규 2집 PSST!</h3>
-                    <div class="album-status">개봉</div>
-                    <div class="album-price-label">구매가</div>
-                    <div class="album-price">74,500원</div>
-                </div>
-            </div>
-
-            <!-- 앨범 카드 3 -->
-            <div class="album-card">
-                <img src="https://image.yes24.com/goods/92147169/XL" alt="적재 - 2집 THE LIGHTS" class="album-image">
-                <div class="album-info">
-                    <h3 class="album-title">적재 - 2집 THE LIGHTS (실버)</h3>
-                    <div class="album-status">개봉</div>
-                    <div class="album-price-label">구매가</div>
-                    <div class="album-price">45,000원</div>
-                </div>
-            </div>
-
-            <!-- 앨범 카드 4 -->
-            <div class="album-card">
-                <img src="https://image.yes24.com/goods/92147169/XL" alt="루시 - 정규 10집" class="album-image">
-                <div class="album-info">
-                    <h3 class="album-title">루시드폴 - 정규 10집 목소리와 기타 (옐로우)</h3>
-                    <div class="album-status">개봉</div>
-                    <div class="album-price-label">구매가</div>
-                    <div class="album-price">40,000원</div>
-                </div>
+            </a>
+<%
+	}
+%>
+            
             </div>
         </div>
-    </div>
-
-    <!-- 정렬 모달 -->
-    <div class="modal-backdrop" id="sortModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">정렬</h2>
-                <button class="modal-close" id="modalClose">&times;</button>
-            </div>
-            <div class="modal-body">
-                <ul class="sort-list">
-                    <li class="sort-item active">신규등록순</li>
-                    <li class="sort-item">인기순</li>
-                    <li class="sort-item">높은가격순</li>
-                    <li class="sort-item">낮은가격순</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // 모달 관련 요소
-        const sortButton = document.getElementById('sortButton');
-        const sortModal = document.getElementById('sortModal');
-        const modalClose = document.getElementById('modalClose');
-        const sortItems = document.querySelectorAll('.sort-item');
-
-        // 정렬 버튼 클릭 시 모달 표시
-        sortButton.addEventListener('click', () => {
-            sortModal.classList.add('show');
-        });
-
-        // 모달 닫기 버튼 클릭 시 모달 숨김
-        modalClose.addEventListener('click', () => {
-            sortModal.classList.remove('show');
-        });
-
-        // 모달 외부 클릭 시 모달 숨김
-        sortModal.addEventListener('click', (e) => {
-            if (e.target === sortModal) {
-                sortModal.classList.remove('show');
-            }
-        });
-
-        // 정렬 옵션 클릭 시 처리
-        sortItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // 기존 활성화된 항목에서 active 클래스 제images거
-                document.querySelector('.sort-item.active').classList.remove('active');
-                // 클릭된 항목에 active 클래스 추가
-                item.classList.add('active');
-                // 정렬 버튼의 텍스트 업데이트
-                sortButton.querySelector('span').textContent = item.textContent;
-                // 모달 닫기
-                sortModal.classList.remove('show');
-            });
-        });
+    
+    const sortButton = document.getElementById('sortButton');
+    const sortList = document.getElementById('sortList');
+    const sortItems = document.querySelectorAll('.sort-item');
 
         // 필터 버튼 기능
         const filterButtons = document.querySelectorAll('.filter-button');
@@ -154,6 +146,100 @@
                 button.classList.toggle('active');
             });
         });
+        
+        let currentPage = 1;     // 현재 페이지 번호
+        let isLoading = false;   // 데이터 로딩 중인지 확인
+
+        // 사용자가 화면을 내릴 때마다 감지
+        window.addEventListener('scroll', () => {
+            // 화면 맨 아래에 거의 도달했을 때
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                if (!isLoading) {
+                    isLoading = true;  // 중복 요청 방지
+                    currentPage++;     // 다음 페이지로 이동
+
+                    // 서버에 AJAX 요청
+                    const isOpened = document.getElementById("input-isOpened").value;
+					const isSold = document.getElementById("input-isSold").value;
+					const sort = document.getElementById("input-sort")?.value || "newest";
+					
+					const keyword = document.getElementById("input-keyword")?.value || "";
+					fetch(`getSales.jsp?page=\${currentPage}&isOpened=\${isOpened}&isSold=\${isSold}&sort=\${sort}&keyword=\${encodeURIComponent(keyword)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const albumGrid = document.querySelector('.album-grid');
+                            
+                            if (!Array.isArray(data) || data.length === 0) {
+                                isLoading = false;
+                                return;
+                            }
+
+                            data.forEach(sale => {
+                                // sale 객체가 유효한지 확인
+                                if (!sale || !sale.photoPath || !sale.albumTitle || !sale.price) return;
+
+                                const card = document.createElement('a');
+                                card.href = `album-detail.jsp?albumNo=${sale.albumNo}`;
+                                card.className = 'album-card';
+                                card.innerHTML = `
+                                    <img src="${sale.photoPath}" class="album-image">
+                                    <div class="album-info">
+                                        <h3 class="album-title">${sale.albumTitle}</h3>
+                                        <div class="album-status">${sale.isOpened == 't' ? '중고' : '미개봉'}</div>
+                                        <div class="album-price-label">구매가</div>
+                                        <div class="album-price">${sale.price}원</div>
+                                    </div>
+                                `;
+                                albumGrid.appendChild(card);
+                            });
+                            isLoading = false;
+
+                        });
+                }
+            }
+        });
+        document.querySelector('select[name="sort"]').addEventListener('change', function () {
+            document.getElementById('input-sort').value = this.value;
+            document.getElementById('form-filter').submit();
+        });
+
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const type = this.dataset.type;
+                const value = this.dataset.value;
+                const input = document.getElementById('input-' + type);
+
+                if (input.value === value) {
+                    input.value = "";
+                    this.classList.remove('active');
+                } else {
+                    input.value = value;
+                    // 같은 타입의 버튼에서 active 제거
+                    document.querySelectorAll(`.filter-button[data-type="${type}"]`)
+                    		.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                }
+
+                // 페이지 1로 초기화 후 form 제출
+                document.querySelector('input[name="page"]').value = 1;
+                document.getElementById('form-filter').submit();
+            });
+        });
+		
+     // 자동 검색 기능 (0.5초 후 자동 제출)
+        document.getElementById("search-input").addEventListener("input", function () {
+            const keyword = this.value;
+            document.getElementById("input-keyword").value = keyword;
+            document.querySelector('input[name="page"]').value = 1;
+
+            clearTimeout(window.searchTimeout);
+            window.searchTimeout = setTimeout(() => {
+                document.getElementById("form-filter").submit();
+            }, 500);
+        });
+
+        
+        
     </script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
