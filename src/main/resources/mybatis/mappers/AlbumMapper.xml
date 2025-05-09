@@ -32,7 +32,7 @@
 		  , release_price		as	releasePrice
 		  , recent_order_price	as	recentOrderPrice
 		from 
-			albums
+			albums 
 		where
 			album_no = #{no}
 			<choose>

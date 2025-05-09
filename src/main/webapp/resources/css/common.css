@@ -168,8 +168,10 @@ hr {
 }
 
 .rating-score {
-    color: #333;
+    color: #666;
     margin-left: 0.5rem;
+    position: relative;
+    top: -2px;
 }
 
 /* 상품 상세 정보 */
