@@ -12,6 +12,7 @@
 	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
 	
 	User savedUser = userMapper.getUserByEmail(email);
+	session.setAttribute("LOGINED_USER", savedUser);
 	
 	if (savedUser == null) {
 		response.sendRedirect("login-form.jsp?fail=invalid");
@@ -30,6 +31,7 @@
 	}
 	
 	session.setAttribute("LOGINED_USER_NO", savedUser.getNo());
+	session.setAttribute("LOGINED_USER_NICKNAME", savedUser.getNickname());
 	
 	response.sendRedirect("../mypage/mypage.jsp");
 %>

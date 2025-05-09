@@ -32,7 +32,7 @@
 <%
 	if (loginedUserNo != null) {
 %>
-                <a href="../login/login-form.jsp" class="navbar-profile">
+                <a href="../mypage/mypage.jsp" class="navbar-profile">
                     <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="profile">
                 </a>
                 <a href="../login/logout.jsp" class="navbar-action">로그아웃</a>
