@@ -1,6 +1,7 @@
 package kr.co.cdtrade.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter	
+@Getter
 @Setter
 @NoArgsConstructor
 @ToString
@@ -29,4 +30,5 @@ public class Album {
 	private int recentOrderPrice; // 판매평균가
 	private Date createdAt;
 	private Date updatedAt;
+	private List<Genre> genres;
 }
