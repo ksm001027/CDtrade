@@ -14,7 +14,10 @@
 			albums
 	</select>
 	
-
+	<!-- 
+		List<Album> getAlbums(Map<String, Object> condition);
+			* condition의 요소 - minReviewCount, offset, rows, sort
+	 -->
 	<select id="getAlbums" parameterType="map" resultType="Album">
 		select
 			album_no			as	no
@@ -33,20 +36,21 @@
 		  , recent_order_price	as	recentOrderPrice
 		from 
 			albums 
-		where
-			album_no = #{no}
-			<choose>
+		<if test="minReviewCount != null">
+			where review_count >= #{minReviewCount}
+		</if>
+		<choose>
 	 		<when test="sort == 'newest'">
-	 			order by book_pub_date desc
+	 			order by release_date desc
 	 		</when>
 	 		<when test="sort == 'price-asc'">
-	 			order by book_price asc
+	 			order by avg_order_price asc nulls last
 	 		</when>
 	 		<when test="sort == 'price-desc'">
-	 			order by book_price desc
+	 			order by avg_order_price desc nulls last
 	 		</when>
 	 		<when test="sort == 'rating'">
-	 			order by book_rating desc
+	 			order by avg_rating desc nulls last
 	 		</when>
 	 	</choose>
 	 	offset #{offset} rows

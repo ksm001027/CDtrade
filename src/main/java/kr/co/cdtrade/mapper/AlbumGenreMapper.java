@@ -14,7 +14,7 @@ public interface AlbumGenreMapper {
 	
 	/**
 	 * 특정 장르에 속하는 앨범 정보를 반환한다 
-	 * @param condition의 요소들 rows. offset. genreNo, sort
+	 * @param condition의 요소들 rows. offset. genreNo, sort, minReviewCount
 	 * @return
 	 */
 	List<Album> getAlbumsByGenreNo(Map<String, Object> condition); 

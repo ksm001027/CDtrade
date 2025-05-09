@@ -22,7 +22,7 @@ public interface AlbumMapper {
 	
 	/**
 	 * 모든 앨범 정보를 조회해서 반환한다.
-	 * @param condition
+	 * @param condition의 요소 - minReviewCount, offset, rows, sort
 	 * @return 앨범정보 목록
 	 */
 	List<Album> getAlbums(Map<String, Object> condition);

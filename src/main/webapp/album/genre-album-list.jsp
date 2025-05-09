@@ -62,7 +62,7 @@
         </header>
 
         <!-- 목록 헤더 -->
-        <form method="get" action="list.jsp" id="form-filter">
+        <form method="get" action="genre-album-list.jsp" id="form-filter">
         	<input type="hidden" name="genreNo" value="<%=genreNo%>">
 	        <div class="list-header">
 	            <div class="total-items">전체 <%=totalRows %>개</div>
@@ -175,7 +175,7 @@
     	   console.log(genreNo,  offset, rows, sort)
     	   $.ajax({
 				type: 'get',
-				url: 'album-genre-list.jsp',
+				url: 'get-album-genre-list.jsp',
 				data: {genreNo: genreNo, offset: offset, rows: rows, sort: sort},
 				dataType: 'json',
 				success: function(albums){
@@ -218,7 +218,6 @@
 				}
     	   });
        }
-        
 	</script>
 	
 	

@@ -26,8 +26,9 @@
 	
 	<!-- 
 		List<Album> getAlbumsByGenreNo(Map<String, Object> condition); 
+		flushCache로 캐시를 초기화
 	 -->
-	<select id="getAlbumsByGenreNo" parameterType="map" resultType="Album">
+	<select id="getAlbumsByGenreNo" parameterType="map" resultType="Album" useCache="false" flushCache="true">
 		select a.album_no			as	no
 		  , a.album_title			as	title
 		  , a.artist_name			as	artistName
@@ -45,6 +46,9 @@
 		from albums_genres ag, albums a
 		where ag.album_no = a.album_no
 			and ag.genre_no = #{genreNo}
+		<if test="minReviewCount != null">
+			and a.review_count >= #{minReviewCount}
+		</if>
 		<choose>
 	 		<when test="sort == 'newest'">
 	 			order by a.release_date desc
