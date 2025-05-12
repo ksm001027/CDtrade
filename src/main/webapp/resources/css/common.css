@@ -3181,3 +3181,58 @@ hr {
 .add-complete-btn:hover {
 	background-color: #d9d6d6;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  text-decoration: none;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 50%;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-color: #198754;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-color: #198754;
+}
+
+.pagination button.prev-next {
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.pagination span {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #adb5bd;
+}
+
+.pagination button.disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+    pointer-events: none; /* 클릭 비활성화 */
+  }

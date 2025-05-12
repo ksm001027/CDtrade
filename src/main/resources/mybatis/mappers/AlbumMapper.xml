@@ -7,16 +7,19 @@
 
 
 	
-	<select id="getTotalRows">
+	<select id="getTotalRows" parameterType="map">
 		select
 			count(*)
 		from
 			albums
+		<if test="keyword != null and keyword != ''">
+			where album_title like '%' || #{keyword} || '%'
+		</if>
 	</select>
 	
 	<!-- 
 		List<Album> getAlbums(Map<String, Object> condition);
-			* condition의 요소 - minReviewCount, offset, rows, sort
+			* condition의 요소 - minReviewCount, offset, rows, sort, keyword
 	 -->
 	<select id="getAlbums" parameterType="map" resultType="Album">
 		select
@@ -38,6 +41,9 @@
 			albums 
 		<if test="minReviewCount != null">
 			where review_count >= #{minReviewCount}
+		</if>
+		<if test="keyword != null and keyword != ''">
+			where album_title like '%' || #{keyword} || '%'
 		</if>
 		<choose>
 	 		<when test="sort == 'newest'">
