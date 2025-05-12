@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.cdtrade.mapper.WishItemMapper">
+
+    <!-- 결과 매핑 설정 -->
+    <resultMap id="WishItemMap" type="WishItem">
+        <id property="no" column="WISH_NO" />
+        <result property="createdAt" column="WISH_CREATED_AT" />
+        <result property="updatedAt" column="WISH_UPDATED_AT" />
+
+        <association property="user" javaType="User">
+            <id property="no" column="USER_NO" />
+            <result property="name" column="USER_NAME" />
+            <result property="nickname" column="USER_NICKNAME" />
+        </association>
+
+        <association property="album" javaType="Album">
+            <id property="no" column="ALBUM_NO" />
+            <result property="title" column="ALBUM_TITLE" />
+            <result property="artistName" column="ARTIST_NAME" />
+            <result property="coverImageUrl" column="COVER_IMAGE_URL" />
+            <result property="releaseDate" column="RELEASE_DATE" />
+            <result property="releasePrice" column="RELEASE_PRICE" />
+            <result property="avgRating" column="AVG_RATING" />
+        </association>
+    </resultMap>
+
+    <!-- 사용자 ID로 위시리스트 아이템 조회 -->
+    <select id="getItemsByUserId" resultMap="WishItemMap">
+        SELECT
+            w.WISH_NO, w.WISH_CREATED_AT, w.WISH_UPDATED_AT,
+            w.USER_NO, u.USER_NAME, u.USER_NICKNAME,
+            w.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE,
+            a.RELEASE_PRICE, a.AVG_RATING
+        FROM
+            WISH_ITEMS w
+        LEFT JOIN
+            USERS u ON w.USER_NO = u.USER_NO
+        LEFT JOIN
+            ALBUMS a ON w.ALBUM_NO = a.ALBUM_NO
+        WHERE
+            w.USER_NO = #{userNo}
+        ORDER BY
+            w.WISH_CREATED_AT DESC
+    </select>
+
+    <!-- 위시리스트 아이템 추가 -->
+    <insert id="addWishItem" parameterType="WishItem">
+        INSERT INTO WISH_ITEMS (
+            WISH_NO, WISH_CREATED_AT, WISH_UPDATED_AT, USER_NO, ALBUM_NO
+        ) VALUES (
+            SEQ_WISH_NO.NEXTVAL, SYSDATE, SYSDATE,
+            #{user.no}, #{album.no}
+        )
+    </insert>
+
+    <!-- 위시리스트 아이템 삭제 -->
+    <delete id="deleteWishItem">
+        DELETE FROM WISH_ITEMS
+        WHERE WISH_NO = #{wishNo}
+    </delete>
+
+    <!-- 특정 앨범이 사용자의 위시리스트에 있는지 확인 -->
+    <select id="findByUserAndAlbum" resultMap="WishItemMap">
+        SELECT
+            WISH_NO, WISH_CREATED_AT, WISH_UPDATED_AT, USER_NO, ALBUM_NO
+        FROM
+            WISH_ITEMS
+        WHERE
+            USER_NO = #{userNo} AND ALBUM_NO = #{albumNo}
+    </select>
+
+    <!-- 정렬 옵션에 따른 위시리스트 아이템 조회 -->
+    <select id="getItemsByUserIdSorted" resultMap="WishItemMap">
+        SELECT
+            w.WISH_NO, w.WISH_CREATED_AT, w.WISH_UPDATED_AT,
+            w.USER_NO, u.USER_NAME, u.USER_NICKNAME,
+            w.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE,
+            a.RELEASE_PRICE, a.AVG_RATING
+        FROM
+            WISH_ITEMS w
+        LEFT JOIN
+            USERS u ON w.USER_NO = u.USER_NO
+        LEFT JOIN
+            ALBUMS a ON w.ALBUM_NO = a.ALBUM_NO
+        WHERE
+            w.USER_NO = #{userNo}
+        <choose>
+            <when test="sortOption == 'newest'">
+                ORDER BY w.WISH_CREATED_AT DESC
+            </when>
+            <when test="sortOption == 'popular'">
+                ORDER BY NVL(a.AVG_RATING, 0) DESC, NVL(a.REVIEW_COUNT, 0) DESC
+            </when>
+            <when test="sortOption == 'priceHigh'">
+                ORDER BY NVL(a.RELEASE_PRICE, 0) DESC
+            </when>
+            <when test="sortOption == 'priceLow'">
+                ORDER BY NVL(a.RELEASE_PRICE, 0) ASC
+            </when>
+            <otherwise>
+                ORDER BY w.WISH_CREATED_AT DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 총 위시리스트 아이템 개수 조회 -->
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM WISH_ITEMS
+        WHERE USER_NO = #{userNo}
+    </select>
+
+</mapper>
