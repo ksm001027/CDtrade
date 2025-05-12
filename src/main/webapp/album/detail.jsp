@@ -150,6 +150,7 @@
 </head>
 
 <body>
+	<%@ include file="../common/nav.jsp" %>
 	<!-- 
 		페이지가 로딩되는 시점에 자바스크립트에서 albumNo를 알고있어야함 -> 화면에 나타나지 않는 태그에 데이터 심어두고, 자바스크립트에서 가져오기 
 	 -->
@@ -528,6 +529,8 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<%@ include file="../common/footer.jsp" %>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">

@@ -1,6 +1,5 @@
 <%@page import="kr.co.cdtrade.utils.Pagination"%>
 <%@page import="kr.co.cdtrade.mapper.AlbumGenreMapper"%>
-<%@page import="kr.co.cdtrade.utils.GenreMappingUtils"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
@@ -93,7 +92,6 @@
 		            <select class="sort-select" style="width: 160px;" id="genre-btn" name="genreNo">
 					  <option value="0" <%= 0 == genreNo ? "selected":"" %>>장르 전체</option>
 <%
-	Map<Integer, String> genreMap = GenreMappingUtils.GENRE_NO_TO_NAME;
 	for (Map.Entry<Integer, String> entry : genreMap.entrySet()) {
 %>	
 					  <option value="<%=entry.getKey() %>" <%=entry.getKey() == genreNo ?"selected":"" %>><%=entry.getValue() %></option>
@@ -185,6 +183,10 @@
 %>
 		 
     </div>
+    
+    <%@ include file="../common/footer.jsp" %>
+    
+    
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script type="text/javascript">
 		const genreNo = parseInt($("#list-info").attr("data-genre-no"));
