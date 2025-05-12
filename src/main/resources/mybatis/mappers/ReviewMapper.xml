@@ -120,10 +120,14 @@
     	 void insertReview(Review review);
      -->
      <insert id="insertReview" parameterType="Review">
+     	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+     		select seq_review_no.nextval as no from dual
+     	</selectKey>
+     	
      	insert into reviews
 		(review_no, review_rating, review_content, user_no, album_no)
 		values
-		(seq_review_no.nextval, #{rating}, #{content}, #{user.no}, #{album.no})
+		(#{no}, #{rating}, #{content}, #{user.no}, #{album.no})
      </insert>
 
 	<!-- 

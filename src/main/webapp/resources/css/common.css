@@ -212,6 +212,8 @@ hr {
     font-size: 1.1rem;
     cursor: pointer;
     margin: 2rem 0;
+    text-align: center;
+    text-decoration: none;
 }
 
 .purchase-btn:hover {
@@ -559,7 +561,7 @@ hr {
 .review-write {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
 }
 
 .review-textarea {
@@ -604,6 +606,7 @@ hr {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 3rem;
 }
 
 .review-item {
@@ -2039,6 +2042,8 @@ hr {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
 }
 
 .address-modal-btn:last-child {
@@ -2157,15 +2162,17 @@ hr {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    text-align: center;
 }
 
-.modal-btn:last-child {
+.modal-btn:first-child {
     background: var(--main-color);
     color: #fff;
     border: none;
 }
 
-.modal-btn:last-child:hover {
+.modal-btn:first-child:hover {
     background: var(--main-color-hover);
 }
 
@@ -3113,3 +3120,64 @@ hr {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.my-collection-btn {
+  background-color: white;
+  color: var(--main-color-hover);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: left;
+  border: solid 1px var(--main-color);
+}
+
+.my-collection-btn:hover {
+  background-color: var(--main-color); /* hover 시 약간 어두운 녹색 */
+  color: white;
+  transform: scale(1.05); /* 살짝 확대 */
+}
+
+.my-collection-btn .icon {
+  margin-right: 8px; /* 텍스트와 아이콘 사이 간격 */
+  font-size: 25px; /* 아이콘 크기 */
+  font-weight: bold;
+  line-height: 0.7;
+  position: relative;
+  top: 2px;
+}
+
+.my-collection-section {
+    margin-bottom: 1rem;
+}
+
+.add-complete {
+  display: flex;
+  justify-content: space-between; /* 좌우로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  padding: 25px 20px; /* 내부 여백 */
+  border: 1px solid #e0e0e0; /* 테두리 색상 */
+  border-radius: 8px; /* 둥근 모서리 */
+  background-color: #f9f9f9; /* 배경색 */
+  margin-top: 10px;
+  color: var(--main-color-hover);
+}
+
+.add-complete-btn {
+	background-color: #f9f9f9;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: left;
+    border: solid 1px var(--main-color);
+    text-decoration: none;
+}
+
+.add-complete-btn:hover {
+	background-color: #d9d6d6;
+}

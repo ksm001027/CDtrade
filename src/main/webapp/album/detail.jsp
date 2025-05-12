@@ -1,3 +1,6 @@
+<%@page import="kr.co.cdtrade.vo.MyCollectionItem"%>
+<%@page import="kr.co.cdtrade.mapper.MyCollectionMapper"%>
+<%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.vo.Review"%>
@@ -5,7 +8,6 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="kr.co.cdtrade.vo.Order"%>
-<%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
 <%@page import="kr.co.cdtrade.utils.GenreMappingUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.mapper.AlbumGenreMapper"%>
@@ -42,8 +44,10 @@
 				ㄴ 마지막요소까지 보여졌으면 더보기 버튼 보이지 않도록 설정하기
 					=> reviewRowsByAlbumNo 로 전체 리뷰수 구하고, 리스트에 표현된 주문 데이터가 전체주문수와 같으면 더보기 버튼 보이지 않도록 설정하기? 
 		5. 리뷰 등록 시 review-add.jsp로 요청 폼 보내기 
-			- 마이컬렉션에 해당 앨범을 추가할건지 묻는 모달창 띄우기 000000000000000000000
-				ㄴ detail.jsp에 reviewAdd 상태로 돌아오면, 모달창 띄우도록 섧정
+			- 마이컬렉션에 해당 앨범을 추가할건지 묻는 모달창 띄우기
+				ㄴ 등록버튼을 눌렀을때, 모달창이 뜨는 이벤트 설정해서 review-add.jsp에서 마이컬렉션에 데이터 추가하는 로직까지 구현하기 
+				ㄴ 이미 리뷰를 달았을 떄, 리뷰 수정창 아래에 마이컬렉션에 등록하기/제외하기 옵션을 추후에도 선택할 수 있도록하기 
+				ㄴ 리뷰가 삭제되면 마이컬렉션에서도 삭제되게 하기
 		6. 위시리스트 테이블에 해당 albumNo, 해당 사용자의 userNo를 가진 행이 존재유무에 따라 위시리스트 버튼 스타일 설정 000000000000000000
 		7. 클릭 시 이동해야하는 페이징 처리
 		
@@ -107,6 +111,12 @@
 	
 	// 본인이 해당 앨범에 남긴 리뷰 조회 
 	Review myReview = reviewMapper.getReviewByAlbumNoAndUserNo(albumNo, userNo);
+	
+	MyCollectionItem myCollectionItem = null;
+	if (myReview != null){
+		MyCollectionMapper myCollectionMapper = MybatisUtils.getMapper(MyCollectionMapper.class);
+		myCollectionItem = myCollectionMapper.findByUserAndAlbum(userNo, albumNo);
+	}
 	
 	/*
 		-----------------------
@@ -236,7 +246,7 @@
                         </div>
                     </dl>
 
-                    <button class="purchase-btn">판매</button>
+                    <a href="../sale/sale-form.jsp?ano=<%=albumNo %>" class="purchase-btn">판매</a>
 
                     <div class="recent-trades">
                         <div class="section-header">
@@ -355,6 +365,7 @@
 	if (myReview == null) {
 %>
         	<form action="../review/review-add.jsp" method="post" id="review-form">
+        		<input type="hidden" name="isAddMyCollection">
 	            <div class="review-header">
 	                <div> 
 	                	<h2>앨범리뷰</h2>
@@ -375,8 +386,8 @@
 	            </div>
 	
 	            <div class="review-write">
-	                <textarea placeholder="리뷰를 작성해주세요" class="review-textarea" name="content"></textarea>
-	                <button class="review-submit" type="submit" id="review-form-btn">등록</button>
+	                <textarea placeholder="리뷰를 작성하고 앨범을 마이컬렉션에 추가해보세요" class="review-textarea" name="content"></textarea>
+	                <button class="review-submit" type="button" id="review-form-btn">등록</button>
 	            </div>
 	        </form>
 	     </div>
@@ -426,6 +437,25 @@
 	                <button class="review-submit second" type="submit" id="review-delete-btn">삭제</button>
 	            </div>
 	           	</form>
+	           		<div class="my-collection-section" id="my-collection-div">
+<%
+		if (myCollectionItem == null) {
+%>
+					  <button class="my-collection-btn" id="my-collection-add-btn" data-my-review-no="<%=myReview.getNo()%>">
+					  	  <span class="icon">+</span>
+					  	  마이컬렉션에 추가하기
+					  </button>
+<%
+		} else {
+%>
+					<button class="my-collection-btn" id="my-collection-del-btn" data-my-review-no="<%=myReview.getNo()%>">
+					  	  <span class="icon">-</span>
+					  	  마이컬렉션에서 삭제하기
+					  </button>
+<%
+		}
+%>
+					</div>
 	        </div>
 <%
 	}
@@ -487,10 +517,89 @@
 %>
     </div>
     
+    <!-- 마이컬렉션 추가 모달 -->
+    <div id="my-collection-check-Modal" class="modal-backdrop">
+	  <div class="modal-content">
+	    <div class="modal-title">마이컬렉션 추가</div>
+	    <div class="modal-desc">마이컬렉션에 해당 앨범을 추가하시겠습니까?</div>
+	    <div class="modal-btns" id="my-collection-modal-btn">
+		    <a href="#" class="modal-btn" data-is-add-my-collection="true">예</a>	
+		    <a href="#" class="modal-btn" data-is-add-my-collection="false">아니요</a>	
+	    </div>
+	  </div>
+	</div>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
     	const albumNo = parseInt($("#album-info").attr("data-album-no"));
     	const userNo = parseInt($("#album-info").attr("data-user-no"));
+    	
+    	/*
+    		------------- 
+    		마이컬렉션 등록 버튼과 관련된 이벤트 
+    	*/
+    	$("#my-collection-div").on("click", "#my-collection-add-btn", function(){
+    		if(confirm("마이컬렉션에 앨범을 추가하시겠습니까?")){
+    			const myReviewNo = $(this).attr("data-my-review-no");
+    			$.ajax({
+    				type: 'get',
+    				url: '../mycollection/add-mycollection-item.jsp',
+    				data: {albumNo: albumNo, reviewNo : myReviewNo},
+    				dataType: 'text',
+    				success: function(reviews){
+    					
+    	    			$div = $("#my-collection-div").empty();
+    	    			
+    	    			const deleteBtn = ` <button class="my-collection-btn" id="my-collection-del-btn" data-my-review-no="\${myReviewNo}">
+    					  	  <span class="icon">-</span>
+    					  	  마이컬렉션에서 삭제하기
+    					 	 </button>`;
+    					const completeAdd = `<div class="add-complete">
+    											마이컬렉션에 추가되었습니다! 
+    											<a href="../mycollection/mycollection.jsp" class="add-complete-btn">마이컬렉션 확인하기 ></a>
+    										</div>`
+    	    			
+    	    			$div.append(deleteBtn);
+    	    			$div.append(completeAdd);
+    				}
+    				});
+    		}
+    	});
+    	
+    	$("#my-collection-div").on("click", "#my-collection-del-btn", function(){
+    		if(confirm("마이컬렉션에서 앨범을 삭제하시겠습니까?")){
+    			const myReviewNo = $(this).attr("data-my-review-no");
+    			$.ajax({
+    				type: 'get',
+    				url: '../mycollection/delete-mycollection-item-by-review.jsp',
+    				data: {reviewNo : myReviewNo},
+    				dataType: 'text',
+    				success: function(reviews){
+    					$div = $("#my-collection-div").empty();
+    					
+    					const addBtn = ` <button class="my-collection-btn" id="my-collection-add-btn" data-my-review-no="\${myReviewNo}">
+  					  	  <span class="icon">+</span>
+  					  	  마이컬렉션에 추가하기
+  					 	 </button>`;
+  					 	 
+		    			$div.append(addBtn);
+    				}
+    				});
+    		}
+    	})
+    	
+    	
+    	/*
+    		마이컬렉션 추가 모달 관련 이벤트 
+    	*/
+    	
+    	// 마이컬렉션 모달창에서 예,아니오를 눌렀을떄 작업
+    	$("#my-collection-modal-btn a").click(function(){
+    		const isAddMyCollection = $(this).attr("data-is-add-my-collection");		
+    		$("#review-form input[name='isAddMyCollection']").val(isAddMyCollection);
+    		
+    		$("#review-form").trigger("submit");
+    	});
     	
     	
     	/*
@@ -703,6 +812,8 @@
     			alert("별점을 설정해주세요")
     			return false;
     		}
+    		$("#my-collection-check-Modal").addClass("show");
+    		return false;
     	});
     	
     	/* 
