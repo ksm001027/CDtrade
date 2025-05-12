@@ -7,14 +7,20 @@
 
 
 	
-	<select id="getTotalRows">
+	<select id="getTotalRows" parameterType="map">
 		select
 			count(*)
 		from
 			albums
+		<if test="keyword != null and keyword != ''">
+			where album_title like '%' || #{keyword} || '%'
+		</if>
 	</select>
 	
-
+	<!-- 
+		List<Album> getAlbums(Map<String, Object> condition);
+			* condition의 요소 - minReviewCount, offset, rows, sort, keyword
+	 -->
 	<select id="getAlbums" parameterType="map" resultType="Album">
 		select
 			album_no			as	no
@@ -32,21 +38,25 @@
 		  , release_price		as	releasePrice
 		  , recent_order_price	as	recentOrderPrice
 		from 
-			albums
-		where
-			album_no = #{no}
-			<choose>
+			albums 
+		<if test="minReviewCount != null">
+			where review_count >= #{minReviewCount}
+		</if>
+		<if test="keyword != null and keyword != ''">
+			where album_title like '%' || #{keyword} || '%'
+		</if>
+		<choose>
 	 		<when test="sort == 'newest'">
-	 			order by book_pub_date desc
+	 			order by release_date desc
 	 		</when>
 	 		<when test="sort == 'price-asc'">
-	 			order by book_price asc
+	 			order by avg_order_price asc nulls last
 	 		</when>
 	 		<when test="sort == 'price-desc'">
-	 			order by book_price desc
+	 			order by avg_order_price desc nulls last
 	 		</when>
 	 		<when test="sort == 'rating'">
-	 			order by book_rating desc
+	 			order by avg_rating desc nulls last
 	 		</when>
 	 	</choose>
 	 	offset #{offset} rows
@@ -67,6 +77,51 @@
 		(#{no}, #{title}, #{artistName}, #{releaseDate}, #{coverImageUrl}, #{releasePrice})
 	</insert>
 	
+	<!-- 
+		Album getAlbumByNo(int albumNo);
+	 -->
+	<select id="getAlbumByNo" resultType="Album">
+		select album_no as no
+			 , album_title as title
+	         , artist_name as artistName
+	         , release_date as releaseDate
+	         , cover_image_url as coverImageUrl
+	         , avg_rating as avgRating
+	         , review_count as reviewCount
+	         , stock_quantity as stockQuantity
+	         , avg_order_price as avgOrderPrice
+	         , avg_sale_price as avgSalePrice
+	         , album_created_at as createdAt
+	         , album_updated_at as updatedAt
+	         , release_price as releasePrice
+	         , recent_order_price as recentOrderPrice
+		from albums
+		where album_no = #{albumNo}
+	</select>
+	
+	<!-- 
+		void updateAlbum(Album album);
+	 -->
+	 <update id="updateAlbum">
+	 	update albums
+		set album_title        = #{title}
+	       , artist_name        = #{artistName}
+	       , release_date       = #{releaseDate}
+	       , cover_image_url    = #{coverImageUrl}
+	       , avg_rating         = #{avgRating}
+	       , review_count       = #{reviewCount}
+	       , stock_quantity     = #{stockQuantity}
+	       , avg_order_price    = #{avgOrderPrice}
+	       , avg_sale_price     = #{avgSalePrice}
+	       , album_created_at   = #{createdAt}
+	       , album_updated_at   = #{updatedAt}
+	       , release_price      = #{releasePrice}
+	       , recent_order_price = #{recentOrderPrice}
+	    where album_no          = #{no}
+	 		
+	 </update>
+		
+
 	<select id="getAlbumByAlbumNo" resultType="Album">
 		select
 	  	    album_no			as	no
@@ -101,4 +156,5 @@
 			and ag.genre_no = g.genre_no
 	</select>
 	
+
 </mapper>

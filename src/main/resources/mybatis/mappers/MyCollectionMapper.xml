@@ -67,6 +67,14 @@
 		DELETE FROM MYCOLLECTION_ITEMS
 		WHERE COL_NO = #{colNo}
 	</delete>
+	
+	<!-- 
+		void deleteCollectionItemByReviewNo(@Param("reviewNo") int reviewNo);
+	 -->
+	 <delete id="deleteCollectionItemByReviewNo">
+	 	DELETE FROM MYCOLLECTION_ITEMS
+		WHERE REVIEW_NO = #{reviewNo}
+	 </delete>
 
 	<!-- 특정 앨범이 사용자의 컬렉션에 있는지 확인 (변경 없음) -->
 	<select id="findByUserAndAlbum" resultMap="MyCollectionItemMap">

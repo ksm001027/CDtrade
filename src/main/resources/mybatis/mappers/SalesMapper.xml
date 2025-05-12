@@ -95,6 +95,9 @@
 	        OR a.artist_name LIKE #{keyword}
 	    )
 	</if>
+	<if test="albumNo != null">
+		AND a.album_no = #{albumNo}
+	</if>
 
 
 	
@@ -125,6 +128,9 @@
 	    </if>
 	    <if test="isSold != null and isSold != ''">
 	   		AND s.sale_is_sold = #{isSold}
+	    </if>
+	    <if test="albumNo != null">
+	    	AND s.album_no = #{albumNo}
 	    </if>
 </select>
 	

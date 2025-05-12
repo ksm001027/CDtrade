@@ -160,6 +160,7 @@ hr {
 .star {
     font-size: 1.2rem;
     margin-right: 2px;
+    color: #ccc;
 }
 
 .star.filled {
@@ -167,8 +168,10 @@ hr {
 }
 
 .rating-score {
-    color: #333;
+    color: #666;
     margin-left: 0.5rem;
+    position: relative;
+    top: -2px;
 }
 
 /* 상품 상세 정보 */
@@ -209,6 +212,8 @@ hr {
     font-size: 1.1rem;
     cursor: pointer;
     margin: 2rem 0;
+    text-align: center;
+    text-decoration: none;
 }
 
 .purchase-btn:hover {
@@ -309,7 +314,7 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .product-count {
@@ -376,6 +381,7 @@ hr {
     display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
+    flex-wrap: wrap;
     /* padding: 0 2rem; */
 }
 
@@ -532,7 +538,7 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .review-header h2 {
@@ -555,7 +561,7 @@ hr {
 .review-write {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
 }
 
 .review-textarea {
@@ -587,11 +593,20 @@ hr {
     background: var(--main-color-hover);
 }
 
+.review-submit.second {
+    background: #bbb;
+}
+
+.review-submit.second:hover {
+    background: #ccc;
+}
+
 /* 리뷰 목록 */
 .review-list {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 3rem;
 }
 
 .review-item {
@@ -601,6 +616,12 @@ hr {
 
 .review-item:last-child {
     border-bottom: none;
+}
+
+.review-item.mine {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
 }
 
 .review-stars {
@@ -613,7 +634,7 @@ hr {
 }
 
 .review-stars .star.filled {
-    color: var(--main-color);
+    color: #ffd700;
 }
 
 .review-text {
@@ -2021,6 +2042,8 @@ hr {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
 }
 
 .address-modal-btn:last-child {
@@ -2139,15 +2162,17 @@ hr {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    text-align: center;
 }
 
-.modal-btn:last-child {
+.modal-btn:first-child {
     background: var(--main-color);
     color: #fff;
     border: none;
 }
 
-.modal-btn:last-child:hover {
+.modal-btn:first-child:hover {
     background: var(--main-color-hover);
 }
 
@@ -2718,6 +2743,7 @@ hr {
 
 .footer-wrapper {
     width: 100%;
+    margin-top: 200px;
 }
 
 .footer {
@@ -2877,10 +2903,10 @@ hr {
 }
 
 .navbar-search {
-    display: flex;
-    align-items: center;
-    background: #f5f5f5;
-    border-radius: 8px;
+    display: flex; /* 플렉스 컨테이너로 설정 */
+    align-items: center; /* 세로 정렬 */
+    background: #f3f3f3;
+    border-radius: 3px;
     padding: 0.3rem 1rem;
     margin: 0 1.5rem;
     min-width: 320px;
@@ -2888,15 +2914,16 @@ hr {
 
 .navbar-search i {
     color: #888;
-    margin-right: 0.7rem;
-    font-size: 1.1rem;
+    font-size: 18px;
+    margin-right: 0.5rem; /* input과의 간격 조정 */
+    pointer-events: none; /* 아이콘 클릭 방지 */
 }
 
 .navbar-search input {
     border: none;
     background: transparent;
     outline: none;
-    font-size: 1rem;
+    font-size: 12px;
     width: 100%;
     color: #333;
     padding: 0.5rem 0;
@@ -2970,46 +2997,292 @@ hr {
         justify-content: flex-end;
         width: 100%;
     }
-    
-    .alert {
-	    padding: 15px;
-	    background-color: #f44336; /* 빨간색 */
-	    color: white;
-	    margin-bottom: 20px;
-	    border-radius: 5px;
-	}
+}
 
-	.alert-dismissible .btn-close {
-	    float: right;
-	    background: none;
-	    border: none;
-	    font-size: 20px;
-	    color: white;
-	}
+.star.half {
+    background: linear-gradient(90deg, #ffd700 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-link {
+    text-decoration: none;     /* 밑줄 제거 */
+    color: #000;               /* 기본 검정색 */
+    transition: color 0.2s ease; /* 부드럽게 색상 전환 */
+}
+
+.text-link:hover {
+    color: var(--main-color);
+}
+
+.review-form-star {
+    font-size: 2rem;
+    margin-right: 2px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.review-form-star.full {
+    color: #ffd700;
+}
+
+.review-form-star.half { 
+    background: linear-gradient(90deg, #ffd700 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-product-list {
+	display: flex;
+	gap: 1rem;
+	width: 100%;
 	
-	.alert {
-	    padding: 15px;
-	    background-color: #f44336; /* 빨간 배경 */
-	    color: white;
-	    margin-bottom: 20px;
-	    border-radius: 5px;
-	    position: relative;
-	    font-family: Arial, sans-serif;
-	    font-size: 15px;
-	}
-	
-	.alert-dismissible .btn-close {
-	    position: absolute;
-	    top: 10px;
-	    right: 15px;
-	    background: none;
-	    border: none;
-	    font-size: 20px;
-	    color: white;
-	    cursor: pointer;
-	}
-	
-    .alert-dismissible .btn-close:hover {
-    color: #ddd;
-	}
+}
+
+.product-pagination-btn {
+    padding: 10px;
+    background-color: #ffffff;
+    border: none;
+    color: #666;
+    cursor: pointer;
+}
+
+.product-pagination-btn:hover {
+	background-color: #f8f9fa;
+}
+
+.product-pagination-btn:disabled {
+	 opacity: 0.5;
+	 cursor: default;
+}
+    
+.alert {
+ padding: 15px;
+ background-color: #f44336; /* 빨간색 */
+    color: white;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.alert-dismissible .btn-close {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+}
+
+.alert {
+    padding: 15px;
+    background-color: #f44336; /* 빨간 배경 */
+    color: white;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position: relative;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+.alert-dismissible .btn-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+   .alert-dismissible .btn-close:hover {
+   color: #ddd;
+}
+
+.sort-select {
+	appearance: none; /* 브라우저 기본 스타일 제거 */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    width: 130px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23222222' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    cursor: pointer;
+    color: #666;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.my-collection-btn {
+  background-color: white;
+  color: var(--main-color-hover);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: left;
+  border: solid 1px var(--main-color);
+}
+
+.my-collection-btn:hover {
+  background-color: var(--main-color); /* hover 시 약간 어두운 녹색 */
+  color: white;
+  transform: scale(1.05); /* 살짝 확대 */
+}
+
+.my-collection-btn .icon {
+  margin-right: 8px; /* 텍스트와 아이콘 사이 간격 */
+  font-size: 25px; /* 아이콘 크기 */
+  font-weight: bold;
+  line-height: 0.7;
+  position: relative;
+  top: 2px;
+}
+
+.my-collection-section {
+    margin-bottom: 1rem;
+}
+
+.add-complete {
+  display: flex;
+  justify-content: space-between; /* 좌우로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  padding: 25px 20px; /* 내부 여백 */
+  border: 1px solid #e0e0e0; /* 테두리 색상 */
+  border-radius: 8px; /* 둥근 모서리 */
+  background-color: #f9f9f9; /* 배경색 */
+  margin-top: 10px;
+  color: var(--main-color-hover);
+}
+
+.add-complete-btn {
+	background-color: #f9f9f9;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: left;
+    border: solid 1px var(--main-color);
+    text-decoration: none;
+}
+
+.add-complete-btn:hover {
+	background-color: #d9d6d6;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+  margin-bottom: 3rem;
+}
+
+.pagination button {
+  text-decoration: none;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 50%;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-color: #198754;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-color: #198754;
+}
+
+.pagination button.prev-next {
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.pagination span {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #adb5bd;
+}
+
+.pagination button.disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+    pointer-events: none; /* 클릭 비활성화 */
+  }
+  
+.dropdown {
+	position: relative;
+  	display: inline-block;
+}
+
+
+.navbar-menu .dropdown-menu {
+  position: absolute;
+  top: 90%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  list-style: none;
+  margin: 5px 0 0 0;
+  padding: 0;
+  min-width: 150px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  color: var(--main-color);
+}
+
+/* 드롭다운 항목 */
+.dropdown-menu li {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: var(--main-color);
+  transition: background-color 0.3s;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: #4c4c4c;
+  display: block;
+}
+
+/* 드롭다운 활성화 */
+.dropdown:hover .dropdown-menu {
+  display: block;
 }

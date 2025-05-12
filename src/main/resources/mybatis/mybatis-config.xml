@@ -35,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="mybatis/mappers/AddressMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumMapper.xml" />
 		<mapper resource="mybatis/mappers/AlbumGenreMapper.xml" />
+		<mapper resource="mybatis/mappers/OrderMapper.xml" />
 		<mapper resource="mybatis/mappers/GenreMapper.xml" />
 		<mapper resource="mybatis/mappers/MyCollectionMapper.xml" />
 		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
