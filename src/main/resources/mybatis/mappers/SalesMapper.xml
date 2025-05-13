@@ -52,7 +52,8 @@
    		 , a.album_title			as "album.title"
 	     , a.artist_name			as "album.artistName"
 	     , a.release_date			as "albums.releaseDate"
-	     
+	     , ag.genre_no				as "albums_genre.genreNo"
+	     , g.genre_name				as "genres.name" 
 	from
 		sales s, albums a
 	where
@@ -94,6 +95,9 @@
 	        OR a.artist_name LIKE #{keyword}
 	    )
 	</if>
+	<if test="albumNo != null">
+		AND a.album_no = #{albumNo}
+	</if>
 
 
 	
@@ -124,6 +128,9 @@
 	    </if>
 	    <if test="isSold != null and isSold != ''">
 	   		AND s.sale_is_sold = #{isSold}
+	    </if>
+	    <if test="albumNo != null">
+	    	AND s.album_no = #{albumNo}
 	    </if>
 </select>
 	

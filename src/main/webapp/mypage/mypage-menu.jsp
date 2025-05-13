@@ -23,18 +23,19 @@
     <div class="mypage-menu-section">
         <div class="mypage-menu-section-title">쇼핑 정보</div>
         <ul class="mypage-menu-list">
-            <li><a href="#">구매 내역</a></li>
-            <li><a href="#">판매 내역</a></li>
-            <li><a href="#">그.. 위시리스트♥</a></li>
+            <li><a href="../order/order-form.jsp">구매 내역</a></li>
+            <li><a href="../sale/sale-form.jsp">판매 내역</a></li>
+            <li><a href="../wishlist/wish-list.jsp">그.. 위시리스트♥</a></li>
+            <li><a href="../mycollection/mycollection.jsp">마이 컬렉션</a></li>
         </ul>
     </div>
 
     <div class="mypage-menu-section">
         <div class="mypage-menu-section-title">내 정보</div>
         <ul class="mypage-menu-list">
-            <li><a href="#">회원정보 수정</a></li>
-            <li><a href="#">배송지 관리</a></li>
-            <li><a href="#">계좌번호 관리</a></li>
+            <li><a href="../edit-profile/edit-profile-form.jsp">회원정보 수정</a></li>
+            <li><a href="../delivery/delivery-form.jsp">배송지 관리</a></li>
+            <li><a href="../account/manage-account.jsp">계좌번호 관리</a></li>
         </ul>
     </div>
 

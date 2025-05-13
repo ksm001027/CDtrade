@@ -42,7 +42,7 @@
                 </tr>
             </table>
             <hr>
-            <button class="complete-btn" >판매글 확인하기</button>
+            <button class="complete-btn" href="http://localhost:8080/CDtrade/sale/sale-detail/sno=<%= %>">판매글 확인하기</button>
             <button class="complete-btn">메인으로 돌아가기</button>
         </div>
     </div>

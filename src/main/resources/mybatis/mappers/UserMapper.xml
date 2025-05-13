@@ -82,8 +82,30 @@
 	
 	<update id="deactivateUserByNo" parameterType="int">
 		update users
-		set user_is_active = 'f'
+		set 
+			user_is_active = 'f'
 			, user_updated_at = SYSDATE
-		where user_no = #{no}
+		where 
+			user_no = #{no}
 	</update>
+	
+	<update id="updateUser" parameterType="User">
+		update users
+		set 
+			user_nickname = #{nickname}
+			, user_password = #{password}
+			, user_name = #{name}
+			, user_tel = #{tel}
+		where 
+			user_no = #{no}
+	</update>
+	
+	<update id="updateAccountNumber" parameterType="User">
+		UPDATE users
+		SET 
+			account_number = #{accountNumber}
+		WHERE 
+			user_no = #{userNo}
+	</update>
+	
 </mapper>

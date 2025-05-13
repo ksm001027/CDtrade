@@ -1,4 +1,3 @@
-<%@page import="kr.co.cdtrade.vo.Order"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.vo.Genre"%>
@@ -15,9 +14,8 @@
 	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
 	Album album = albumMapper.getAlbumByAlbumNo(albumNo);
 	
-	List<Genre> genres = albumMapper.getGenreByAlbumNo(albumNo);
+	List<Genre> genres = albumMapper.getGenreNameByAlbumNo(albumNo);
     String genreNames = "";
-    String genreNos="";
     
    	for (int i = 0; i < genres.size(); i++) {
    		genreNames += genres.get(i).getName();
@@ -25,15 +23,6 @@
    			genreNames += ", ";
    		}
    	}
-   	
-   	for (int i = 0; i < genres.size(); i++) {
-   		genreNos += genres.get(i).getNo();
-   		if (i < genres.size() - 1)
-   			genreNos += ", ";
-   	}
-   	
-   
-   
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -41,7 +30,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=album.getTitle() %></title>
+    <title>BLACKPINK 2nd VINYL LP (BORN PINK)</title>
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
 
@@ -50,7 +39,7 @@
         <div class="detail-container">
             <!-- 왼쪽: 앨범 이미지 -->
             <div class="detail-image">
-                <img src="<%=album.getCoverImageUrl() %>" alt="<%=album.getTitle() %>">
+                <img src="https://image.yes24.com/goods/92147169/XL" alt="BLACKPINK BORN PINK">
             </div>
             <!-- 오른쪽: 앨범 정보 -->
             <div class="detail-info">
@@ -131,11 +120,11 @@
                         </div>
                         <div class="info-item">
                             <dt>장르</dt>
-                            <dd><%=genreNames %></dd>
+                            <dd><%=album.getGenres() %></dd>
                         </div>
                         <div class="info-item">
                             <dt>Cat.No / BARCODE</dt>
-                            <dd><%=genreNos %></dd>
+                            <dd><%=genreNames %></dd>
                         </div>
                         <div class="info-item">
                             <dt>추가정보</dt>
@@ -148,7 +137,7 @@
                         </div>
                     </dl>
 
-                    <button class="purchase-btn" onclick="location.href='sale-form.jsp?ano=<%=album.getNo()%>'">판매</button>
+                    <button class="purchase-btn">판매</button>
 
                     <div class="recent-trades">
                         <h3>최근거래</h3>
@@ -162,7 +151,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><%= %></td>
+                                    <td>미개봉</td>
                                     <td>2025-01-17</td>
                                     <td>95,000원</td>
                                 </tr>
