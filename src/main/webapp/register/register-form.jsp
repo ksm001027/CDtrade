@@ -216,7 +216,7 @@
 						telCheckPassed = true;
 					} else if (result === 'exists') {
 						$div.addClass("text-danger")
-							.text("사용할 수 없는 전화번호입니다.")
+							.text("이미 사용중인 전화번호입니다.")
 						telCheckPassed = false;
 					}
 				}
