@@ -16,14 +16,10 @@ public interface MyCollectionMapper {
 
     // 마이컬렉션 아이템 삭제
     void deleteCollectionItem(@Param("colNo") int colNo);
-
-
-
-
-    // 리뷰번호로 마이컬렉션 아이템 삭제
+    
+    // 리뷰번호로 마이컬렉션 아이템 삭제 
     void deleteCollectionItemByReviewNo(@Param("reviewNo") int reviewNo);
-
-
+    
     // 특정 앨범이 사용자의 컬렉션에 있는지 확인
     MyCollectionItem findByUserAndAlbum(@Param("userNo") int userNo, @Param("albumNo") int albumNo);
 
