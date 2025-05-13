@@ -54,7 +54,7 @@
                 <tr>
                     <th>아티스트명</th>
                     <td><%=order.getArtistName() %></td>
-                </tr>
+                </tr>    
                 <tr>
                     <th>결제가격</th>
                     <td><%=StringUtils.commaWithNumber(order.getPrice() + order.getDeliveryFee()) %> 원</td>
