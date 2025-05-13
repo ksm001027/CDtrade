@@ -105,7 +105,7 @@
 			</div>
 			
 <%
-	} else {
+	} else { 
 %>
 			<div class="album-grid" id="album-list">
 <%

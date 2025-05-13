@@ -17,7 +17,7 @@
 <%@page import="kr.co.cdtrade.utils.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<% 
 	/*
 		앨범 상세 페이지 8
 		필요한 파라미터 : albumNo, sessionUserNo 

@@ -9,7 +9,7 @@
 	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
 	SalesMapper saleMapper = MybatisUtils.getMapper(SalesMapper.class);
 	Sale sale = saleMapper.getSaleBySaleNo(saleNo);
-	
+	 
 	
 %>
 <!DOCTYPE html>

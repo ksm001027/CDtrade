@@ -29,6 +29,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@include file="../common/nav.jsp" %>
     <title>결제</title>
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
@@ -245,7 +246,7 @@
         </div>
     </div>
     
-    
+    <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         // 배송지 선택 모달 닫기
