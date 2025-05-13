@@ -57,6 +57,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    .album-title {
+    color: black !important;
+    text-decoration: none !important; /* 밑줄 제거도 원할 경우 */
+	}
+	.album-title:hover {
+	    color: black !important; /* 마우스 오버 시에도 색 유지 */
+	}
+</style>
     <title>판매 목록</title>
     <%@include file="../../common/nav.jsp" %>
     <link rel="stylesheet" href="../resources/css/common.css">
@@ -118,7 +127,7 @@
 %>
             <!-- 앨범 카드 1 -->
             <a href="sale-detail.jsp?sno=<%=sale.getNo() %>" class="album-card">
-                <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
+                <img src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
                 <div class="album-info">
                     <h3 class="album-title"><%=sale.getAlbumTitle() %></h3>
                     <div class="album-status"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
@@ -166,10 +175,10 @@
 						        console.log(sale);  // ✅ 구조 확인용
 						
 						        const card = document.createElement('a');
-						        card.href = `album-detail.jsp?ano=\${sale.albumNo}`;
+						        card.href = `sale-detail.jsp?sno=\${sale.saleNo}`;
 						        card.className = 'album-card';
 						        card.innerHTML = `
-						            <img src="\${sale.photoPath}" class="album-image">
+						            <img src="\${sale.photoPath.split(",")[0]}" class="album-image">
 						            <div class="album-info">
 						                <h3 class="album-title">\${sale.albumTitle}</h3>
 						                <div class="album-status">\${sale.isOpened == 't' ? '중고' : '미개봉'}</div>
