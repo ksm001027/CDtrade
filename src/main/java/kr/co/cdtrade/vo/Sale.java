@@ -26,7 +26,7 @@ public class Sale {
 	private List<Genre> genres;
 
 	public String getAlbumTitle() {
-		return album.getTitle();
+		return album.getTitle(); 
 	}
 	public String getArtistName() {
 		return album.getArtistName();
