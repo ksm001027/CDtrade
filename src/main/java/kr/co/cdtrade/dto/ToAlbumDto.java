@@ -38,10 +38,10 @@ public class ToAlbumDto {
 		} catch (ParseException e) {
 			 System.out.println("날짜 형식이 잘못되었습니다: " + e.getMessage());
 		}
-		
-		// cover를 coverSum에서 cover500으로 변환 
+
+		// cover를 coverSum에서 cover500으로 변환
 		cover = cover.replace("coversum", "cover500");
-		
+
 		Album album = new Album();
 		album.setTitle(title);
 

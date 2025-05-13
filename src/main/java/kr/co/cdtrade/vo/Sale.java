@@ -29,7 +29,7 @@ public class Sale {
 	private List<Genre> genres;
 
 	public String getAlbumTitle() {
-		return album.getTitle(); 
+		return album.getTitle();
 	}
 	public String getArtistName() {
 		return album.getArtistName();
@@ -37,5 +37,15 @@ public class Sale {
 	public Date getReleaseDate() {
 		return album.getReleaseDate();
 	}
-	
+	public void setUserNo(int userNo) {
+		User user = new User();
+		user.setNo(userNo);
+		this.user = user;
+	}
+	public void setAlbumNo(int albumNo) {
+		Album album = new Album();
+		album.setNo(albumNo);
+		this.album = album;
+	}
+
 	}

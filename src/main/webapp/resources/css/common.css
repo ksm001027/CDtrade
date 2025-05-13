@@ -1329,6 +1329,8 @@ hr {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 0.5rem;
+    display: block; /* 추가 */
+    visibility: visible; /* 혹시 숨김 처리된 경우 대비 */
 }
 
 .photo-notice {
@@ -3012,4 +3014,6 @@ hr {
     .alert-dismissible .btn-close:hover {
     color: #ddd;
 	}
+	
+	
 }

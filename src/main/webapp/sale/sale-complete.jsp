@@ -29,23 +29,29 @@
             <div class="complete-title">상품등록 완료</div>
             <img class="complete-img" src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>">
             <div class="badge" style="margin-bottom:1rem;"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
-            <div style="font-size:1.15rem;font-weight:bold;"><%=sale.getAlbumTitle() %></div>
-            <div style="color:#aaa; font-size:1rem; margin-bottom:2rem;"><%=sale.getArtistName() %></div>
+			<div id="album-title"
+				style="font-size: 1.15rem; 
+						font-weight: bold; 
+						white-space: nowrap; 
+						overflow: hidden; 
+						text-overflow: ellipsis; 
+						max-width: 600px;"><%=sale.getAlbumTitle()%></div>
+			<div style="color:#aaa; font-size:1rem; margin-bottom:2rem;"><%=sale.getArtistName() %></div>
             <hr>
             <div class="complete-main-title">판매 상품이 등록되었습니다.</div>
             <div class="complete-main-desc">거래가 완료되면 알림톡이 발송됩니다.</div>
             <table class="complete-table">
                 <tr>
                     <th>수수료(판매금액3%)</th>
-                    <td class="fee"><%=(int)(sale.getPrice()*0.03) %></td>
+                    <td class="fee"><%=String.format("%,d",(int)(sale.getPrice()*0.03)) %></td>
                 </tr>
                 <tr>
                     <th>판매희망가</th>
-                    <td><%=sale.getPrice() %>원</td>
+                    <td><%=String.format("%,d",sale.getPrice()) %>원</td>
                 </tr>
                 <tr>
                     <th>정산금액</th>
-                    <td><%=(int)(sale.getPrice()-sale.getPrice()*0.03) %>원</td>
+                    <td><%=String.format("%,d",(int)(sale.getPrice()-sale.getPrice()*0.03)) %>원</td>
                 </tr>
             </table>
             <hr>

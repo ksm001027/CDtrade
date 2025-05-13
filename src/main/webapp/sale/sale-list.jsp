@@ -117,13 +117,13 @@
 	for(Sale sale : sales){
 %>
             <!-- 앨범 카드 1 -->
-            <a href="album-detail.jsp?ano=<%=sale.getAlbum().getNo() %>" class="album-card">
+            <a href="sale-detail.jsp?sno=<%=sale.getNo() %>" class="album-card">
                 <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
                 <div class="album-info">
                     <h3 class="album-title"><%=sale.getAlbumTitle() %></h3>
                     <div class="album-status"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
                     <div class="album-price-label">구매가</div>
-                    <div class="album-price"><%=sale.getPrice() %>원</div>
+                    <div class="album-price"><%=String.format("%,d", sale.getPrice()) %>원</div>
                 </div>
             </a>
 <%
@@ -152,7 +152,7 @@
         let isLoading = false;
 
         window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 100) {
+            if ((window.innerHeight + window.scrollY + 500) > document.body.scrollHeight) {
                 if (!isLoading) {
                     isLoading = true;
                     currentPage++;
@@ -226,9 +226,22 @@
             clearTimeout(window.searchTimeout);
             window.searchTimeout = setTimeout(() => {
                 document.getElementById("form-filter").submit();
-            }, 500);
+            }, 400);
         });
+	
+        // 최대 길이 설정 (원하는 값으로 조정하세요)
+        const maxTitleLength = 40;
 
+        // 모든 앨범 제목 요소 가져오기
+        const titles = document.querySelectorAll('.album-title');
+
+        titles.forEach(titleElement => {
+            const originalText = titleElement.innerText;
+            if (originalText.length > maxTitleLength) {
+                const truncated = originalText.substring(0, maxTitleLength) + '...';
+                titleElement.innerText = truncated;
+            }
+        });
         
         
     </script>

@@ -6,6 +6,8 @@
 <%@page import="kr.co.cdtrade.vo.Sale" %>
 
 <%
+	int maxTitleLength = 40;	
+
     int pageNo = StringUtils.strToInt(request.getParameter("page"), 1);
     int offset = (pageNo - 1) * 4;
 
@@ -20,15 +22,23 @@
     for (Sale sale : sales) {
         if (sale.getAlbum() == null) continue;  // ✅ 앨범 정보 없는 경우 생략
 
+        String albumTitle = sale.getAlbumTitle();
+        // ✅ 서버에서 문자열 자르기 처리
+        if (albumTitle.length() > maxTitleLength) {
+            albumTitle = albumTitle.substring(0, maxTitleLength) + "...";
+        }
+        
         JsonObject obj = new JsonObject();
         obj.addProperty("photoPath", sale.getPhotoPath());
-        obj.addProperty("price", sale.getPrice());
+        obj.addProperty("price", String.format("%,d", sale.getPrice()));
         obj.addProperty("isOpened", sale.getIsOpened());
-        obj.addProperty("albumTitle", sale.getAlbumTitle());
+        obj.addProperty("albumTitle", albumTitle);
         obj.addProperty("albumNo", sale.getAlbum().getNo());
 
         jsonArray.add(obj);
     }
 
     out.print(jsonArray.toString());
+    
+    
 %>
