@@ -43,6 +43,7 @@
 	    <div class="modal-title">로그인 실패</div>
 	    <div class="modal-desc"><%= message %></div>
 	    <a href="login-form.jsp" class="modal-btn">확인</a>
+	    
 	  </div>
 	</div>
 </body>
