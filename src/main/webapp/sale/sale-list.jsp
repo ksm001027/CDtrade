@@ -57,6 +57,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    .album-title {
+    color: black !important;
+    text-decoration: none !important; /* 밑줄 제거도 원할 경우 */
+	}
+	.album-title:hover {
+	    color: black !important; /* 마우스 오버 시에도 색 유지 */
+	}
+</style>
     <title>판매 목록</title>
     <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -118,6 +127,8 @@
             <!-- 앨범 카드 1 -->
             <a href="album-detail.jsp?albumNo=<%=sale.getAlbum().getNo() %>" class="album-card">
                 <img src="<%=sale.getPhotoPath() %>" alt="HYBS - Making Steak" class="album-image">
+            <a href="sale-detail.jsp?sno=<%=sale.getNo() %>" class="album-card">
+                <img src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
                 <div class="album-info">
                     <h3 class="album-title"><%=sale.getAlbumTitle() %></h3>
                     <div class="album-status"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
@@ -192,6 +203,30 @@
                                 `;
                                 albumGrid.appendChild(card);
                             });
+						    const albumGrid = document.querySelector('.album-grid');
+						
+						    data.forEach(sale => {
+						        console.log(sale);  // ✅ 구조 확인용
+						
+						        const card = document.createElement('a');
+						        card.href = `sale-detail.jsp?sno=\${sale.saleNo}`;
+						        card.className = 'album-card';
+						        card.innerHTML = `
+						            <img src="\${sale.photoPath.split(",")[0]}" class="album-image">
+						            <div class="album-info">
+						                <h3 class="album-title">\${sale.albumTitle}</h3>
+						                <div class="album-status">\${sale.isOpened == 't' ? '중고' : '미개봉'}</div>
+						                <div class="album-price-label">구매가</div>
+						                <div class="album-price">\${sale.price}원</div>
+						            </div>
+						        `;
+						        albumGrid.appendChild(card);
+						    });
+						
+						    isLoading = false;
+						})
+                        .catch(err => {
+                            console.error('불러오기 실패:', err);
                             isLoading = false;
 
                         });

@@ -4,6 +4,64 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.cdtrade.mapper.SalesMapper">
+
+
+
+<select id="getSalesByIsSoldAndUserNo" parameterType="map" resultType="Sale">
+    select 
+        s.sale_no 				AS no,
+        s.sale_description 		AS description,
+        s.sale_photo_path 		AS photoPath,
+        s.sale_price 			AS price,
+        s.sale_is_opened 		AS isOpened,
+        s.sale_is_sold 			AS isSold,
+        s.sale_created_at 		AS createdAt,
+        s.sale_updated_at 		AS updatedAt,
+        a.album_no				AS "album.no",
+        a.album_title			AS "album.title"
+    from sales s, albums a
+    where s.user_no = #{userNo}
+      and s.sale_is_sold = #{isSold}
+      and a.album_no = s.album_no
+      <if test="period != null and period != 'all'">
+        <choose>
+            <when test="period == '1w'">
+                AND s.sale_created_at >= SYSDATE - 7
+            </when>
+            <when test="period == '1m'">
+                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+            </when>
+            <when test="period == '3m'">
+                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+            </when>
+        </choose>
+      </if>
+      <if test="keyword != null and keyword != ''">
+        AND (a.album_title LIKE #{keyword} OR a.artist_name LIKE #{keyword})
+      </if>
+    order by s.sale_created_at desc
+    offset #{offset} rows fetch next #{rows} rows only   
+</select>
+
+<select id="getSaleByUserNo" resultType="Sale">
+	select 
+		s.sale_no					as no,
+	    s.sale_description			as description,
+	    s.sale_photo_path			as photoPath,
+	    s.sale_price				as price,
+	    s.sale_is_opened			as isOpened,
+	    s.sale_is_sold 				as isSold,
+	    s.view_count				as viewCount,
+	    s.sale_updated_at			as updatedAt,
+	    s.sale_created_at			as createdAt,
+	    u.user_no					as "users.no"
+	from 
+		sales s, users u
+	where
+		s.user_no = #{user.no}
+		and s.user_no = u.user_no 
+</select>
+
 <insert id="insertSale" parameterType="Sale">
 	<selectKey keyProperty="no" resultType="int" order="BEFORE">
 		select SEQ_SALE_NO.nextval from dual

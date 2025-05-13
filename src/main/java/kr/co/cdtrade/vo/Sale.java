@@ -8,11 +8,8 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-@Getter
-@Setter
+  
 @Alias("Sale")
-@NoArgsConstructor
 public class Sale {
 
 	private int no;
@@ -37,4 +34,28 @@ public class Sale {
 	public Date getReleaseDate() {
 		return album.getReleaseDate();
 	}
+	public void setUserNo(int userNo) {
+		User user = new User();
+		user.setNo(userNo);
+		this.user = user;
+	}
+	public void setAlbumNo(int albumNo) {
+		Album album = new Album();
+		album.setNo(albumNo);
+		this.album = album;
+	}
+
+	public int getAlbumNo() {
+		return album.getNo();
+	}
+	public int getUserNo() {
+		return user.getNo();
+	}
+	public String getUserName() {
+		return user.getName();
+	}
+	public String getUserAccountNumber() {
+		return user.getAccountNumber();
+	}
+
 }

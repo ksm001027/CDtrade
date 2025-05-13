@@ -24,6 +24,16 @@
             <div class="badge" style="margin-bottom:1rem;">미개봉</div>
             <div style="font-size:1.15rem;font-weight:bold;">신지훈 - 1집 별과 추억과 시 (2024)</div>
             <div style="color:#aaa; font-size:1rem; margin-bottom:2rem;">신지훈</div>
+            <img class="complete-img" src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>">
+            <div class="badge" style="margin-bottom:1rem;"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
+			<div id="album-title"
+				style="font-size: 1.15rem; 
+						font-weight: bold; 
+						white-space: nowrap; 
+						overflow: hidden; 
+						text-overflow: ellipsis; 
+						max-width: 600px;"><%=sale.getAlbumTitle()%></div>
+			<div style="color:#aaa; font-size:1rem; margin-bottom:2rem;"><%=sale.getArtistName() %></div>
             <hr>
             <div class="complete-main-title">판매 상품이 등록되었습니다.</div>
             <div class="complete-main-desc">거래가 완료되면 알림톡이 발송됩니다.</div>

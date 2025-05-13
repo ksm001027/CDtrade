@@ -23,7 +23,7 @@
 		    join users u on a.user_no = u.user_no
 		where
 		    a.user_no = #{userNo}
-			and is_default_address = 't'
+			and is_default_address = 't'   
 	</select>
 	
 	<select id="getAllAddressByUserNo" resultType="Address">
