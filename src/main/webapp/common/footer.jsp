@@ -5,7 +5,7 @@
             <div class="footer-left">
                 <h4>이용약관 &nbsp;&nbsp;&nbsp; 개인정보처리방침</h4>
                 <div class="business-info">
-                    (주)세컨드트랙&nbsp;&nbsp;&nbsp;&nbsp;대표: 김재니&nbsp;&nbsp;&nbsp;&nbsp;사업자등록번호: 419-81-02900
+                    (주)세컨드트랙&nbsp;&nbsp;&nbsp;&nbsp;대표: 김방구&nbsp;&nbsp;&nbsp;&nbsp;사업자등록번호: 419-81-02900
                     <a href="#" onclick="toggleModal()">사업자정보확인</a><br>
                     통신판매업: 제 2023-고양일산서-0955 호<br>
                     사업장소재지: 경기도 고양시 일산동구 중앙로 1261번길 77, 704호 B113 (장항동, 메트로폴리스)
@@ -26,6 +26,7 @@
         </footer>
     </div>
 
+    <!-- 모달 
     <!-- 모달 -->
     <div class="modal" id="bizModal">
         <div class="modal-content">
@@ -37,6 +38,10 @@
             <button onclick="toggleModal()">확인</button>
         </div>
     </div>
+    -->
+
+    <script>
+        
 
     <script>
         function toggleModal() {

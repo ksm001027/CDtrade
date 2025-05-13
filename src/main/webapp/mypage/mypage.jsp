@@ -13,6 +13,9 @@
 	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
 	User user = userMapper.getUserByNo(userNo);
 %>
+
+<%@ include file="../common/nav.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -32,8 +35,8 @@
         <main class="mypage-content">
             <div class="mypage-profile-card">
                 <div class="mypage-profile-info">
-                    <div class="mypage-profile-name">김다영 님 &gt;</div>
-                    <div class="mypage-profile-email">dayeong0120@naver.com</div>
+                    <div class="mypage-profile-name"> <%= user.getName() %></div>
+                    <div class="mypage-profile-email"> <%= user.getEmail() %></div>
                 </div>
             </div>
             <div class="mypage-summary-card">
