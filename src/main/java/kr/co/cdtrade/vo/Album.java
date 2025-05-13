@@ -20,7 +20,7 @@ public class Album {
 	private String artistName;
 	private Date releaseDate;
 	private String coverImageUrl;
-	private double avgRating;
+	private double rating;
 	private int reviewCount;
 	private int stockQuantity;
 	private int avgOrderPrice; // 구매평균가

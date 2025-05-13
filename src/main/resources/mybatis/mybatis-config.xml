@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="jdbcTypeForNull" value="NULL" />
 		<!-- 로깅 설정 추가 -->
 		<setting name="logImpl" value="STDOUT_LOGGING" />
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
 	</settings>
 
 	<typeAliases>
@@ -41,6 +42,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
 		<mapper resource="mybatis/mappers/UserMapper.xml" />
 		<mapper resource="mybatis/mappers/WishItemMapper.xml" />
+		<mapper resource="mybatis/mappers/OrderMapper.xml"/>
+		<mapper resource="mybatis/mappers/SaleMapper.xml"/>
+		<mapper resource="mybatis/mappers/AddressMapper.xml"/>
 	</mappers>
   
 </configuration>
