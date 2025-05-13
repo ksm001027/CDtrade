@@ -19,6 +19,6 @@ public interface UserMapper {
 	int deactivateUserByNo(int no);
 
 	void updateUser(User user);
-
+	
 	void updateAccountNumber(@Param("userNo") int userNo, @Param("accountNumber") String accountNumber);
 }

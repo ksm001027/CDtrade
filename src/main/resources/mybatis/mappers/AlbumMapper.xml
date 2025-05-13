@@ -145,9 +145,8 @@
 	
 	</select>
 	
-	<select id="getGenreByAlbumNo" resultType="Genre">
+	<select id="getGenreNameByAlbumNo" resultType="Genre">
 		select
-			g.genre_no		as no,
 		    g.genre_name	as name
 		from
 			albums a, albums_genres ag, genres g
@@ -157,42 +156,5 @@
 			and ag.genre_no = g.genre_no
 	</select>
 	
-
-	<select id="getOrderbyAlbumNo" resultType="Order">
-		select
-			o.order_no					as no
-			, o.order_price				as price
-			, o.order_delivery_fee		as deliveryFee
-			, o.order_payment_method	as paymentMethod
-			, o.order_status			as status
-			, o.order_created_at		as createdAt
-			, o.order_updated_at		as updateAt
-			, o.addr_no					as addrNo
-			, o.sale_no					as saleNo
-			, o.album_no				as albumNo
-			, o.user_no					as userNo
-		    , a.album_title			as	title
-		    , a.artist_name			as	artistName
-		    , a.release_date		as	releaseDate
-		    , a.cover_image_url		as	coverImageUrl
-		    , a.avg_rating			as	avgRating
-		    , a.review_count		as	reviewCount
-	        , a.stock_quantity		as	stockQuantity
-		    , a.avg_order_price		as	avgOrderPrice
-		    , a.avg_sale_price		as	avgSalePrice
-		    , a.album_created_at	as	albumCreatedAt
-	        , a.album_updated_at	as	albumUpdatedAt
-		    , a.release_price		as	releasePrice
-	        , a.recent_order_price	as	recentOrderPrice	
-		from
-			albums a, orders o, sales s
-		where
-			album_no = #{no}	
-			and a.album_no = o.album_no
-			and a.album_no = s.album_no
-	</select>
-	
-
-
 
 </mapper>
