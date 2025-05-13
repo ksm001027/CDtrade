@@ -9,9 +9,9 @@ import kr.co.cdtrade.vo.Genre;
 public interface AlbumMapper {
 	
 	void insertAlbum(Album album);
-	
+
 	Album getAlbumByNo(int albumNo);
-	
+
 	void updateAlbum(Album album);
 	/**
 	 * 앨번번호를 전달받아서 해당 앨벙정보를 반환한다.

@@ -10,8 +10,8 @@
     pageEncoding="UTF-8"%>     
 <%   
      //String userNo = (String) session.getAttribute("LOGINED_USER_NO");
-     	   
-       
+     	     
+          
      	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
      	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
      	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);   

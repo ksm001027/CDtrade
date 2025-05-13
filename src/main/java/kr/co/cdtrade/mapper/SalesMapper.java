@@ -3,6 +3,8 @@ package kr.co.cdtrade.mapper;
 import java.util.List;
 import java.util.Map;
 
+import kr.co.cdtrade.vo.Album;
+import kr.co.cdtrade.vo.Genre;
 import kr.co.cdtrade.vo.Sale;
 
 public interface SalesMapper {

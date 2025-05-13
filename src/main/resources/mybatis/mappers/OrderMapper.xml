@@ -38,7 +38,7 @@
 	  
 	  
 		
-	<select id="getTotalRows" resultType="Order">
+	<select id="getRows" resultType="Order">
 		select
 			order_no
 		from
@@ -69,7 +69,7 @@
             O.album_no = A.album_no
             and O.sale_no = S.sale_no
             and O.user_no = #{userNo}
-
+               
           
 		<choose>
 			<when test="sort == 'newest'">
