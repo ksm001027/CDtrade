@@ -27,7 +27,7 @@
     <div class="container">
         <div class="complete-container">
             <div class="complete-title">상품등록 완료</div>
-            <img class="complete-img" src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>">
+            <img class="complete-img" src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>">
             <div class="badge" style="margin-bottom:1rem;"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
 			<div id="album-title"
 				style="font-size: 1.15rem; 

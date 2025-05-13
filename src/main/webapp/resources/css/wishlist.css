@@ -1,12 +1,12 @@
-/* 마이컬렉션 페이지 스타일 */
-.mycollection-title {
+/* 위시리스트 페이지 스타일 */
+.wishlist-title {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
     margin: 2.5rem 0 2.5rem 0;
 }
 
-.mycollection-header {
+.wishlist-header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2.5rem;
@@ -54,8 +54,8 @@
     font-size: 0.8rem;
 }
 
-/* 컬렉션 그리드 레이아웃 */
-.mycollection-grid {
+/* 앨범 그리드 레이아웃 */
+.album-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 2.5rem;
@@ -63,97 +63,32 @@
     margin: 0 auto;
 }
 
-.mycollection-card {
+.album-card {
     background: #f5f5f5;
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    cursor: pointer;
     transition: box-shadow 0.2s;
     position: relative;
 }
 
-.mycollection-card:hover {
+.album-card:hover {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-.mycollection-album-img {
+.album-image {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     transition: transform 0.2s;
 }
 
-.mycollection-card:hover .mycollection-album-img {
+.album-card:hover .album-image {
     transform: scale(1.05);
 }
 
-/* 카드 오버레이 효과 */
-.mycollection-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(5, 27, 13, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 2;
-}
-
-.mycollection-card:hover .mycollection-card-overlay {
-    opacity: 1;
-}
-
-/* 별점 스타일 */
-.stars {
-    color: #ffd700;
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-}
-
-.star {
-    margin-right: 2px;
-}
-
-.star.filled {
-    color: #ffd700;
-}
-
-.rating-message {
-    color: white;
-    font-size: 0.9rem;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0.3rem 0.8rem;
-    border-radius: 1rem;
-}
-
-/* 제거 버튼 */
-.remove-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.remove-btn:hover {
-    background: rgba(220, 53, 69, 0.8);
-}
-
-.mycollection-card-info {
+.album-info {
     padding: 1rem;
     background: white;
 }
@@ -167,23 +102,51 @@
     text-overflow: ellipsis;
 }
 
-.album-artist {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.album-price-label {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 0.5rem;
 }
 
-/* 빈 컬렉션 메시지 */
-.no-collection-message {
+.album-price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* 위시리스트 제거 버튼 */
+.remove-wishlist-btn {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f5f9;
+    color: #334155;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.remove-wishlist-btn:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.remove-wishlist-btn i {
+    color: #dc2626;
+    margin-right: 6px;
+}
+
+/* 빈 위시리스트 메시지 */
+.empty-wishlist {
     grid-column: 1 / -1;
     text-align: center;
     padding: 50px 0;
 }
 
-.browse-albums-btn {
+.btn-primary {
     display: inline-block;
     margin-top: 15px;
     padding: 10px 20px;
@@ -195,7 +158,7 @@
     transition: background 0.2s;
 }
 
-.browse-albums-btn:hover {
+.btn-primary:hover {
     background: #4e6c53;
 }
 
@@ -280,35 +243,17 @@
 
 /* 반응형 디자인 */
 @media (max-width: 1200px) {
-    .mycollection-grid {
+    .album-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
     }
 }
 
 @media (max-width: 992px) {
-    .mycollection-grid {
+    .album-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
     }
 }
 
-@media (max-width: 768px) {
-    .mycollection-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.2rem;
-    }
-    
-    .mycollection-header {
-        flex-direction: column;
-        gap: 1.2rem;
-        align-items: flex-start;
-    }
-}
-
-@media (max-width: 480px) {
-    .mycollection-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
+@media (max-width: 768p
