@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.UserMapper">
+ 
+	<insert id="insertUser" parameterType="User">
+		insert into users
+		(user_no
+		, user_email
+		, user_password
+		, user_name
+		, user_nickname
+		, user_tel
+		, account_number)
+		values  
+		(SEQ_USER_NO.NEXTVAL   
+		, #{email}
+		, #{password}
+		, #{name}
+		, #{nickname}
+		, #{tel}
+		, #{accountNumber})
+	</insert>
+	
+	<select id="getUserByEmail" resultType="User">
+		select user_no          as no
+           , user_email         as email
+           , user_password      as password
+           , user_name          as name
+           , user_nickname      as nickname
+           , user_tel           as tel
+           , user_is_active     as isActive
+           , user_created_at    as createdAt
+           , user_updated_at    as updatedAt
+           , account_number     as accountNumber
+      from
+         users
+      where
+         user_email = #{email}
+	</select>
+	
+	<select id="getUserByNickname" resultType="User">
+    	select
+    		user_email				as email
+    		, user_password			as password
+    		, user_nickname			as nickname
+    		, user_name				as name
+    		, user_tel				as tel
+    	from users
+    	where user_nickname = #{nickname}
+	</select>
+	
+	<select id="getUserByTel" resultType="User">
+		select
+    		user_email				as email
+    		, user_password			as password
+    		, user_nickname			as nickname
+    		, user_name				as name
+    		, user_tel				as tel
+    	from users
+    	where user_tel = #{tel}
+	</select>
+	
+	<select id="getUserByNo" resultType="User">
+		select user_no          as no
+           , user_email         as email
+           , user_password      as password
+           , user_name          as name
+           , user_nickname      as nickname
+           , user_tel           as tel
+           , user_is_active     as isActive
+           , user_created_at    as createdAt
+           , user_updated_at    as updatedAt
+           , account_number     as accountNumber
+      from
+         users
+      where
+         user_no = #{no}
+	</select>
+	
+	<update id="deactivateUserByNo" parameterType="int">
+		update users
+		set 
+			user_is_active = 'f'
+			, user_updated_at = SYSDATE
+		where 
+			user_no = #{no}
+	</update>
+	
+
+	<update id="updateAccountNumber" parameterType="map">
+    update users
+    set account_number = #{accountNumber},
+        user_updated_at = SYSDATE
+    where user_no = #{userNo}
+
+	<update id="updateUser" parameterType="User">
+		update users
+		set 
+			user_nickname = #{nickname}
+			, user_password = #{password}
+			, user_name = #{name}
+			, user_tel = #{tel}
+		where 
+			user_no = #{no}
+
+	</update>
+	
+	<update id="updateAccountNumber" parameterType="User">
+		UPDATE users
+		SET 
+			account_number = #{accountNumber}
+		WHERE 
+			user_no = #{userNo}
+	</update>
+	
+</mapper>

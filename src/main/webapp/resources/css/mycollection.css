@@ -1,0 +1,314 @@
+/* 마이컬렉션 페이지 스타일 */
+.mycollection-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 2.5rem 0 2.5rem 0;
+}
+
+.mycollection-header {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.total-items {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 정렬 버튼 */
+.sort-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sort-button:hover {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.sort-button i {
+    font-size: 0.8rem;
+}
+
+/* 컬렉션 그리드 레이아웃 */
+.mycollection-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mycollection-card {
+    background: #f5f5f5;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    position: relative;
+}
+
+.mycollection-card:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mycollection-album-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
+.mycollection-card:hover .mycollection-album-img {
+    transform: scale(1.05);
+}
+
+/* 카드 오버레이 효과 */
+.mycollection-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 27, 13, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2;
+}
+
+.mycollection-card:hover .mycollection-card-overlay {
+    opacity: 1;
+}
+
+/* 별점 스타일 */
+.stars {
+    color: #ffd700;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.star {
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #ffd700;
+}
+
+.rating-message {
+    color: white;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+}
+
+/* 제거 버튼 */
+.remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.remove-btn:hover {
+    background: rgba(220, 53, 69, 0.8);
+}
+
+.mycollection-card-info {
+    padding: 1rem;
+    background: white;
+}
+
+.album-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.album-artist {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 빈 컬렉션 메시지 */
+.no-collection-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.browse-albums-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #628868;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.browse-albums-btn:hover {
+    background: #4e6c53;
+}
+
+/* 정렬 모달 */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 320px;
+    overflow: hidden;
+    margin: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    color: #666;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 1rem;
+}
+
+.sort-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sort-item {
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.sort-item:hover {
+    background-color: #f8f9fa;
+}
+
+.sort-item.active {
+    color: #628868;
+    font-weight: 500;
+    background-color: #eff6ff;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .mycollection-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .mycollection-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mycollection-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+    
+    .mycollection-header {
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .mycollection-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}

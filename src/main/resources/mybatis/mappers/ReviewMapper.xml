@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.cdtrade.mapper.ReviewMapper">
+
+    <!-- 리뷰 결과 매핑 -->
+    <resultMap id="ReviewResultMap" type="Review">
+        <id property="no" column="REVIEW_NO" />
+        <result property="rating" column="REVIEW_RATING" />
+        <result property="content" column="REVIEW_CONTENT" />
+        <result property="createdAt" column="REVIEW_CREATED_AT" />
+        <result property="updatedAt" column="REVIEW_UPDATED_AT" />
+        <association property="user" javaType="User">
+            <id property="no" column="USER_NO" />
+            <result property="name" column="USER_NAME" />
+            <result property="nickname" column="USER_NICKNAME" />
+        </association>
+        <association property="album" javaType="Album">
+            <id property="no" column="ALBUM_NO" />
+            <result property="title" column="ALBUM_TITLE" />
+            <result property="artistName" column="ARTIST_NAME" />
+            <result property="coverImageUrl" column="COVER_IMAGE_URL" />
+        </association>
+    </resultMap>
+
+    <!-- 전체 리뷰 수 조회 -->
+    <select id="getTotalRows" resultType="int">
+        SELECT COUNT(*) FROM REVIEWS
+    </select>
+
+    <!-- 장르별 리뷰 수 조회 -->
+    <select id="getTotalRowsByGenre" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEWS R
+        JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
+        JOIN ALBUMS_GENRES AG ON A.ALBUM_NO = AG.ALBUM_NO
+        WHERE AG.GENRE_NO = #{genreNo}
+    </select>
+
+    <!-- 키워드로 리뷰 수 조회 -->
+    <select id="getTotalRowsByKeyword" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEWS R
+        JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
+        WHERE UPPER(A.ALBUM_TITLE) LIKE UPPER('%' || #{keyword} || '%')
+           OR UPPER(A.ARTIST_NAME) LIKE UPPER('%' || #{keyword} || '%')
+    </select>
+
+    <!-- 페이징된 전체 리뷰 조회 -->
+    <select id="getReviewsByPage" resultMap="ReviewResultMap">
+        SELECT 
+            R.REVIEW_NO,
+            R.REVIEW_RATING,
+            R.REVIEW_CONTENT,
+            R.REVIEW_CREATED_AT,
+            R.REVIEW_UPDATED_AT,
+            U.USER_NO,
+            U.USER_NAME,
+            U.USER_NICKNAME,
+            A.ALBUM_NO,
+            A.ALBUM_TITLE,
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
+        FROM REVIEWS R
+        JOIN USERS U ON R.USER_NO = U.USER_NO
+        JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
+        ORDER BY R.REVIEW_CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
+    </select>
+
+    <!-- 장르별 페이징된 리뷰 조회 -->
+    <select id="getReviewsByGenreWithPage" resultMap="ReviewResultMap">
+        SELECT 
+            R.REVIEW_NO,
+            R.REVIEW_RATING,
+            R.REVIEW_CONTENT,
+            R.REVIEW_CREATED_AT,
+            R.REVIEW_UPDATED_AT,
+            U.USER_NO,
+            U.USER_NAME,
+            U.USER_NICKNAME,
+            A.ALBUM_NO,
+            A.ALBUM_TITLE,
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
+        FROM REVIEWS R
+        JOIN USERS U ON R.USER_NO = U.USER_NO
+        JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
+        JOIN ALBUMS_GENRES AG ON A.ALBUM_NO = AG.ALBUM_NO
+        WHERE AG.GENRE_NO = #{genreNo}
+        ORDER BY R.REVIEW_CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
+    </select>
+
+    <!-- 키워드로 페이징된 리뷰 조회 -->
+    <select id="searchReviewsWithPage" resultMap="ReviewResultMap">
+        SELECT 
+            R.REVIEW_NO,
+            R.REVIEW_RATING,
+            R.REVIEW_CONTENT,
+            R.REVIEW_CREATED_AT,
+            R.REVIEW_UPDATED_AT,
+            U.USER_NO,
+            U.USER_NAME,
+            U.USER_NICKNAME,
+            A.ALBUM_NO,
+            A.ALBUM_TITLE,
+            A.ARTIST_NAME,
+            A.COVER_IMAGE_URL
+        FROM REVIEWS R
+        JOIN USERS U ON R.USER_NO = U.USER_NO
+        JOIN ALBUMS A ON R.ALBUM_NO = A.ALBUM_NO
+        WHERE 
+            UPPER(A.ALBUM_TITLE) LIKE UPPER('%' || #{keyword} || '%')
+            OR UPPER(A.ARTIST_NAME) LIKE UPPER('%' || #{keyword} || '%')
+        ORDER BY R.REVIEW_CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
+    </select>
+    
+    <!-- 
+    	 void insertReview(Review review);
+     -->
+     <insert id="insertReview" parameterType="Review">
+     	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+     		select seq_review_no.nextval as no from dual
+     	</selectKey>
+     	
+     	insert into reviews
+		(review_no, review_rating, review_content, user_no, album_no)
+		values
+		(#{no}, #{rating}, #{content}, #{user.no}, #{album.no})
+     </insert>
+
+	<!-- 
+		 List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo, 
+            @Param("offset") int offset, 
+            @Param("rows") int rows);
+	 -->
+	 <select id="searchReviewsByAlbumNo" resultType="Review">
+	 	 SELECT 
+            R.REVIEW_NO as no,
+            R.REVIEW_RATING as rating,
+            R.REVIEW_CONTENT as content,
+            R.REVIEW_CREATED_AT as createdAt,
+            R.REVIEW_UPDATED_AT as updatedAt,
+            U.USER_NO as "user.no",
+            U.USER_NAME as "user.name",
+            U.USER_NICKNAME as "user.nickname",
+            R.ALBUM_NO as "album.no"
+        FROM REVIEWS R
+        JOIN USERS U ON R.USER_NO = U.USER_NO
+        WHERE R.ALBUM_NO = #{albumNo}
+        ORDER BY R.REVIEW_CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
+	 </select>
+	 
+	 <!-- 
+	 	Review getReviewByAlbumNoAndUserNo(@Param("albumNo") int albumNo, @Param("userNo") int userNo);
+	  -->
+	  <select id="getReviewByAlbumNoAndUserNo" resultType="Review">
+	  		select 
+	  			REVIEW_NO as no,
+	            REVIEW_RATING as rating,
+	            REVIEW_CONTENT as content,
+	            REVIEW_CREATED_AT as createdAt,
+	            REVIEW_UPDATED_AT as updatedAt,
+	            USER_NO as "user.no",
+	            ALBUM_NO as "album.no"
+	        from reviews
+	        where album_no = #{albumNo} 
+	        	and user_no = #{userNo}
+	  </select>
+	  
+	  <!-- 
+	  	 Review getReviewByNo(int reviewNo);
+	   -->
+	   <select id="getReviewByNo" resultType="Review">
+		   	SELECT 
+	            REVIEW_NO as no,
+	            REVIEW_RATING as rating,
+	            REVIEW_CONTENT as content,
+	            REVIEW_CREATED_AT as createdAt,
+	            REVIEW_UPDATED_AT as updatedAt,
+	            USER_NO as "user.no",
+	            ALBUM_NO as "album.no"
+	        FROM REVIEWS
+	        where review_no = #{reviewNo}
+	   </select>
+	   
+	   <!-- 
+	   		void updateReview(Review review);
+	    -->
+	    <update id="updateReview" parameterType="Review">
+	    	update reviews
+	    	set 
+	    		review_rating = #{rating},
+	    		review_content = #{content},
+	    		review_updated_at = sysdate
+	    	where review_no = #{no}
+	    </update>
+	    
+	    <!-- 
+	    	void deleteReviewByNo(int reviewNo);
+	     -->
+	     <delete id="deleteReviewByNo">
+	     	delete from reviews
+	     	where review_no = #{reviewNo}
+	     </delete>
+	     
+	     <!-- 
+	     	  int getRowsByAlbumNo(int albumNo);
+	      -->
+	      <select id="getRowsByAlbumNo" >
+	      	select count(*)
+	      	from reviews
+	  		where album_no = #{albumNo}
+	      </select>
+	  
+</mapper>

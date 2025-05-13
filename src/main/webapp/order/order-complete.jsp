@@ -63,7 +63,7 @@
                     <th>배송정보</th>
                     <td><%=order.getaddrBasic() %><br><%=order.getreceiverName() %> | <%=order.getreceiverTel() %></td>
                 </tr>
-            </table>
+            </table>   
             <hr>
             <button class="complete-btn">구매내역으로 이동하기</button>
             <button class="complete-btn">메인으로 돌아가기</button>

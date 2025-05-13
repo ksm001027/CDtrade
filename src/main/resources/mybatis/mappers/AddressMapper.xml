@@ -44,10 +44,13 @@
 		    join users u on a.user_no = u.user_no
 		where
 		    a.user_no = #{userNo}
+		order by 
+	    	case when a.is_default_address = 't' then 1 else 0 end desc
+	   	    , a.addr_created_at desc
 	</select>
 	
 	<insert id="insertAddress" parameterType="Address">
-		insert into address
+		insert into addresses
 		(addr_no
 		, addr_name
 		, receiver_name
@@ -60,7 +63,7 @@
 		, addr_updated_at
 		, user_no)
 		values
-		(USER_SEQ.NEXTVAL
+		(SEQ_ADDR_NO.NEXTVAL
 		, #{name}
 		, #{receiverName}
 		, #{receiverTel}
@@ -72,4 +75,33 @@
 		, sysdate
 		, #{user.no})
 	</insert>
+	
+	<delete id="deleteAddress" parameterType="int">
+		delete
+		from addresses 
+		where addr_no = #{addrNo}
+	</delete>
+	
+	<update id="updateAllAddressToNonDefault" parameterType="int">
+		update addresses
+		set 
+			is_default_address = 'f'
+		where
+			user_no = #{userNo}
+	</update>
+	
+	<update id="updateAddress" parameterType="Address">
+		update 
+			addresses
+		set 
+			addr_name = #{name}
+			, receiver_name = #{receiverName}
+			, receiver_tel = #{receiverTel}
+			, addr_basic = #{addrBasic}
+			, addr_detail = #{addrDetail}
+			, addr_zipcode = #{zipCode}
+			, is_default_address = #{isDefaultAddress}
+			, addr_updated_at = sysdate
+		where addr_no = #{no}
+	</update>
 </mapper>

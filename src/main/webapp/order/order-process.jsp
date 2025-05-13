@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 	/*
-		
+		    
 	*/ 
 	int no = StringUtils.strToInt(request.getParameter("no"));
 	int price = StringUtils.strToInt(request.getParameter("price"));
