@@ -4,6 +4,87 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.cdtrade.mapper.OrderMapper">
+
+	<select id="getTotalRows" resultType="Order">
+		select
+			order_no
+		from
+			orders
+		where user_no = #{userNo}
+
+	</select>
+
+	<select id="getOrders" parameterType="map" resultType="Order">
+		select
+			O.order_no					as no
+			, O.order_price				as price
+			, O.order_delivery_fee		as deliveryFee
+			, O.order_payment_method		as paymentMethod
+			, O.order_status				as status
+			, O.order_created_at			as createdAt
+			, O.order_updated_at			as updatedAt
+			, O.addr_no					as addrNo
+			, O.sale_no					as saleNo
+			, O.album_no					as albumNo
+			, O.user_no					as userNo
+			, A.album_title				as "ALBUM.title"
+			, A.cover_image_url	as "ALBUM.coverImageUrl"
+			, S.sale_is_opened as "SALE.isOpened"
+		from
+			orders O, albums A, sales S
+			where
+            O.album_no = A.album_no
+            and O.sale_no = S.sale_no
+            and O.user_no = #{userNo}
+
+          
+		<choose>
+			<when test="sort == 'newest'">
+				order by order_created_at desc
+			</when>
+			<when test="sort == 'oldest'">
+				order by order_created_at asc
+			</when>
+			<when test="sort == 'price-asc'">
+				order by order_price asc
+			</when>
+			<when test="sort == 'price-desc'">
+				order by order_price desc
+			</when>
+		</choose>
+		offset #{offset} rows
+		fetch next #{rows} rows only
+	</select>
+	
+	
+     <!-- 앨범명, 상태, 구매가, 구매일 -->
+	<select id="getOrderByUserNo" parameterType="map" resultType="Order">
+		select
+			O.order_no					as no
+			, O.order_price				as price
+			, O.order_delivery_fee		as deliveryFee
+			, O.order_payment_method		as paymentMethod
+			, O.order_status				as status
+			, O.order_created_at			as createdAt
+			, O.order_updated_at			as updatedAt
+			, O.addr_no					as addrNo
+			, O.sale_no					as saleNo
+			, O.album_no					as albumNo
+			, O.user_no					as userNo
+			, A.album_title				as "ALBUM.title"
+			, A.cover_image_url	as "ALBUM.coverImageUrl"
+			, S.sale_is_opened as "SALE.isOpened"
+		from
+			orders O, albums A, sales S
+			where   
+			O.album_no = A.album_no
+            and O.sale_no = S.sale_no
+            and O.user_no = #{userNo}
+            and O.order_status = #{sort}
+            
+	</select>
+
+
 	<!-- 
 		Sales getOrderByNo(int no);
 	 -->
@@ -19,19 +100,17 @@
 	 		, D.addr_detail as "ADDRESS.addrDetail"
 	 		, D.receiver_name as "ADDRESS.receiverName"
 	 		, D.receiver_tel as "ADDRESS.receiverTel"
+	 		, S.sale_is_opened as "SALE.isOpened"
 	 	from
-	 		orders O, albums A, addresses D
+	 		orders O, albums A, addresses D, sales S
 	 	where
 	 		order_no = #{no}
 	 		and O.album_no = A.album_no
 	 		and O.addr_no = D.addr_no
+	 		and O.sale_no = S.sale_no
 	 		
 	 
 	 </select>
-
-
-
-
 
 
 

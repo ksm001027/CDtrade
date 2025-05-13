@@ -11,15 +11,18 @@
 	 	select
 	 		A.ALBUM_TITLE	as "ALBUM.title"
 	 		, A.ARTIST_NAME as "ALBUM.artistName"
-	 		, S.SALE_IS_OPENED as isOpend
+	 		, S.SALE_IS_OPENED as isOpened
 	 		, S.SALE_PRICE as price
 	 		, S.SALE_PHOTO_PATH as photoPath
 	 		, A.ALBUM_NO as "ALBUM.no"
+	 		, U.ACCOUNT_NUMBER as "USER.accountNumber"
+	 		, U.USER_NAME as "USER.name"
 	 	from
-	 		sales S, albums A
+	 		sales S, albums A, users U
 	 	where
 	 		S.SALE_NO = #{no}
 	 		and S.ALBUM_NO = A.ALBUM_NO
+	 		and S.USER_NO = U.USER_NO
 	 
 	 </select>
 

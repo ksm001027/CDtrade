@@ -9,7 +9,7 @@
 
    OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
    
-   Order order = orderMapper.getOrderByNo(orderNo);   
+   Order order = orderMapper.getOrderByNo(orderNo);       
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -27,7 +27,20 @@
             <div class="complete-title">결제 완료</div>
             <span class="complete-purchase-id">구매번호: <%= orderNo %></span>
             <img class="complete-img" src="<%= order.getcoverImageUrl() %>" alt="<%=order.getAlbumTitle() %>">
-            <div class="badge" style="margin-bottom:1rem;">미개봉</div>
+            <div class="badge" style="margin-bottom:1rem;">
+<%
+	if (order.getIsOpened().equals("f")) {
+%>               
+            미개봉
+<%
+	;} else {
+%>
+			개봉
+<%
+	;}
+%>            
+            
+            </div>
             <div style="font-size:1.15rem;font-weight:bold;"><%=order.getAlbumTitle() %></div>
             <div style="color:#aaa; font-size:1rem; margin-bottom:2rem;"><%=order.getArtistName() %></div>
             <hr>

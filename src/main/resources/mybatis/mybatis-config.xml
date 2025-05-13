@@ -8,6 +8,7 @@
 	<settings>
 		<!-- null허용되는 컬럼에 null값이 추가될 수 있도록 한다. -->
 		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
 	</settings>
 
 	<typeAliases>

@@ -18,7 +18,7 @@ public class Sale {
 	private String description;
 	private String photoPath;
 	private int price;
-	private String isOpend;
+	private String isOpened;
 	private String isSold;
 	private int viewCount;
 	private User user;
@@ -37,6 +37,12 @@ public class Sale {
 	}
 	public int getUserNo() {
 		return user.getNo();
+	}
+	public String getUserName() {
+		return user.getName();
+	}
+	public String getUserAccountNumber() {
+		return user.getAccountNumber();
 	}
 
 }

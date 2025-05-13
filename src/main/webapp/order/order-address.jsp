@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%  
-	// String userId = (String) session.getAttribute("LOGINED_USER_ID");
+	// String userNo = (String) session.getAttribute("LOGINED_USER_No");
 	int userNo = 1;
    
 	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);

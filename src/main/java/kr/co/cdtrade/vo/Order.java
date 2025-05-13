@@ -34,7 +34,7 @@ public class Order {
 	public void setAddressNo(int no) {
 		Address address = new Address();
 		address.setNo(no);
-		this.address = address; 
+		this.address = address;
 	}
 
 	public void setSaleNo(int no) {
@@ -72,6 +72,9 @@ public class Order {
 	}
 	public String getreceiverTel() {
 		return address.getReceiverTel();
+	}
+	public String getIsOpened() {
+		return sale.getIsOpened();
 	}
 
 

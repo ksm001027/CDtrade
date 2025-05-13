@@ -20,7 +20,7 @@
 	
    
 	
-	//String userId = (String) session.getAttribute("LOGINED_USER_ID");
+	//String userNo = (String) session.getAttribute("LOGINED_USER_NO");
 	 
 	Order order = new Order();   
 	order.setNo(no);

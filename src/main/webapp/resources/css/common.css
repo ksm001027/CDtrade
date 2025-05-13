@@ -1984,6 +1984,7 @@ hr {
     overflow-y: auto;
 }
 
+
 .address-item {
     margin-bottom: 2rem;
     border-bottom: 1px solid #eee;
@@ -2047,6 +2048,16 @@ hr {
 
 .address-modal-btn:last-child:hover {
     background: var(--main-color-hover);
+}
+
+.dis-box {
+	width: 100px;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid red;
+    margin: 10px;
+    background-color: beige;
+	
 }
 
 /* 배송지 추가 모달 */

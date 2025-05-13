@@ -9,9 +9,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>     
 <%   
-     String userId = (String) session.getAttribute("LOGINED_USER_ID");
-     	
-  
+     //String userNo = (String) session.getAttribute("LOGINED_USER_NO");
+     	   
+       
      	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
      	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
      	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);   
@@ -59,7 +59,7 @@
                         <img src="<%=sale.getPhotoPath() %>" alt="Blonde">
                         <div class="order-product-detail">
 <% 
-	if (sale.getIsOpend().equals("f")) {
+	if (sale.getIsOpened().equals("f")) {    
 %>
                             <div><span class="badge">미개봉</span></div>
 <%
@@ -110,14 +110,17 @@
                          id="#input-addr-tel" 
                          value="<%=address.getReceiverTel() %>" disabled>
                    
-                    </div>
+                    </div> 
                 </div>
                 <div class="order-form-section">
                     <div class="order-form-label">결제 방법</div>
                     <div class="order-pay-methods">
                         <button class="order-pay-btn " id="btn-paymethod" onclick="dis()">무통장 입금</button>
                     </div>
-                    <div id="dis" align="center"><h1>예금주 : 김유신</h1><br><h1>계좌정보 : 000000000</h1></div>
+                    <div class="order-shipping-box" id="dis" align="center">                   
+                    	<h1>예금주 : <%=sale.getUserName() %></h1>
+                    	<br><h1>계좌정보 : <%=sale.getUserAccountNumber() %></h1>
+                    </div>
                 </div>
             </div>
             <div class="vertical-line"></div>
@@ -146,7 +149,7 @@
                 <ul class="order-agree-list">
                     <li class="order-agree-item"><input type="checkbox" name="ck1">구매하려는 상품을 확인했습니다. 앨범명, 아티스트명, 출시년도, CAT NO.,
                         상세정보를 한번 더 확인했습니다.</li>
-                    <li class="order-agree-item"><input type="checkbox" name="ck1"><strong> 검수 기준과 이용 정책</strong>을 확인했습니다.</li>
+                    <li class="order-agree-item"><input type="checkbox" name="ck1"><strong id="text-modal1">검수 기준과</strong><strong id="text-modal2"> 이용 정책</strong>을 확인했습니다.</li>
                     <li class="order-agree-item"><input type="checkbox" name="ck1">판매자의 판매거부, 배송지연, 미입고 등의 사유가 발생할 경우, 거래가 취소될 수
                         있습니다. 거래 진행 상태 알림을 위한 알림톡 수신 동의와 등록 전화번호를 확인 했습니다.</li>
                     <li class="order-agree-item"><input type="checkbox" name="ck1">구매를 통해 거래 체결이 완료되면 단순 변심이나 실수에 의한 취소는 불가합니다.
@@ -166,13 +169,7 @@
                 <button class="address-modal-close" id="closeAddressSelect">&times;</button>
             </div>
             <div class="address-list">
-                <div class="address-item">
-                    <div><span class="address-name"><%=address.getName() %></span> <span class="address-basic">(기본배송지)</span></div>
-                    <div class="address-info"><%=address.getZipCode() %></div>
-                    <div class="address-info"><%=address.getAddrBasic() %></div>
-                    <div class="address-phone"><%=address.getReceiverName() %> | <%=address.getReceiverTel() %></div>
-                </div>
-                <div class="address-list" id="address-list"></div>
+                <div class="address-item" id="address-list"></div>
             </div>
             <div class="address-modal-footer">
                 <button class="address-modal-btn" id="closeAddressSelect2">적용</button>
@@ -208,7 +205,7 @@
             </div>
         </div>
     </div>
-    <!-- 결제 확인 모달 -->
+    <!-- <!-- 결제 확인 모달 -->
     <div class="modal-backdrop" id="payModal">
         <div class="modal">
             <div class="modal-title">상품 결제</div>
@@ -218,7 +215,37 @@
                 <button class="modal-btn" id="payModalYes">예</button>
             </div>
         </div>
+    </div> 
+    
+    <div class="address-modal-backdrop" id="checkModal1">
+        <div class="address-modal">
+            <div class="address-modal-header">
+                검수 기준
+                <button class="address-modal-close" id="closecheckModal1">&times;</button>
+            </div>
+            <div class="modal-desc">
+            검수 기준1<br>검수 기준2<br>
+            <br><br><br><br><br><br><br><br><br>
+            </div>
+            
+        </div>
     </div>
+    
+    <div class="address-modal-backdrop" id="checkModal2">
+        <div class="address-modal">
+            <div class="address-modal-header">
+                이용 정책
+                <button class="address-modal-close" id="closecheckModal2">&times;</button>
+            </div>
+            <div class="modal-desc">
+            이용 정책1<br>이용 정책2<br>
+            <br><br><br><br><br><br><br><br><br>
+            </div>
+            
+        </div>
+    </div>
+    
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
         // 배송지 선택 모달 닫기
@@ -253,6 +280,12 @@
             document.getElementById('payModal').classList.remove('show');
             // 실제 결제 로직은 여기에 추가
         };
+        document.getElementById('closecheckModal1').onclick = function () {
+            document.getElementById('checkModal1').classList.remove('show');
+        };
+        document.getElementById('closecheckModal2').onclick = function () {
+            document.getElementById('checkModal2').classList.remove('show');
+        };
         
         $(":checkbox[name='ck1']").click(function(){
         	if($(":checkbox[name='ck1']:checked").length == 5){
@@ -266,6 +299,13 @@
         
         $("#pay-button").click(function() {
         	$("#form-order").trigger("submit");
+        });
+        
+        $("#text-modal1").click(function() {
+        	document.getElementById('checkModal1').classList.add('show');
+        });
+        $("#text-modal2").click(function() {
+        	document.getElementById('checkModal2').classList.add('show');
         });
         
         $('#dis').hide();
@@ -315,12 +355,11 @@
     				
     				for (let addr of addressArr) {
     					let content = `
-        					<div class="address-list-item" data-address-id="1">
-                            	<div class="form-check">
+        					<div class="address-list-item" data-address-id="1">                      
                                 	<input class="form-check-input" 
                                 		type="radio" 
                                 		name="addressRadio" 
-                                		id="address-\${addr.no}" \${addr.gibon == 'Y' ? 'checked' : ''}
+                                		id="address-\${addr.no}" \${addr.isDefaultAddress == 't' ? 'checked' : ''}
                                 		data-addr-no="\${addr.no}"
                                 		data-addr-name="\${addr.name}"
                                 		data-addr-receiverName="\${addr.receiverName}"
@@ -329,13 +368,12 @@
                                 		data-addr-detail="\${addr.addrDetail}"
                                 		data-addr-zipcode="\${addr.zipCode}">
                                 	<label class="form-check-label" for="address1">
-                                    	<strong>\${addr.name}</strong> (\${addr.receiverTel})
-                                    	<br>
-                                    	\${addr.addrBasic} \${addr.addrDetail}
-                                    	<br>
-                                    	우편번호: \${addr.zipCode} \${addr.receiverName}
-                                	</label>
-                            	</div>
+                                		<div class="address-item">
+                                		<div><span class="address-name">\${addr.name}</span></div>
+                                        <div class="address-info">\${addr.zipCode}</div>
+                                        <div class="address-info">\${addr.addrBasic} \${addr.addrDetail}</div>
+                                        <div class="address-phone"> \${addr.receiverName}| \${addr.receiverTel}</div>                  
+                                	</label>                           	
                         	</div>
         				`;
         				$("#address-list").append(content);
