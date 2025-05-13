@@ -67,7 +67,7 @@
 	}
 </style>
     <title>판매 목록</title>
-    <%@include file="../../common/nav.jsp" %>
+    <%@include file="../common/nav.jsp" %>
     <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>

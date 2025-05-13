@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <%@include file="../../common/nav.jsp" %>
+     <%@include file="../common/nav.jsp" %>
     <title>상품등록 완료</title>
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
