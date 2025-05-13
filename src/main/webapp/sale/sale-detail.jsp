@@ -50,6 +50,7 @@
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
+    width: 100%;
 }
 
 .slide {
@@ -59,8 +60,8 @@
 
 .slide img {
     width: 100%;
-    display: block;
-    border-radius: 8px;
+    max-height: 500px;
+    object-fit: contain;
 }
 
 
@@ -240,6 +241,8 @@
 
 	function updateSlider() {
 	    const slideWidth = document.querySelector('.slider-container').clientWidth;
+	    
+	    
 	    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 	    dots.forEach((dot, index) => {
 	        dot.classList.toggle('active', index === currentIndex);
@@ -258,7 +261,6 @@
 	    updateSlider();
 	}
 
-	window.addEventListener('resize', updateSlider);
 	window.addEventListener('load', () => {
 	    if (slides.length <= 1) {
 	        prevBtn?.style.setProperty('display', 'none');
@@ -268,6 +270,7 @@
 	    updateSlider();
 	});
 
+	window.addEventListener('resize', updateSlider);
 
 	</script>
 

@@ -34,6 +34,7 @@
         obj.addProperty("isOpened", sale.getIsOpened());
         obj.addProperty("albumTitle", albumTitle);
         obj.addProperty("albumNo", sale.getAlbum().getNo());
+        obj.addProperty("saleNo", sale.getNo());
 
         jsonArray.add(obj);
     }
