@@ -17,11 +17,17 @@
                 <h4>고객센터 031-931-5878</h4>
                 <p>운영시간 평일 10:00 - 19:00 (토,일,공휴일 휴무)<br>점심시간 평일 13:00 - 14:00</p>
                 <a class="faq-button" href="#">자주 묻는 질문</a>
+                <div class="social-icons">
+                    <img src="chat.png" alt="채팅">
+                    <img src="insta.png" alt="인스타">
+                    <img src="blog.png" alt="블로그">
+                </div>
             </div>
         </footer>
     </div>
 
     <!-- 모달 
+    <!-- 모달 -->
     <div class="modal" id="bizModal">
         <div class="modal-content">
             <p><strong>(주)세컨드트랙</strong> &nbsp;&nbsp;&nbsp;&nbsp;| 김재니</p>
@@ -36,4 +42,9 @@
 
     <script>
         
+
+    <script>
+        function toggleModal() {
+            document.getElementById('bizModal').classList.toggle('show');
+        }
     </script>
