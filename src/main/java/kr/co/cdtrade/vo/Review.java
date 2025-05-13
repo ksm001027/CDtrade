@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Review {
 
  private int no;
- private int rating;
+ private double rating;
  private String content;
  private User user;
  private Album album;

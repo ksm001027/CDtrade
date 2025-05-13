@@ -115,5 +115,104 @@
         ORDER BY R.REVIEW_CREATED_AT DESC
         OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
     </select>
+    
+    <!-- 
+    	 void insertReview(Review review);
+     -->
+     <insert id="insertReview" parameterType="Review">
+     	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+     		select seq_review_no.nextval as no from dual
+     	</selectKey>
+     	
+     	insert into reviews
+		(review_no, review_rating, review_content, user_no, album_no)
+		values
+		(#{no}, #{rating}, #{content}, #{user.no}, #{album.no})
+     </insert>
 
+	<!-- 
+		 List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo, 
+            @Param("offset") int offset, 
+            @Param("rows") int rows);
+	 -->
+	 <select id="searchReviewsByAlbumNo" resultType="Review">
+	 	 SELECT 
+            R.REVIEW_NO as no,
+            R.REVIEW_RATING as rating,
+            R.REVIEW_CONTENT as content,
+            R.REVIEW_CREATED_AT as createdAt,
+            R.REVIEW_UPDATED_AT as updatedAt,
+            U.USER_NO as "user.no",
+            U.USER_NAME as "user.name",
+            U.USER_NICKNAME as "user.nickname",
+            R.ALBUM_NO as "album.no"
+        FROM REVIEWS R
+        JOIN USERS U ON R.USER_NO = U.USER_NO
+        WHERE R.ALBUM_NO = #{albumNo}
+        ORDER BY R.REVIEW_CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
+	 </select>
+	 
+	 <!-- 
+	 	Review getReviewByAlbumNoAndUserNo(@Param("albumNo") int albumNo, @Param("userNo") int userNo);
+	  -->
+	  <select id="getReviewByAlbumNoAndUserNo" resultType="Review">
+	  		select 
+	  			REVIEW_NO as no,
+	            REVIEW_RATING as rating,
+	            REVIEW_CONTENT as content,
+	            REVIEW_CREATED_AT as createdAt,
+	            REVIEW_UPDATED_AT as updatedAt,
+	            USER_NO as "user.no",
+	            ALBUM_NO as "album.no"
+	        from reviews
+	        where album_no = #{albumNo} 
+	        	and user_no = #{userNo}
+	  </select>
+	  
+	  <!-- 
+	  	 Review getReviewByNo(int reviewNo);
+	   -->
+	   <select id="getReviewByNo" resultType="Review">
+		   	SELECT 
+	            REVIEW_NO as no,
+	            REVIEW_RATING as rating,
+	            REVIEW_CONTENT as content,
+	            REVIEW_CREATED_AT as createdAt,
+	            REVIEW_UPDATED_AT as updatedAt,
+	            USER_NO as "user.no",
+	            ALBUM_NO as "album.no"
+	        FROM REVIEWS
+	        where review_no = #{reviewNo}
+	   </select>
+	   
+	   <!-- 
+	   		void updateReview(Review review);
+	    -->
+	    <update id="updateReview" parameterType="Review">
+	    	update reviews
+	    	set 
+	    		review_rating = #{rating},
+	    		review_content = #{content},
+	    		review_updated_at = sysdate
+	    	where review_no = #{no}
+	    </update>
+	    
+	    <!-- 
+	    	void deleteReviewByNo(int reviewNo);
+	     -->
+	     <delete id="deleteReviewByNo">
+	     	delete from reviews
+	     	where review_no = #{reviewNo}
+	     </delete>
+	     
+	     <!-- 
+	     	  int getRowsByAlbumNo(int albumNo);
+	      -->
+	      <select id="getRowsByAlbumNo" >
+	      	select count(*)
+	      	from reviews
+	  		where album_no = #{albumNo}
+	      </select>
+	  
 </mapper>
