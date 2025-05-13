@@ -8,10 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Alias("Order")
-@NoArgsConstructor
 public class Order {
 
 	private int no;
@@ -25,11 +22,6 @@ public class Order {
 	private Sale sale;
 	private Album album;
 	private User user;
-
-
-	/*
-	 * public void setAddressNo(Address address) { address.setNo(address.getNo()); }
-	 */
 
 	public void setAddressNo(int no) {
 		Address address = new Address();
