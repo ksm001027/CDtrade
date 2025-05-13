@@ -1350,6 +1350,8 @@ hr {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 0.5rem;
+    display: block; /* 추가 */
+    visibility: visible; /* 혹시 숨김 처리된 경우 대비 */
 }
 
 .photo-notice {
@@ -3037,6 +3039,14 @@ hr {
 	gap: 1rem;
 	width: 100%;
 	
+
+    .alert-dismissible .btn-close:hover {
+    color: #ddd;
+	}
+	
+	
+}
+
 }
 
 .product-pagination-btn {
@@ -3286,3 +3296,4 @@ hr {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
+
