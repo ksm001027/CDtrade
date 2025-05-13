@@ -1,5 +1,7 @@
 package kr.co.cdtrade.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import kr.co.cdtrade.vo.User;
 
 public interface UserMapper {
@@ -17,4 +19,6 @@ public interface UserMapper {
 	int deactivateUserByNo(int no);
 
 	void updateUser(User user);
+	
+	void updateAccountNumber(@Param("userNo") int userNo, @Param("accountNumber") String accountNumber);
 }
