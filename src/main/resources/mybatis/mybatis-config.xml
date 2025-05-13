@@ -42,9 +42,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="mybatis/mappers/ReviewMapper.xml" />
 		<mapper resource="mybatis/mappers/UserMapper.xml" />
 		<mapper resource="mybatis/mappers/WishItemMapper.xml" />
-		<mapper resource="mybatis/mappers/OrderMapper.xml"/>
 		<mapper resource="mybatis/mappers/SaleMapper.xml"/>
-		<mapper resource="mybatis/mappers/AddressMapper.xml"/>
+
 	</mappers>
   
 </configuration>

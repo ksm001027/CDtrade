@@ -3,8 +3,6 @@ package kr.co.cdtrade.mapper;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
 import kr.co.cdtrade.vo.Album;
 import kr.co.cdtrade.vo.Genre;
 import kr.co.cdtrade.vo.Sale;
