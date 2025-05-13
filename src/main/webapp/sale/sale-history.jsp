@@ -141,7 +141,6 @@
     	            }
     	        });
     	    });
-    	    
 
     	    // 페이지 로딩 시 판매완료로 자동 클릭
     	    $(".sale-history-tab.active").trigger("click");
