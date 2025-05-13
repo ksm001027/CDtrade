@@ -48,6 +48,28 @@ public class GenreMappingUtils {
 			);
 
 	/**
+	 * DB의 장르번호와 장르이름을 매핑시켜주는 Map 상수
+	 * (예시 : 1 -> "클래식")
+	 */
+	public static final Map<Integer, String> GENRE_NO_TO_NAME = Map.ofEntries(
+	    Map.entry(1, "클래식"),
+	    Map.entry(2, "아이돌"),
+	    Map.entry(3, "댄스뮤직"),
+	    Map.entry(4, "락"),
+	    Map.entry(5, "RnB"),
+	    Map.entry(6, "발라드"),
+	    Map.entry(7, "기타"),
+	    Map.entry(8, "인디"),
+	    Map.entry(9, "일렉트로닉/하우스"),
+	    Map.entry(10, "재즈"),
+	    Map.entry(11, "포크"),
+	    Map.entry(12, "힙합"),
+	    Map.entry(13, "해외"),
+	    Map.entry(14, "JPOP"),
+	    Map.entry(15, "OST")
+	);
+	
+	/**
 	 * 알라딘 API에서 응답으로 받아온 장르와 우리 서비스의 장르를 매핑시켜주는 Map 상수 (예시 : "가요>발라드/R&B" : ["RnB", "발라드"])
 	 */
 	private static final Map<String, List<String>> ALADIN_TO_SERVICE_GENRES = Map.ofEntries(

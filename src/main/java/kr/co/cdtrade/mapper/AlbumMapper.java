@@ -11,6 +11,12 @@ public interface AlbumMapper {
 
 	void insertAlbum(Album album);
 
+
+	
+	Album getAlbumByNo(int albumNo);
+	
+	void updateAlbum(Album album);
+
 	/**
 	 * 앨번번호를 전달받아서 해당 앨벙정보를 반환한다.
 	 * @param no 앨번번호
@@ -20,7 +26,7 @@ public interface AlbumMapper {
 
 	/**
 	 * 모든 앨범 정보를 조회해서 반환한다.
-	 * @param condition
+	 * @param condition의 요소 - minReviewCount, offset, rows, sort
 	 * @return 앨범정보 목록
 	 */
 	List<Album> getAlbums(Map<String, Object> condition);
@@ -45,5 +51,9 @@ public interface AlbumMapper {
 	 * @return 구매정보
 	 */
 	Order getOrderbyAlbumNo(int no);
+
+	List<Genre> getGenreNameByAlbumNo(int albumNo);
+
+
 }
 

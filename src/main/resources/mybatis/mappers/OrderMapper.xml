@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.cdtrade.mapper.OrderMapper">
+
+	<!-- 
+		List<Order> getOrdersByAlbumNo(@Param("albumNo") int albumNo, @Param("offset") int offset, @Param("rows") int rows);
+	 -->
+	 <select id="getOrdersByAlbumNo" resultType="Order">
+	 	select O.order_no as no
+	 		, O.order_price as price
+	 		, O.order_created_at as createdAt
+	 		, S.sale_no as "sale.no"
+	 		, S.sale_is_opened as "sale.isOpened"
+	 	from orders O, sales S
+	 	where O.sale_no = S.sale_no
+	 	 and O.album_no = #{albumNo}
+	 	order by order_created_at desc
+	 	offset #{offset} rows
+	 	fetch next #{rows} rows only
+	 </select>
+	 
+	 <!-- 
+	 	int getTotalRows(Map<String, Object> condition);
+	 	condition 값
+			condition -> {albumNo: 앨범번호}
+				=> 해당 앨범번호에 해당하는 order 개수 조회 
+	  -->
+	  <select id="getTotalRows" parameterType="map">
+	  	select count(*)
+	  	from orders
+	  	<if test="albumNo != null">
+	  		where album_no = #{albumNo}
+	  	</if>
+	  </select>
+	  
+	  
+		
+</mapper>

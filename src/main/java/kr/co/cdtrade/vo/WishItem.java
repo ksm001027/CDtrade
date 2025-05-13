@@ -1,3 +1,4 @@
+// vo/WishItem.java
 package kr.co.cdtrade.vo;
 
 import java.util.Date;

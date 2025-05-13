@@ -15,4 +15,74 @@
 		(#{albumNo}, #{genreNo})
 	</insert>
 	
+	<!-- 
+		List<Integer> getGenreNosByAlbumNo(int albumNo); 
+	 -->
+	<select id="getGenreNosByAlbumNo" resultType="Int">
+		select genre_no 
+		from albums_genres
+		where album_no = #{albumNo}
+	</select>
+	
+	<!-- 
+		List<Album> getAlbumsByGenreNo(Map<String, Object> condition); 
+		flushCache로 캐시를 초기화
+	 -->
+	<select id="getAlbumsByGenreNo" parameterType="map" resultType="Album" useCache="false" flushCache="true">
+		select a.album_no			as	no
+		  , a.album_title			as	title
+		  , a.artist_name			as	artistName
+		  , a.release_date		as	releaseDate
+		  , a.cover_image_url		as	coverImageUrl
+		  , a.avg_rating			as	avgRating
+		  , a.review_count		as	reviewCount
+		  , a.stock_quantity		as	stockQuantity
+		  , a.avg_order_price		as	avgOrderPrice
+		  , a.avg_sale_price		as	avgSalePrice
+	      , a.album_created_at	as	albumCreatedAt
+		  , a.album_updated_at	as	albumUpdatedAt
+		  , a.release_price		as	releasePrice
+		  , a.recent_order_price	as	recentOrderPrice
+		from albums_genres ag, albums a
+		where ag.album_no = a.album_no
+			and ag.genre_no = #{genreNo}
+		<if test="minReviewCount != null">
+			and a.review_count >= #{minReviewCount}
+		</if>
+		<if test="keyword != null and keyword != ''">
+			and a.album_title like '%' || #{keyword} || '%'
+		</if>
+		<choose>
+	 		<when test="sort == 'newest'">
+	 			order by a.release_date desc
+	 		</when>
+	 		<when test="sort == 'price-asc'">
+	 			order by a.avg_order_price asc nulls last
+	 		</when>
+	 		<when test="sort == 'price-desc'">
+	 			order by a.avg_order_price desc nulls last
+	 		</when>
+	 		<when test="sort == 'rating'">
+	 			order by a.avg_rating desc nulls last
+	 		</when>
+	 	</choose>
+		offset #{offset} rows
+	 	fetch next #{rows} rows only
+	</select>
+	
+	<!-- 
+		int getTotalRows(Map<String, Object> condition);
+	 -->
+	 <select id="getTotalRows" parameterType="map">
+	 	select count(*)
+	 	from albums_genres ag, albums a
+	 	where ag.album_no = a.album_no
+	 	<if test="genreNo != null">
+	 		and genre_no = #{genreNo}
+	 	</if>
+	 	<if test="keyword != null and keyword != ''">
+			and album_title like '%' || #{keyword} || '%'
+		</if>
+	 </select>
+	
 </mapper>
