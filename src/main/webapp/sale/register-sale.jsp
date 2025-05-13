@@ -11,40 +11,38 @@
 
 
 <%
-	int no = StringUtils.strToInt(request.getParameter("no"), 0);
-	int price = StringUtils.strToInt(request.getParameter("price"));
-	String priceParam = request.getParameter("price");
+	int userNo = 1;/* (int) userNoAttr; */
+	int albumNo = StringUtils.strToInt(request.getParameter("ano"));
 	String description = request.getParameter("description");
 	String photoPath = request.getParameter("photoPath");
-	int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-	int albumNo = StringUtils.strToInt(request.getParameter("ano"));
+	int price = StringUtils.strToInt(request.getParameter("price"), 0);
+	String isOpened = request.getParameter("isOpened");
+	
+	
+	if (isOpened == null || isOpened.trim().isEmpty()) {
+	    isOpened = "N";  // 기본값 설정: N (미개봉), 필요에 따라 "Y"로 설정
+	}
+	if (photoPath != null) {
+	    photoPath = photoPath.replace("[", "").replace("]", "").replace("\"", "");
+	}
 
 	
 	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
 	
-	Sale savedSale = salesMapper.getSaleBySaleNo(no);
-	if (savedSale != null) {
-		response.sendRedirect("register-form.jsp?fail=no");
-	}
-	
 	Sale sale = new Sale();
-	User user = new User();
-	Album album = new Album();
-	sale.setNo(no);
 	sale.setPrice(price);
 	sale.setDescription(description);
 	sale.setPhotoPath(photoPath);
-	user.setNo(userNo);
-	sale.setUser(user);
-	album.setNo(albumNo);
-	sale.setAlbum(album);
-	sale.setCreatedAt(new Date());
-	sale.setUpdatedAt(new Date());
-	sale.setIsOpened("Y");
-	sale.setIsSold("N");
-	sale.setViewCount(0);
+	sale.setUserNo(userNo);
+	sale.setAlbumNo(albumNo);
+	sale.setIsOpened(isOpened);
+
 	
 	salesMapper.insertSale(sale);
 	
-	response.sendRedirect("sale-complete.jsp");
+	
+	response.sendRedirect("sale-complete.jsp?sno=" + sale.getNo());
+	
+	
+
 %>
