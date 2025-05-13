@@ -49,3 +49,17 @@ public class Sale {
 	}
 
 	}
+	public int getAlbumNo() {
+		return album.getNo();
+	}
+	public int getUserNo() {
+		return user.getNo();
+	}
+	public String getUserName() {
+		return user.getName();
+	}
+	public String getUserAccountNumber() {
+		return user.getAccountNumber();
+	}
+
+}
