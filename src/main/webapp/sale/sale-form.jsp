@@ -1,3 +1,4 @@
+<%@page import="org.apache.catalina.mapper.Mapper"%>
 <%@page import="kr.co.cdtrade.vo.User"%>
 <%@page import="kr.co.cdtrade.mapper.UserMapper"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
@@ -9,24 +10,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	 int albumNo = StringUtils.strToInt(request.getParameter("ano"));
-	 /* Object userNoAttr = session.getAttribute("LOGINED_USER_NO");
-	 if (userNoAttr == null) {
-		 response.sendRedirect("../login/login.jsp");
-		 return;
-	 }
-	 int userNo = (int) userNoAttr; */
-	 int userNo = 1;
-	 
-	 AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
-	 Album album = albumMapper.getAlbumByAlbumNo(albumNo);
-	 
-	 UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
-	 User user = userMapper.getUserByNo(userNo);
-	 
-	 int counyPhotoLength = 0;
-	 
-	 
+	String mode = request.getParameter("mode");
+	int albumNo = StringUtils.strToInt(request.getParameter("ano"));
+	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
+	
+	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
+	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
+	
+	Album album = albumMapper.getAlbumByAlbumNo(albumNo);
+	Sale sale = null;
+	
+	if ("edit".equals(mode) && saleNo > 0) {
+	    sale = salesMapper.getSaleBySaleNo(saleNo);
+	}
+		 
 	
 %>
 
@@ -38,12 +35,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%@include file="../common/nav.jsp" %>
-    <title>판매 등록</title>
+    <title><%= "edit".equals(mode) ? "상품 수정" : "판매 등록" %>판매 등록</title>
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
+<%
+	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
+	User user = userMapper.getUserByNo(loginedUserNo);
+%>
 
 <body>
-<form action="register-sale.jsp?ano=<%=album.getNo() %>" method="post" id="saleForm">
+<h1><%= "edit".equals(mode) ? "상품 수정" : "판매 등록" %></h1>
+
+<form action="<%= "edit".equals(mode) ? "update-sale.jsp" : "register-sale.jsp" %>" method="post" id="saleForm">
+	<input type="hidden" name="mode" value="<%= mode %>">
+	<input type="hidden" name="sno" value="<%= saleNo %>">
+	<input type="hidden" name="ano" value="<%= albumNo %>">
 	<div class="container">
         <div class="sale-form-container">
             <div class="sale-form-layout">
@@ -119,7 +125,9 @@
                             <button type="button" class="condition-tag">사인반</button>
                             <button type="button" class="condition-tag">테두리 터짐</button>
                         </div>
-                        <textarea class="description-input" name="description" placeholder="내용을 입력해주세요."></textarea>
+                        <textarea class="description-input" name="description" placeholder="내용을 입력해주세요.">
+                        	<%= sale != null ? sale.getDescription() : "" %>
+                        </textarea>
                         
                     </div>
 
@@ -130,7 +138,7 @@
 
                         <div class="photo-link-container">
                             <div class="photo-link-input">
-                                <input type="text" placeholder="사진 URL을 입력해주세요" class="link-input">
+                                <input type="text" placeholder="사진 URL을 입력해주세요"  class="link-input">
                                 <button type="button" class="add-link-btn">추가</button>
                             </div>
 							<div class="photo-links">
@@ -158,7 +166,7 @@
                         <div class="account-info-content">
 						    <p><span id="main-bank"></span></p>
 						    <p>예금주: <span id="main-holder"><%=user.getName()%></span></p>
-						    <p>계좌번호: <span id="main-account"><%=user.getAccountNumber() != null ? user.getAccountNumber() : "110-123-456789"%></span></p>
+						    <p>계좌번호: <span id="main-account"><%=user.getAccountNumber()%></span></p>
 						</div>
 
                     </div>
@@ -204,7 +212,7 @@
                             <input type="hidden" name="photoPath" id="photoLinksInput">
                             <div class="price-row">
                                 <span class="price-label">판매희망가</span>
-                                <input type="text" class="price-input" name="price" placeholder="판매희망가 입력"id="price-input">
+                                <input type="text" class="price-input" value="<%= sale != null ? sale.getPrice() : "" %>" name="price" placeholder="판매희망가 입력"id="price-input">
                             </div>
                             
                             <div class="price-row">
@@ -235,7 +243,9 @@
                     </div>
 					
                     <!-- 판매 버튼 -->
-                    <button class="submit-button" form="saleForm" disabled>판매</button>
+                    <button type="submit" class="submit-button" form="saleForm" disabled>
+                    <%= "edit".equals(mode) ? "상품 수정" : "판매 등록" %>
+                    </button>
 
                     <!-- 주의사항 -->
                     <p class="notice-text">* 포토카드, 가사지, 스티커와 같은 구성품이 포함되어 있지 않거나 (분실), 특정 구성품이 누락되었다면 (미개봉), 이러한 정보를
