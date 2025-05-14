@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<%@include file="../../common/nav.jsp"%>
+<%@include file="../common/nav.jsp"%>
 <title><%=sale.getAlbumTitle()%></title>
 <style>
  .slider-container {
@@ -290,20 +290,21 @@
 			</div>
 		</div>
 	</div>
-	<%@include file="../../common/footer.jsp"%>
+	<%@include file="../common/footer.jsp"%>
 	<script>
 	const slider = document.getElementById('slider');
 	const slides = document.querySelectorAll('.slide');
 	const prevBtn = document.querySelector('.prev');
 	const nextBtn = document.querySelector('.next');
 	const dots = document.querySelectorAll('.dot');
+	
 	let currentIndex = 0;
 
 	function updateSlider() {
 	    const slideWidth = document.querySelector('.slider-container').clientWidth;
 	    
 	    
-	    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+	    slider.style.transform = `translateX(-\${currentIndex * slideWidth}px)`;
 	    dots.forEach((dot, index) => {
 	        dot.classList.toggle('active', index === currentIndex);
 	    });

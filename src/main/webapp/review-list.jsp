@@ -8,7 +8,7 @@
 <%@ page import="kr.co.cdtrade.vo.Review"%>
 <%@ page import="java.util.List"%>
 <!-- 네비게이션 바 -->
-<%@include file="common/nav.jsp" %>
+<%@include file="../common/nav.jsp" %>
 <%
 // AJAX 요청인지 확인
 String ajaxParam = request.getParameter("ajax");

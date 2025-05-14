@@ -89,6 +89,18 @@
 			user_no = #{no}
 	</update>
 
+	
+
+	<update id="updateAccountNumber" parameterType="map">
+    update users
+    set account_number = #{accountNumber},
+        user_updated_at = SYSDATE
+    where user_no = #{userNo}
+	</update>
+	
+
+
+
 	<update id="updateUser" parameterType="User">
 		update users
 		set 

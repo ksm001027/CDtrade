@@ -26,7 +26,6 @@
         </footer>
     </div>
 
-    <!-- 모달 
     <!-- 모달 -->
     <div class="modal" id="bizModal">
         <div class="modal-content">
@@ -38,11 +37,6 @@
             <button onclick="toggleModal()">확인</button>
         </div>
     </div>
-    -->
-
-    <script>
-        
-
     <script>
         function toggleModal() {
             document.getElementById('bizModal').classList.toggle('show');
