@@ -98,6 +98,7 @@
 			, user_tel = #{tel}
 		where 
 			user_no = #{no}
+
 	</update>
 	
 	<update id="updateAccountNumber" parameterType="User">

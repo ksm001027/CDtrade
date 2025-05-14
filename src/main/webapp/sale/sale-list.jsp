@@ -67,6 +67,13 @@
 	}
 </style>
     <title>판매 목록</title>
+
+
+    <%@include file="../common/nav.jsp" %>
+
+
+    <%@include file="../../common/nav.jsp" %>
+
     <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -125,15 +132,20 @@
 	for(Sale sale : sales){
 %>
             <!-- 앨범 카드 1 -->
+
             <a href="album-detail.jsp?albumNo=<%=sale.getAlbum().getNo() %>" class="album-card">
                 <img src="<%=sale.getPhotoPath() %>" alt="HYBS - Making Steak" class="album-image">
             <a href="sale-detail.jsp?sno=<%=sale.getNo() %>" class="album-card">
                 <img src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
+
+            <a href="sale-detail.jsp?sno=<%=sale.getNo() %>" class="album-card">
+                <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>" class="album-image">
+
                 <div class="album-info">
                     <h3 class="album-title"><%=sale.getAlbumTitle() %></h3>
                     <div class="album-status"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
                     <div class="album-price-label">구매가</div>
-                    <div class="album-price"><%=sale.getPrice() %>원</div>
+                    <div class="album-price"><%=String.format("%,d", sale.getPrice()) %>원</div>
                 </div>
             </a>
 <%
@@ -158,26 +170,19 @@
             });
         });
         
-        let currentPage = 1;     // 현재 페이지 번호
-        let isLoading = false;   // 데이터 로딩 중인지 확인
+        let currentPage = 1;
+        let isLoading = false;
 
-        // 사용자가 화면을 내릴 때마다 감지
         window.addEventListener('scroll', () => {
-            // 화면 맨 아래에 거의 도달했을 때
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+            if ((window.innerHeight + window.scrollY + 500) > document.body.scrollHeight) {
                 if (!isLoading) {
-                    isLoading = true;  // 중복 요청 방지
-                    currentPage++;     // 다음 페이지로 이동
+                    isLoading = true;
+                    currentPage++;
 
-                    // 서버에 AJAX 요청
-                    const isOpened = document.getElementById("input-isOpened").value;
-					const isSold = document.getElementById("input-isSold").value;
-					const sort = document.getElementById("input-sort")?.value || "newest";
-					
-					const keyword = document.getElementById("input-keyword")?.value || "";
-					fetch(`getSales.jsp?page=\${currentPage}&isOpened=\${isOpened}&isSold=\${isSold}&sort=\${sort}&keyword=\${encodeURIComponent(keyword)}`)
-                        .then(response => response.json())
+                    fetch(`getSales.jsp?page=\${currentPage}`)
+                        .then(res => res.json())
                         .then(data => {
+
                             const albumGrid = document.querySelector('.album-grid');
                             
                             if (!Array.isArray(data) || data.length === 0) {
@@ -203,16 +208,24 @@
                                 `;
                                 albumGrid.appendChild(card);
                             });
+
 						    const albumGrid = document.querySelector('.album-grid');
 						
 						    data.forEach(sale => {
 						        console.log(sale);  // ✅ 구조 확인용
 						
 						        const card = document.createElement('a');
+
 						        card.href = `sale-detail.jsp?sno=\${sale.saleNo}`;
 						        card.className = 'album-card';
 						        card.innerHTML = `
 						            <img src="\${sale.photoPath.split(",")[0]}" class="album-image">
+
+						        card.href = `album-detail.jsp?ano=\${sale.albumNo}`;
+						        card.className = 'album-card';
+						        card.innerHTML = `
+						            <img src="\${sale.photoPath}" class="album-image">
+
 						            <div class="album-info">
 						                <h3 class="album-title">\${sale.albumTitle}</h3>
 						                <div class="album-status">\${sale.isOpened == 't' ? '중고' : '미개봉'}</div>
@@ -228,7 +241,6 @@
                         .catch(err => {
                             console.error('불러오기 실패:', err);
                             isLoading = false;
-
                         });
                 }
             }
@@ -244,13 +256,13 @@
                 const value = this.dataset.value;
                 const input = document.getElementById('input-' + type);
 
-                if (input.value === value) {
+                if (input.value == value) {
                     input.value = "";
                     this.classList.remove('active');
                 } else {
                     input.value = value;
                     // 같은 타입의 버튼에서 active 제거
-                    document.querySelectorAll(`.filter-button[data-type="${type}"]`)
+                    document.querySelectorAll(`.filter-button[data-type="\${type}"]`)
                     		.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                 }
@@ -270,12 +282,27 @@
             clearTimeout(window.searchTimeout);
             window.searchTimeout = setTimeout(() => {
                 document.getElementById("form-filter").submit();
-            }, 500);
+            }, 400);
         });
+	
+        // 최대 길이 설정 (원하는 값으로 조정하세요)
+        const maxTitleLength = 40;
 
+        // 모든 앨범 제목 요소 가져오기
+        const titles = document.querySelectorAll('.album-title');
+
+        titles.forEach(titleElement => {
+            const originalText = titleElement.innerText;
+            if (originalText.length > maxTitleLength) {
+                const truncated = originalText.substring(0, maxTitleLength) + '...';
+                titleElement.innerText = truncated;
+            }
+        });
+        
         
         
     </script>
+     <%@include file="../../common/footer.jsp" %>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>

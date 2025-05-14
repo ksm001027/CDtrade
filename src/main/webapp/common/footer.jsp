@@ -26,7 +26,6 @@
         </footer>
     </div>
 
-    <!-- 모달 
     <!-- 모달 -->
     <div class="modal" id="bizModal">
         <div class="modal-content">
