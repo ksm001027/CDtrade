@@ -12,13 +12,18 @@
 <%  
 	// String userId = (String) session.getAttribute("LOGINED_USER_ID");
 	int userNo = 1;
-	String sort = "완료";
+	
+	String status = request.getParameter("status");
+	String period = request.getParameter("period");
+	//String sort = "완료";
 	Map<String, Object> condition = new HashMap<>();
-	condition.put("sort", sort); 
+	condition.put("status", status); 
+	condition.put("period", period); 
 	condition.put("userNo", userNo);
    
 	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
 	List<Order> orders = orderMapper.getOrderByUserNo(condition);   
+	
 	Gson gson = new Gson();
 	String json = gson.toJson(orders);
 	

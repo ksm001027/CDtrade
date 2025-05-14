@@ -21,6 +21,7 @@
     sale.setAlbum(album);
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     String formattedReleaseDate = album.getReleaseDate() != null ? dateFormat.format(album.getReleaseDate()) : "발매일 정보 없음";
 	int userNo = 1;
     /* Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO"); */

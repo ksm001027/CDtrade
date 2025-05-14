@@ -105,7 +105,7 @@
 			</div>
 			
 <%
-	} else {
+	} else { 
 %>
 			<div class="album-grid" id="album-list">
 <%
@@ -125,7 +125,7 @@
             %>
                         <span class="star filled">★</span>
             <%
-                    } else if (i - reviewRating <= 0.5) {
+                    } else if (i - reviewRating <= 0.5) { 
             %>
                         <span class="star half">★</span>
             <%

@@ -89,6 +89,7 @@
 			user_no = #{no}
 	</update>
 
+
 	
 
 	<update id="updateAccountNumber" parameterType="map">
@@ -97,6 +98,7 @@
         user_updated_at = SYSDATE
     where user_no = #{userNo}
 	</update>
+
 
 
 	<update id="updateUser" parameterType="User">

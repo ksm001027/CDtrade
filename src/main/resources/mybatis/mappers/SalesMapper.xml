@@ -57,7 +57,7 @@
     order by s.sale_created_at desc
     offset #{offset} rows fetch next #{rows} rows only   
 
-    	
+
 </select>
 
 <select id="getSaleByUserNo" resultType="Sale">

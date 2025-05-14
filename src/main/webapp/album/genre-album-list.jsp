@@ -9,7 +9,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-
+ 
 	/*
 		장르별 검색 페이지
 		무한스크롤 페이지 
@@ -18,7 +18,7 @@
 		요청처리 절차 
 		-- 앨범카드에 별점 표시하기 
 		-- 
-	*/
+	*/  
 	
 	int genreNo = StringUtils.strToInt(request.getParameter("genreNo"), 0);
 	String sort = request.getParameter("genreNo") == null ? "newest" : request.getParameter("sort");
@@ -89,7 +89,7 @@
 			<div class="album-grid" id="album-list">
 <%
 		for(Album album : albums) {
-			double reviewRating = album.getAvgRating();
+			double reviewRating = album.getAvgRating();  
 %>
             <div class="album-card">
             	<a href="detail.jsp?albumNo=<%=album.getNo()%>">
