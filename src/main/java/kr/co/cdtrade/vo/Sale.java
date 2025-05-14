@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Setter 
 @NoArgsConstructor
 @Alias("Sale")
 public class Sale {
@@ -63,6 +63,4 @@ public class Sale {
 	}
 
 }
-
-	}
 
