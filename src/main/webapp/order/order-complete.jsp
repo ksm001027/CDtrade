@@ -17,6 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@include file="../common/nav.jsp" %>
     <title>구매완료</title>
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
@@ -69,6 +70,7 @@
             <button class="complete-btn">메인으로 돌아가기</button>
         </div>
     </div>
+    <%@include file="../common/footer.jsp" %>
 </body>
 
 </html>

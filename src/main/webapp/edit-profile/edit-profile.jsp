@@ -5,7 +5,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%
+<% 
 	Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	if (userNo == null) {
 		response.sendRedirect("../login/login-form.jsp");
