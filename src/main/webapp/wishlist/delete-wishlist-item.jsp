@@ -32,4 +32,5 @@ try {
     response.setContentType("text/plain");
     out.print("error");
 }
+
 %>
