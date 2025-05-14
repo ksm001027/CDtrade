@@ -20,7 +20,7 @@
 <%
 	/*
 		앨범 상세 페이지 8
-		필요한 파라미터 : albumNo, sessionUserNo 
+		필요한 파라미터 : albumNo, sessionUserNo  
 		
 		요청처리절차 
 		1. albumNo로 앨범을 조회 및 표현
