@@ -23,7 +23,7 @@
 	//String userNo = (String) session.getAttribute("LOGINED_USER_NO");
 	 
 	Order order = new Order();   
-	order.setNo(no);
+	order.setNo(no);  
 	order.setPrice(price);
 	order.setDeliveryFee(deliveryFee);
 	order.setStatus(status);

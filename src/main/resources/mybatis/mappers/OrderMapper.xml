@@ -113,8 +113,31 @@
 			O.album_no = A.album_no
             and O.sale_no = S.sale_no
             and O.user_no = #{userNo}
-            and O.order_status = #{sort}
+            <!-- and O.order_status = #{sort} -->
             
+            	<choose>
+            		<when test="status == 'complete'">
+                		AND o.order_status = '완료'
+            		</when>
+            		<when test="status == 'continue'">
+                		AND o.order_status = '배송중'
+            		</when>
+            		<otherwise>
+            		</otherwise>
+        		</choose>
+        		<choose>
+            		<when test="period == '1w'">
+                		AND o.order_created_at >= SYSDATE - 7
+            		</when>
+            		<when test="period == '1m'">
+                		AND o.order_created_at >= ADD_MONTHS(SYSDATE, -1)
+            		</when>
+            		<when test="period == '3m'">
+                		AND o.order_created_at >= ADD_MONTHS(SYSDATE, -3)
+            		</when>
+            		<otherwise>
+            		</otherwise>
+        		</choose>
 	</select>
 
 

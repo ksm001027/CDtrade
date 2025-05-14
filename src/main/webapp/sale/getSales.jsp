@@ -38,11 +38,12 @@
         jsonArray.add(obj);
     }
 
+    JsonArray jsonArray = new JsonArray(); 
     Gson gson = new Gson();
     out.print(gson.toJson(sales));
     JsonArray jsonArray = new JsonArray();
     for (Sale sale : sales) {
-        if (sale.getAlbum() == null) continue;  // ✅ 앨범 정보 없는 경우 생략
+        if (sale.getAlbum() == null) continue;  // ✅ 앨범 정보 없는 경우 생략 
 
         String albumTitle = sale.getAlbumTitle();
         // ✅ 서버에서 문자열 자르기 처리

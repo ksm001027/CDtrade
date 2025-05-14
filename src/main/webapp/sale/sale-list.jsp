@@ -14,7 +14,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    
+     
 <%
 	int pageNo = StringUtils.strToInt(request.getParameter("page"), 1);
 	String sort = StringUtils.nullToStr(request.getParameter("sort"), "newest");

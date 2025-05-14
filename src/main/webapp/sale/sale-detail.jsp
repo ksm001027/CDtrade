@@ -10,7 +10,7 @@
 <%@page import="kr.co.cdtrade.vo.Album"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<%  
 	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
 	SalesMapper saleMapper = MybatisUtils.getMapper(SalesMapper.class);
 	Sale sale = saleMapper.getSaleBySaleNo(saleNo);
