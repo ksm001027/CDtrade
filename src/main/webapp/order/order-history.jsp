@@ -34,13 +34,13 @@
         <div class="sale-history-search-row">
             <div class="sale-history-search">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="앨범명, 가수명, 소속사명 등">
+                <input type="text" id="search" placeholder="앨범명, 가수명">
             </div>
             <div class="sale-history-periods">
-                <button class="period-btn active">최근 1주일</button>
-                <button class="period-btn">최근 1개월</button>
-                <button class="period-btn">최근 3개월</button>
-                <button class="period-btn">전체</button>
+                <button class="period-btn active" id="pr1">최근 1주일</button>
+                <button class="period-btn" id="pr2">최근 1개월</button>
+                <button class="period-btn" id="pr3">최근 3개월</button>
+                <button class="period-btn" id="pr4">전체</button>
             </div>
             
         </div>
@@ -61,21 +61,29 @@
     <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-    	let status = "complete";
-    	let period = "all";
+    	let status = "all";
+    	let period = "1w";
+    	let keyword = $("#search").val();
+    	
+    function updatekeyword(){
+    	keyword = $("#search").val();
+    }	
+    	
+    
     function logic(){
     	$.ajax({
 			type: "get",
 			data: {
 				status: status,
-				period: period
+				period: period,
+				keyword: keyword
 			},
 			url: "order-history-ajax.jsp",
 			dataType: "json",  
 			success: function(result){
 				let $div = $("#address-list").empty();
 				for (let item of result){
-					let tr = `
+					let tr = `  
 			               <tr>
 	                    		<td>
 	                        		<div class="sale-history-product">
@@ -89,7 +97,7 @@
 	                        		</div>
 	                    		</td>
 	                    		<td><span class="sale-history-status">\${item?.status}</span></td>
-	                    		<td style="font-weight:bold;">\${item?.price}원</td>
+	                    		<td style="font-weight:bold;">\${item?.price.toLocaleString()}원</td>
 	                    		<td>\${item?.createdAt}</td>
 	                		</tr>`
 					
@@ -98,11 +106,67 @@
 			}});
     };
     
-     logic();
+    $("#search").on("keyup", function (e) {
+        if (e.key === "Enter") {
+        	//let $div = $("#address-list").empty();
+            updatekeyword();
+            console.log(5);
+            logic();
+        }
+    });
+    
+    
+    logic();
      
+     $("#tmp1").click(function() {
+   	  	//let $div = $("#address-list").empty();
+   	  	status = "all";
+   	  	$(".sale-history-tab").removeClass("active");
+   	    $("#tmp1").addClass("active");
+   	  	logic();
+     });
+    
      $("#tmp2").click(function() {
-    	 let $div = $("#address-list").empty();
-    	 let status = "continue";
+    	 //let $div = $("#address-list").empty();
+    	 status = "continue";
+    	 $(".sale-history-tab").removeClass("active");
+    	 $("#tmp2").addClass("active");
+    	 logic();
+     });
+     $("#tmp3").click(function() {
+    	 //let $div = $("#address-list").empty();
+    	 status = "complete";
+    	 $(".sale-history-tab").removeClass("active");
+    	 $("#tmp3").addClass("active");
+    	 logic();
+     });
+     
+     $("#pr1").click(function() {
+    	 //let $div = $("#address-list").empty();
+    	 period = "1w";
+    	 $(".period-btn").removeClass("active");
+    	 $("#pr1").addClass("active");
+    	 logic();
+     });
+     $("#pr2").click(function() {
+    	 //let $div = $("#address-list").empty();
+    	 period = "1m";
+    	 $(".period-btn").removeClass("active");
+    	 $("#pr2").addClass("active");
+    	 logic();
+     });
+     $("#pr3").click(function() {
+    	 //let $div = $("#address-list").empty();
+    	 period = "3m";
+    	 $(".period-btn").removeClass("active");
+    	 $("#pr3").addClass("active");
+    	 logic();
+     });
+     $("#pr4").click(function() {
+    	 //let $div = $("#address-list").empty();
+    	 period = "all";
+    	 $(".period-btn").removeClass("active");
+    	 $("#pr4").addClass("active");
     	 logic();
      });
     </script>

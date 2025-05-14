@@ -1,3 +1,7 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
+<%@page import="kr.co.cdtrade.mapper.SaleMapper"%>
 <%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
 <%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
 <%@page import="kr.co.cdtrade.vo.Order"%>
@@ -36,8 +40,20 @@
 	
 	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
 	orderMapper.insertOrder(order);		// 주문정보 저장
+	int avgOrderPrice = orderMapper.getOrderAvgPriceByAlbumNo(albumNo);
 	//System.out.println("저장 후: " + order.getNo());
 	
+	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
+	saleMapper.updateSaleIsSold(saleNo);
+	int avgSalePrice = saleMapper.getSaleAvgPriceByAlbumNo(albumNo);
+	Map<String, Object> condition = new HashMap<>();
+	condition.put("avgOrderPrice", avgOrderPrice); 
+	condition.put("avgSalePrice", avgSalePrice); 
+	condition.put("recentOrderPrice", price); 
+	condition.put("albumNo", albumNo); 
+	
+	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
+	albumMapper.updateAlbumPrice(condition);
 	
 	response.sendRedirect("order-complete.jsp?ono=" + order.getNo());
 %>

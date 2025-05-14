@@ -156,5 +156,15 @@
 			and ag.genre_no = g.genre_no
 	</select>
 	
+	
+	<update id="updateAlbumPrice" parameterType="Album">
+	 	update albums
+	 		set avg_order_price = #{avgOrderPrice}
+	 			,avg_sale_price = #{avgSalePrice}
+	 			,stock_quantity = stock_quantity - 1
+	 			,recent_order_price = #{recentOrderPrice}
+	 			
+	 		where album_no = #{albumNo}
+	 </update>
 
 </mapper>

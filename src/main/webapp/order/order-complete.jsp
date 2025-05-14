@@ -6,9 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
    int orderNo = StringUtils.strToInt(request.getParameter("ono"));
-
    OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
-   
    Order order = orderMapper.getOrderByNo(orderNo);       
 %>
 <!DOCTYPE html>
