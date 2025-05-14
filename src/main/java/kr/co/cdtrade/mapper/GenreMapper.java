@@ -21,9 +21,9 @@ public interface GenreMapper {
      * @return 장르정보
      */
     Genre getGenreByNo(int genreNo);
-    
-    
+
+
     int getReviewCountByGenre();
-    
+
     int getTotalReviewCount();
 }
