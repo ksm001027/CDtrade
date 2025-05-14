@@ -32,9 +32,20 @@
 <html lang="ko">
 
 <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=sale.getAlbumTitle() %></title>
+    <link rel="stylesheet" href="../resources/css/common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%@include file="../common/nav.jsp"%>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%@include file="../../common/nav.jsp"%>
+
 <title><%=sale.getAlbumTitle()%></title>
 <style>
  .slider-container {
@@ -50,6 +61,9 @@
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
+
+    width: 100%;
+
 }
 
 .slide {
@@ -59,8 +73,13 @@
 
 .slide img {
     width: 100%;
+
+    max-height: 500px;
+    object-fit: contain;
+
     display: block;
     border-radius: 8px;
+
 }
 
 
@@ -135,6 +154,23 @@
         <span class="dot <%= i == 0 ? "active" : "" %>" onclick="goToSlide(<%=i%>)"></span>
         <% } %>
     </div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <% if (photoPaths.length > 1) { %>
+    <button class="nav-btn prev" onclick="moveSlide(-1)">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="nav-btn next" onclick="moveSlide(1)">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <div class="dots">
+        <% for (int i = 0; i < photoPaths.length; i++) { %>
+        <span class="dot <%= i == 0 ? "active" : "" %>" onclick="goToSlide(<%=i%>)"></span>
+        <% } %>
+    </div>
+
     <% } %>
 </div>			</div>
 
@@ -229,18 +265,29 @@
 			</div>
 		</div>
 	</div>
+
+	<%@include file="../common/footer.jsp"%>
+
 	<%@include file="../../common/footer.jsp"%>
+
 	<script>
 	const slider = document.getElementById('slider');
 	const slides = document.querySelectorAll('.slide');
 	const prevBtn = document.querySelector('.prev');
 	const nextBtn = document.querySelector('.next');
 	const dots = document.querySelectorAll('.dot');
+
 	let currentIndex = 0;
 
 	function updateSlider() {
 	    const slideWidth = document.querySelector('.slider-container').clientWidth;
+
+	    
+	    
+	    slider.style.transform = `translateX(-\${currentIndex * slideWidth}px)`;
+
 	    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
 	    dots.forEach((dot, index) => {
 	        dot.classList.toggle('active', index === currentIndex);
 	    });
@@ -258,6 +305,7 @@
 	    updateSlider();
 	}
 
+
 	window.addEventListener('resize', updateSlider);
 	window.addEventListener('load', () => {
 	    if (slides.length <= 1) {
@@ -267,6 +315,9 @@
 	    }
 	    updateSlider();
 	});
+
+
+	window.addEventListener('resize', updateSlider);
 
 
 	</script>

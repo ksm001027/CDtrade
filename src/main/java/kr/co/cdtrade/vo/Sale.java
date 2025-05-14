@@ -11,8 +11,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Alias("Sale")
 @NoArgsConstructor
+@Alias("Sale")
 public class Sale {
 
 	private int no;
@@ -48,4 +48,21 @@ public class Sale {
 		this.album = album;
 	}
 
+
+	public int getAlbumNo() {
+		return album.getNo();
 	}
+	public int getUserNo() {
+		return user.getNo();
+	}
+	public String getUserName() {
+		return user.getName();
+	}
+	public String getUserAccountNumber() {
+		return user.getAccountNumber();
+	}
+
+}
+
+	}
+

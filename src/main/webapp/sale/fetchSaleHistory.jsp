@@ -16,6 +16,9 @@
     String isSold = "completed".equals(status) ? "t" : "f";
     String period = request.getParameter("period");
 
+    String keyword = request.getParameter("keyword");
+
+
     int pageNo = Integer.parseInt(request.getParameter("page"));
     int size = Integer.parseInt(request.getParameter("size"));
     int offset = (pageNo - 1) * size;
@@ -27,6 +30,15 @@
     param.put("offset", offset);
     param.put("rows", size);
     param.put("period", period);
+
+    
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        keyword = "%" + keyword.trim() + "%";
+    } else {
+        keyword = null;
+    }
+    param.put("keyword", keyword);
+
 
     SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
     List<Sale> salesList = salesMapper.getSalesByIsSoldAndUserNo(param);  // 여기를 바꿨음!

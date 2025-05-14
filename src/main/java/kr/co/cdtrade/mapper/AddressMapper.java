@@ -11,10 +11,10 @@ public interface AddressMapper {
 	List<Address> getAllAddressByUserNo(int userNo);
 
 	void insertAddress(Address address);
-	
+
 	void deleteAddress(int addrNo);
-	
+
 	void updateAllAddressToNonDefault(int userNo);
-	
+
 	void updateAddress(Address address);
 }

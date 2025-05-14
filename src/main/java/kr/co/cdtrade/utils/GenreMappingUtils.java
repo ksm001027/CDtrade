@@ -68,7 +68,7 @@ public class GenreMappingUtils {
 	    Map.entry(14, "JPOP"),
 	    Map.entry(15, "OST")
 	);
-	
+
 	/**
 	 * 알라딘 API에서 응답으로 받아온 장르와 우리 서비스의 장르를 매핑시켜주는 Map 상수 (예시 : "가요>발라드/R&B" : ["RnB", "발라드"])
 	 */

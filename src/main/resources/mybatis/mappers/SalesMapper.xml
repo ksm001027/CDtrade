@@ -35,9 +35,18 @@
                 AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
             </when>
         </choose>
+
+      </if>
+      <if test="keyword != null and keyword != ''">
+        AND (a.album_title LIKE #{keyword} OR a.artist_name LIKE #{keyword})
+      </if>
+    order by s.sale_created_at desc
+    offset #{offset} rows fetch next #{rows} rows only   
+
     </if>
     order by s.sale_created_at desc
     offset #{offset} rows fetch next #{rows} rows only
+
 </select>
 
 <select id="getSaleByUserNo" resultType="Sale">
