@@ -1,3 +1,5 @@
+<%@page import="kr.co.cdtrade.vo.WishItem"%>
+<%@page import="kr.co.cdtrade.mapper.WishItemMapper"%>
 <%@page import="kr.co.cdtrade.vo.MyCollectionItem"%>
 <%@page import="kr.co.cdtrade.mapper.MyCollectionMapper"%>
 <%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
@@ -48,11 +50,9 @@
 				ㄴ 등록버튼을 눌렀을때, 모달창이 뜨는 이벤트 설정해서 review-add.jsp에서 마이컬렉션에 데이터 추가하는 로직까지 구현하기 
 				ㄴ 이미 리뷰를 달았을 떄, 리뷰 수정창 아래에 마이컬렉션에 등록하기/제외하기 옵션을 추후에도 선택할 수 있도록하기 
 				ㄴ 리뷰가 삭제되면 마이컬렉션에서도 삭제되게 하기
-		6. 위시리스트 테이블에 해당 albumNo, 해당 사용자의 userNo를 가진 행이 존재유무에 따라 위시리스트 버튼 스타일 설정 000000000000000000
+		6. 위시리스트 테이블에 해당 albumNo, 해당 사용자의 userNo를 가진 행이 존재유무에 따라 위시리스트 버튼 스타일 설정
 		7. 클릭 시 이동해야하는 페이징 처리
 		
-		++ 위시리스트 찜 개수 표현할지 말지 결정 
-		++ 장르 클릭하면 장르별 앨범 목록 페이지로 이동 
 		++ 판매상품이 몇일전에 올라온건지 표시 (하루전, 2일전, ... 일주일전, 몇개월 전 ...)
 	*/
 	
@@ -137,6 +137,18 @@
 	saleRowsCondition.put("albumNo", albumNo);
 	int totalSaleRows = salesMapper.getTotalRows(saleRowsCondition);
 	
+	/*
+		------------
+		위시리스트
+	*/
+	WishItemMapper wishItemMapper = MybatisUtils.getMapper(WishItemMapper.class);
+	WishItem wishItem = wishItemMapper.findByUserAndAlbum(userNo, albumNo);
+	
+	Map<String, Object> wishCondition = new HashMap<>();
+	wishCondition.put("albumNo", albumNo);
+	int totalWishRows = wishItemMapper.getTotalRows(wishCondition);
+	
+	boolean isInUserWish = (wishItem != null);
 	
 %>
 <!DOCTYPE html>
@@ -175,15 +187,15 @@
                         <h1 class="detail-title"><%= album.getTitle() %></h1>
                         <p class="artist-name"><%= album.getArtistName() %></p>
                     </div>
-                    <button class="icon-button" id="wishlist-btn">
+                    <button class="icon-button" id="wishlist-btn" data-wish-no="<%=wishItem != null ? wishItem.getNo() : ""%>">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19 21L12 16L5 21V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V21Z"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" fill="#628868" />
+                                stroke-linejoin="round" fill="<%= isInUserWish ? "#628868" : "" %>" />
                         </svg>
-                        <span class="bookmark-count">32</span>
+                        <span class="bookmark-count" id="wish-count"><%= totalWishRows %></span>
                     </button>
                 </div>
 <%
@@ -223,7 +235,7 @@
 <%
 	for (int i = 0; i<genres.size(); i++){
 %>
-							<a href="#" class="text-link"><%= GenreMappingUtils.GENRE_NO_TO_NAME.get(genres.get(i)) %></a><%= i <  genres.size() - 1 ? "," : "" %>
+							<a href="genre-album-list.jsp?genreNo=<%= genres.get(i)  %>" class="text-link"><%= GenreMappingUtils.GENRE_NO_TO_NAME.get(genres.get(i)) %></a><%= i <  genres.size() - 1 ? "," : "" %>
 <%
 	}
 %>
@@ -536,6 +548,46 @@
     <script type="text/javascript">
     	const albumNo = parseInt($("#album-info").attr("data-album-no"));
     	const userNo = parseInt($("#album-info").attr("data-user-no"));
+    	
+    	/*
+    		----------------
+    		위시리스트 관련 이벤트
+    	*/
+    	$("#wishlist-btn").click(function(){
+    		const $iconPath = $(this).find("path"); 
+    		
+    		// 위시리스트에 추가되어있지 않을 때 이벤트 
+    		if($(this).attr("data-wish-no") == "" || $(this).attr("data-wish-no") == undefined ){
+	    		
+    			$.ajax({
+    				type: 'post',
+    				url: '../wishlist/add-wishlist-item.jsp',
+    				data: {albumNo: albumNo},
+    				dataType: 'text',
+    				success: function(wishNo){
+			    			$iconPath.attr("fill", "#628868");
+			    			$("#wishlist-btn").attr("data-wish-no", wishNo);
+			    			
+			    			$("#wish-count").text(Number($("#wish-count").text()) + 1);
+    					}
+    				});
+    			
+    		} else {
+    			
+    			$.ajax({
+    				type: 'post',
+    				url: '../wishlist/delete-wishlist-item.jsp',
+    				data: {wishNo: $(this).attr("data-wish-no")},
+    				dataType: 'text',
+    				success: function(wishNo){
+			    			$iconPath.attr("fill", "");
+			    			$("#wishlist-btn").attr("data-wish-no", "");
+			    			
+			    			$("#wish-count").text(Number($("#wish-count").text()) - 1);
+    					}
+    				});
+    		}
+    	})
     	
     	/*
     		------------- 
