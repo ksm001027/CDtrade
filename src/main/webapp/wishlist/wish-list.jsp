@@ -259,7 +259,8 @@ System.out.println("===== 위시리스트 디버깅 종료 =====");
                     }
                 });
             }
-        });
+        });  
+        
     </script>
 </body>
 </html>
