@@ -8,7 +8,7 @@
 <%@ page import="kr.co.cdtrade.vo.Review"%>
 <%@ page import="java.util.List"%>
 <!-- 네비게이션 바 -->
-<%@include file="../common/nav.jsp" %>
+
 <%
 // AJAX 요청인지 확인
 String ajaxParam = request.getParameter("ajax");
@@ -122,6 +122,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+<%@include file="../common/nav.jsp" %>
 	<div class="review-list-layout">
 		<div class="review-list-header">
 			<div class="review-list-filter">

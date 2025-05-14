@@ -37,7 +37,7 @@
 	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
 	Album album = albumMapper.getAlbumByNo(albumNo);
 	
-	double oldAvg = album.getAvgRating();
+	double oldAvg = album.getAvgRating(); 
 	int oldCount = album.getReviewCount();
 	int newCount = oldCount - 1;
 	double newAvg = 0;

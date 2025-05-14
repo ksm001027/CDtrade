@@ -75,7 +75,7 @@
 		data-sort="<%=sort%>"
 		data-total-rows="<%=totalRows%>"
 		data-now-rows="<%=nowRows%>"></div>
-    <div class="container">
+    <div class="container"> 
         <header class="album-list-header">
             <h1 class="album-list-title">베스트 앨범 <%=totalRows %>선</h1>
         </header>

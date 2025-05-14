@@ -101,7 +101,7 @@
             <%
                 for (int i = 1; i <= 5; i++) {
                     if (i <= (int)reviewRating) {
-            %>
+            %> 
                         <span class="star filled">★</span>
             <%
                     } else if (i - reviewRating <= 0.5) {
