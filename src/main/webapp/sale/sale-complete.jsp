@@ -23,7 +23,6 @@
      <%@include file="../common/nav.jsp" %>
 
 
-     <%@include file="../../common/nav.jsp" %>
 
     <title>상품등록 완료</title>
     <link rel="stylesheet" href="../resources/css/common.css">
@@ -34,13 +33,8 @@
         <div class="complete-container">
             <div class="complete-title">상품등록 완료</div>
 
-            <img class="complete-img" src="https://image.yes24.com/goods/92147169/XL" alt="신지훈 - 1집 별과 추억과 시 (2024)">
-            <div class="badge" style="margin-bottom:1rem;">미개봉</div>
-            <div style="font-size:1.15rem;font-weight:bold;">신지훈 - 1집 별과 추억과 시 (2024)</div>
-            <div style="color:#aaa; font-size:1rem; margin-bottom:2rem;">신지훈</div>
             <img class="complete-img" src="<%=sale.getPhotoPath().split(",")[0] %>" alt="<%=sale.getAlbumTitle()%>">
 
-            <img class="complete-img" src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>">
 
             <div class="badge" style="margin-bottom:1rem;"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
 			<div id="album-title"

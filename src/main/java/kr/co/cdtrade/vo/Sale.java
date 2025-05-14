@@ -11,8 +11,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Alias("Sale")
+@NoArgsConstructor
 public class Sale {
 
 	private int no;
@@ -23,7 +23,7 @@ public class Sale {
 	private String isSold;
 	private int viewCount;
 	private Date createdAt;
-	private Date updatedAt;
+	private Date updatedAt;   
 	private User user;
 	private Album album;
 	private List<Genre> genres;
@@ -64,5 +64,4 @@ public class Sale {
 
 }
 
-	}
 

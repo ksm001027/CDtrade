@@ -97,14 +97,6 @@
         user_updated_at = SYSDATE
     where user_no = #{userNo}
 	</update>
-	
-
-
-	<update id="updateAccountNumber" parameterType="map">
-    update users
-    set account_number = #{accountNumber},
-        user_updated_at = SYSDATE
-    where user_no = #{userNo}
 
 
 	<update id="updateUser" parameterType="User">
@@ -119,12 +111,5 @@
 
 	</update>
 	
-	<update id="updateAccountNumber" parameterType="User">
-		UPDATE users
-		SET 
-			account_number = #{accountNumber}
-		WHERE 
-			user_no = #{userNo}
-	</update>
 	
 </mapper>
