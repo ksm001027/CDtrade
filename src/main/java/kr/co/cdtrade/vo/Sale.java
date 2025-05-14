@@ -8,10 +8,13 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+<<<<<<< HEAD
+=======
 
+@Setter 
 @Getter
-@Setter
 @NoArgsConstructor
+>>>>>>> 9310b48cb85084af94d497c2dbced5dcda49f86e
 @Alias("Sale")
 public class Sale {
 
@@ -29,7 +32,7 @@ public class Sale {
 	private List<Genre> genres;
 
 	public String getAlbumTitle() {
-		return album.getTitle(); 
+		return album.getTitle();
 	}
 	public String getArtistName() {
 		return album.getArtistName();
@@ -48,6 +51,7 @@ public class Sale {
 		this.album = album;
 	}
 
+
 	public int getAlbumNo() {
 		return album.getNo();
 	}
@@ -62,3 +66,4 @@ public class Sale {
 	}
 
 }
+

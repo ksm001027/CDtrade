@@ -1,3 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="lombok.EqualsAndHashCode.Include"%>
+<%@page import="kr.co.cdtrade.vo.Genre"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.vo.Sale"%>
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.utils.StringUtils"%>
@@ -10,6 +14,17 @@
 	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
 	SalesMapper saleMapper = MybatisUtils.getMapper(SalesMapper.class);
 	Sale sale = saleMapper.getSaleBySaleNo(saleNo);
+	
+	List<Genre> genres = saleMapper.getGenresBySaleNo(saleNo);
+	sale.setGenres(genres);
+	
+	Album album = saleMapper.getAlbumBySaleNo(saleNo);
+	sale.setAlbum(album);
+	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String formattedReleaseDate = album.getReleaseDate() != null ? dateFormat.format(album.getReleaseDate()) : "발매일 정보 없음";
+    
+  
 %>    
     
   
@@ -17,6 +32,7 @@
 <html lang="ko">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=sale.getAlbumTitle() %></title>
@@ -24,7 +40,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%@include file="../common/nav.jsp"%>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%@include file="../../common/nav.jsp"%>
+
 <title><%=sale.getAlbumTitle()%></title>
 <style>
  .slider-container {
@@ -40,7 +61,9 @@
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
+
     width: 100%;
+
 }
 
 .slide {
@@ -50,8 +73,13 @@
 
 .slide img {
     width: 100%;
+
     max-height: 500px;
     object-fit: contain;
+
+    display: block;
+    border-radius: 8px;
+
 }
 
 
@@ -98,89 +126,35 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="detail-container">
-            <!-- 상품 이미지 -->
-            <div class="detail-image">
-                <!-- 이미지 슬라이더 인디케이터 -->
-                <div class="image-slider">
-                    <img src="<%=sale.getPhotoPath() %>">
-                    <div class="slider-indicators">
-                        <span class="indicator active"></span>
-                        <span class="indicator"></span>
-                        <span class="indicator"></span>
-                        <span class="indicator"></span>
-                        <span class="indicator"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 상품 정보 -->
-            <div class="detail-info">
-                <!-- 제목과 공유 버튼 -->
-                <div class="detail-header">
-                    <div>
-                        <h1 class="detail-title"><%=sale.getAlbumTitle() %></h1>
-                        <p class="artist-name"><%=sale.getArtistName() %></p>
-                    </div>
-                    <button class="share-button">
-                        <i class="fas fa-share-alt"></i>
-                    </button>
-                </div>
-
-                <!-- 가격 -->
-                <div class="detail-price">
-                    <span class="price-label">즉시 구매가</span>
-                    <span class="price-value"><%=sale.getPrice() %>원</span>
-                </div>
-
-                <!-- 상태 뱃지 -->
-                <div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉" %></div>
-                <div class="condition-info">음반 NM / 커버 NM</div>
-
-                <!-- 상품 설명 -->
-                <div class="product-description">
-                    <%=sale.getDescription() %>
-                </div>
-
-                <!-- 상품 정보 테이블 -->
-                <div class="info-section">
-                    <h2>Information</h2>
-                    <table class="info-table">
-                        <tr>
-                            <th>발매일</th>
-                            <td><%=sale.getReleaseDate() %></td>
-                        </tr>
-                        <tr>
-                            <th>발매사</th>
-                            <td>카카오M</td>
-                        </tr>
-                        <tr>
-                            <th>장르</th>
-                            <td>Korean,Indie</td>
-                        </tr>
-                        <tr>
-                            <th>수입국</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Cat.No / BARCODE</th>
-                            <td>L20000193O</td>
-                        </tr>
-                        <tr>
-                            <th>추가정보</th>
-                            <td>그린</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <!-- 버튼 영역 -->
-                <div class="button-group">
-                    <button class="purchase-button" onclick="location.href='order-form.jsp?sno=<%=sale.getNo() %>'">즉시 구매</button>
-                </div>
-            </div>
+	<div class="container">
+		<div class="detail-container">
+			<!-- 상품 이미지 -->
+			<div class="detail-image">
+				<div class="slider-container">
+    <div class="slider" id="slider">
+        <% 
+        String[] photoPaths = sale.getPhotoPath().split(",");
+        for (int i = 0; i < photoPaths.length; i++) { 
+        %>
+        <div class="slide">
+            <img src="<%=photoPaths[i].trim()%>" alt="상품 이미지">
         </div>
+        <% } %>
     </div>
+
+    <% if (photoPaths.length > 1) { %>
+    <button class="nav-btn prev" onclick="moveSlide(-1)">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="nav-btn next" onclick="moveSlide(1)">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <div class="dots">
+        <% for (int i = 0; i < photoPaths.length; i++) { %>
+        <span class="dot <%= i == 0 ? "active" : "" %>" onclick="goToSlide(<%=i%>)"></span>
+        <% } %>
+    </div>
+
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -196,6 +170,7 @@
         <span class="dot <%= i == 0 ? "active" : "" %>" onclick="goToSlide(<%=i%>)"></span>
         <% } %>
     </div>
+
     <% } %>
 </div>			</div>
 
@@ -290,20 +265,29 @@
 			</div>
 		</div>
 	</div>
+
+	<%@include file="../common/footer.jsp"%>
+
 	<%@include file="../../common/footer.jsp"%>
+
 	<script>
 	const slider = document.getElementById('slider');
 	const slides = document.querySelectorAll('.slide');
 	const prevBtn = document.querySelector('.prev');
 	const nextBtn = document.querySelector('.next');
 	const dots = document.querySelectorAll('.dot');
+
 	let currentIndex = 0;
 
 	function updateSlider() {
 	    const slideWidth = document.querySelector('.slider-container').clientWidth;
+
 	    
 	    
+	    slider.style.transform = `translateX(-\${currentIndex * slideWidth}px)`;
+
 	    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
 	    dots.forEach((dot, index) => {
 	        dot.classList.toggle('active', index === currentIndex);
 	    });
@@ -321,6 +305,8 @@
 	    updateSlider();
 	}
 
+
+	window.addEventListener('resize', updateSlider);
 	window.addEventListener('load', () => {
 	    if (slides.length <= 1) {
 	        prevBtn?.style.setProperty('display', 'none');
@@ -330,7 +316,9 @@
 	    updateSlider();
 	});
 
+
 	window.addEventListener('resize', updateSlider);
+
 
 	</script>
 

@@ -10,8 +10,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
- 
-	/*
+
+
+	/* 
+
 		키워드별 검색 페이지
 		페이지네이션 버튼으로 페이징 처리  
 		요청 파라미터 : genreNo, sort, keyword, page
