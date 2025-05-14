@@ -188,7 +188,7 @@
                 </div>
 <%
 	// 0.5 단위로 평균 평점에 따라 별 색상 다르게 표시 
-    double rating = album.getAvgRating(); // 예: 3.7
+    double rating = album.getAvgRating();  // 예: 3.7
     int fullStars = (int) rating;         // 가득 찬 별의 개수 -> 3개 
     boolean hasHalf = (rating - fullStars) >= 0.5; // 반 별이 있는지 -> 1개 
     int emptyStars = 5 - fullStars - (hasHalf ? 1 : 0); // 나머지는 빈 별 -> 1개

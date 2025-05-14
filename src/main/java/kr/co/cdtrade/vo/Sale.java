@@ -6,12 +6,8 @@ import java.util.List;
 import org.apache.ibatis.type.Alias;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
+ 
 @Alias("Sale")
 public class Sale {
 

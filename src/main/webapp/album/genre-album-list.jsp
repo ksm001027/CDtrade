@@ -89,7 +89,7 @@
 			<div class="album-grid" id="album-list">
 <%
 		for(Album album : albums) {
-			double reviewRating = album.getAvgRating();
+			double reviewRating = album.getAvgRating();  
 %>
             <div class="album-card">
             	<a href="detail.jsp?albumNo=<%=album.getNo()%>">
