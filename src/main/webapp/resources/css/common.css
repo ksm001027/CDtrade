@@ -791,7 +791,6 @@ hr {
     width: 90%;
     max-width: 320px;
     overflow: hidden;
-    margin: auto;
 }
 
 .modal-header {
@@ -1350,8 +1349,6 @@ hr {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 0.5rem;
-    display: block; /* 추가 */
-    visibility: visible; /* 혹시 숨김 처리된 경우 대비 */
 }
 
 .photo-notice {
@@ -1890,11 +1887,11 @@ hr {
     color: #444;
 }
 
-.order-agree-item input[type="checkbox"] {
+/* .order-agree-item input[type="checkbox"] {
     margin-top: 0.2rem;
     width: 18px;
     height: 18px;
-}
+} */
 
 .order-agree-item strong {
     font-weight: bold;
@@ -1990,6 +1987,7 @@ hr {
     overflow-y: auto;
 }
 
+
 .address-item {
     margin-bottom: 2rem;
     border-bottom: 1px solid #eee;
@@ -2055,6 +2053,16 @@ hr {
 
 .address-modal-btn:last-child:hover {
     background: var(--main-color-hover);
+}
+
+.dis-box {
+	width: 100px;
+    height: 100px;
+    padding: 20px;
+    border: 5px solid red;
+    margin: 10px;
+    background-color: beige;
+	
 }
 
 /* 배송지 추가 모달 */
@@ -2233,12 +2241,11 @@ hr {
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-size: 1.1;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background 0.2s;
-    text-decoration: none;
 }
 
 .auth-btn:hover {
@@ -2814,6 +2821,23 @@ hr {
     height: 24px;
 }
 
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
 
 .modal-content {
     background-color: white;
@@ -2823,7 +2847,6 @@ hr {
     max-width: 380px;
     text-align: left;
     line-height: 1.6;
-    
 }
 
 .modal-content button {
@@ -2835,12 +2858,10 @@ hr {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    
 }
 
 .modal-content button:hover {
     background-color: #5cae70;
-    
 }
 
 /* 네비게이션 바 스타일 */
@@ -2894,7 +2915,7 @@ hr {
 
 .navbar-menu li a {
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.15s;
@@ -2939,7 +2960,7 @@ hr {
 
 .navbar-action {
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     text-decoration: none;
     font-weight: 500;
     padding: 0.3rem 0.7rem;
@@ -3039,14 +3060,6 @@ hr {
 	gap: 1rem;
 	width: 100%;
 	
-
-    .alert-dismissible .btn-close:hover {
-    color: #ddd;
-	}
-	
-	
-}
-
 }
 
 .product-pagination-btn {
@@ -3297,3 +3310,50 @@ hr {
   display: block;
 }
 
+.account-manage-container {
+	text-align: center;
+	padding-top: 80px;
+}
+
+.account-title {
+	font-size: 24px;
+	margin-bottom: 40px;
+}
+
+.account-form {
+	display: inline-block;
+	text-align: left;
+	width: 300px;
+}
+
+.account-label {
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.account-select,
+.account-input {
+	width: 100%;
+	padding: 12px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.account-save-btn {
+	width: 100%;
+	padding: 14px;
+	background-color: #6A5ACD; /* 보라색 */
+	color: white;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.account-save-btn:hover {
+	background-color: #5941A9; /* 보라 hover 효과 */
+}

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+7<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -84,8 +84,8 @@
 			<input class="address-add-input" type="text" name="receiverName">
 
 			<label class="address-add-label">전화번호</label>
-			<input class="address-add-input" type="text" name="receiverTel">
-			<div class="form-text-receiverTel"></div>
+			<input class="address-add-input" type="text" name="receiverTel" >
+			<div id="tel-validation-message" style="color: red; font-size: 12px;"></div>
 
 			<label class="address-add-label">배송지 주소</label>
 			<div class="address-add-row">
@@ -189,79 +189,27 @@
 
 <script type="text/javascript">
 	let telRegExp = /^010-\d{4}-\d{4}$/;
-	let telCheckPassed = {
-		add: false,
-		edit: false
-	};
 	
-	// 📌 전화번호 입력 시 실시간 유효성 검사
 	$("input[name='receiverTel']").keyup(function() {
-		let $modal = $(this).closest('.address-modal-backdrop');
-		let modalType = ($modal.attr('id') === 'addressAddModal') ? 'add' : 'edit';
 		let value = $(this).val();
-		let $div = $modal.find('.form-text-receiverTel').empty().removeClass("text-danger text-success");
+		let $message = $("#tel-validation-message");
 	
-		// 정규식 검사
 		if (!telRegExp.test(value)) {
-			$div.addClass("text-danger").text("올바른 전화번호 형식을 입력하세요. (예: 010-1234-5678)");
-			telCheckPassed[modalType] = false;
-			return;
+			$message.text("올바른 전화번호 형식을 입력하세요. (예: 010-1234-5678)");
+		} else {
+			$message.text("");
 		}
-	
-		$div.addClass("text-success").text("올바른 전화번호 형식입니다.");
-	
-		// AJAX 중복 검사
-		$.ajax({
-			type: 'get',
-			url: '../register/tel-check.jsp',
-			data: { tel: value },
-			dataType: 'text',
-			success: function(result) {
-				if (result === 'none') {
-					$div.addClass("text-success").text("사용 가능한 전화번호입니다.");
-					telCheckPassed[modalType] = true;
-				} else if (result === 'exists') {
-					$div.addClass("text-danger").text("이미 사용 중인 전화번호입니다.");
-					telCheckPassed[modalType] = false;
-				}
-			}
-		});
 	});
 	
-	// 📌 폼 제출 시 최종 유효성 검사
-	$(".address-add-form").on("submit", function(e) {
-		validateForm(e, 'add');
-	});
-	$(".address-edit-form").on("submit", function(e) {
-		validateForm(e, 'edit');
-	});
-	
-	function validateForm(e, type) {
-		let $modal = (type === 'add') ? $("#addressAddModal") : $("#editAddressModal");
-		let $input = $modal.find("input[name='receiverTel']");
-		let tel = $input.val();
-	
-		if (tel.trim() === "") {
-			alert("전화번호는 필수 입력값입니다.");
-			$input.focus();
-			e.preventDefault();
-			return false;
-		}
-	
+	$(".address-add-form, .address-edit-form").on("submit", function(e) {
+		let tel = $(this).find("input[name='receiverTel']").val();
 		if (!telRegExp.test(tel)) {
-			alert("전화번호 형식이 올바르지 않습니다.");
-			$input.focus();
+			alert("전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)");
+			$(this).find("input[name='receiverTel']").focus();
 			e.preventDefault();
 			return false;
 		}
-	
-		if (!telCheckPassed[type]) {
-			alert("이미 사용 중인 전화번호입니다.");
-			$input.focus();
-			e.preventDefault();
-			return false;
-		}
-	}
+	});
 </script>
 
 </body>
