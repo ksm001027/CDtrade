@@ -1,7 +1,6 @@
 package kr.co.cdtrade.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -80,56 +79,56 @@ public interface ReviewMapper {
      * @return 검색 조건에 해당하는 리뷰 수
      */
     int getTotalRowsByKeyword(String keyword);
-    
+
     /**
-     * 리뷰를 추가한다 
+     * 리뷰를 추가한다
      * @param review
      */
     void insertReview(Review review);
-    
+
     /**
-     * 특정 앨범의 리뷰 목록을 조회한다 
+     * 특정 앨범의 리뷰 목록을 조회한다
      * @param albumNo
      * @param offset
      * @param rows
      * @return
      */
-    List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo, 
-            @Param("offset") int offset, 
+    List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo,
+            @Param("offset") int offset,
             @Param("rows") int rows);
-    
+
     /**
-     * 특정 앨범에 특정 유저가 남긴 리뷰를 조회한다 
+     * 특정 앨범에 특정 유저가 남긴 리뷰를 조회한다
      * @param albumNo
      * @param userNo
      * @return
      */
     Review getReviewByAlbumNoAndUserNo(@Param("albumNo") int albumNo, @Param("userNo") int userNo);
-    
+
     /**
-     * reviewNo로 해당 리뷰를 조회한다 
+     * reviewNo로 해당 리뷰를 조회한다
      * @param reviewNo
      * @return
      */
     Review getReviewByNo(int reviewNo);
-    
+
     /**
-     * 리뷰를 업데이트 한다  
+     * 리뷰를 업데이트 한다
      * @param review
      */
     void updateReview(Review review);
-    
+
     /**
-     * 리뷰를 삭제한다 
+     * 리뷰를 삭제한다
      * @param reviewNo
      */
     void deleteReviewByNo(int reviewNo);
-    
+
     /**
-     * 해당 앨범에 달린 리뷰의 수를 조회한다 
+     * 해당 앨범에 달린 리뷰의 수를 조회한다
      * @param albumNo
      * @return
      */
     int getRowsByAlbumNo(int albumNo);
-    
+
 }
