@@ -29,7 +29,7 @@ public class Sale {
 	private List<Genre> genres;
 
 	public String getAlbumTitle() {
-		return album.getTitle(); 
+		return album.getTitle();
 	}
 	public String getArtistName() {
 		return album.getArtistName();
@@ -48,6 +48,7 @@ public class Sale {
 		this.album = album;
 	}
 
+
 	public int getAlbumNo() {
 		return album.getNo();
 	}
@@ -62,3 +63,6 @@ public class Sale {
 	}
 
 }
+
+	}
+
