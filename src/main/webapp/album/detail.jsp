@@ -245,7 +245,7 @@
                             <dt>최근거래가</dt>
                             <dd><%= recentPrice == 0? "-" : StringUtils.commaWithNumber(recentPrice)+"원" %></dd>
                         </div>
-                    </dl>
+                    </dl> 
 
                     <a href="../sale/sale-form.jsp?ano=<%=albumNo %>" class="purchase-btn">판매</a>
 

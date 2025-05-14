@@ -21,6 +21,7 @@ public class Album {
 	private Date releaseDate;
 	private String coverImageUrl;
 	private double getAvgRating;
+
 	private int reviewCount;
 	private int stockQuantity;
 	private int avgOrderPrice; // 구매평균가
