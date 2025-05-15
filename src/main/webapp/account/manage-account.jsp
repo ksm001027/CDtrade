@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="kr.co.cdtrade.vo.User" %>
-<%@ include file="../common/nav.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>정산 계좌 관리</title>
-	<link rel="stylesheet" href="../resources/css/common.css">
+	<title>계좌번호 관리</title>
+	<link rel="stylesheet" href="../resources/css/account.css">
 </head>
 <body>
+
+<%@ include file="../common/nav.jsp" %>
 
 <%
 	User savedUser = (User) session.getAttribute("LOGINED_USER");
@@ -20,7 +22,7 @@
 	<%@ include file="../mypage/mypage-menu.jsp" %>
 
 	<div class="mypage-content account-manage-container">
-		<h2 class="account-title">정산 계좌 관리</h2>
+		<h2 class="account-title">계좌번호 관리</h2>
 
 		<form action="account-save.jsp" method="post" class="account-form">
 			<label class="account-label">계좌정보</label>
@@ -39,6 +41,8 @@
 		</form>
 	</div>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 
 </body>
 </html>

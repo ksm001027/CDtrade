@@ -72,6 +72,8 @@
 				  <option value="price-desc" <%="price-desc".equals(sort)?"selected":"" %>>높은가격순</option>
 				  <option value="price-asc" <%="price-asc".equals(sort)?"selected":"" %>>낮은가격순</option>
 				  <option value="rating" <%="rating".equals(sort)?"selected":"" %>>평점순</option>
+				  <option value="stock" <%="stock".equals(sort)?"selected":"" %>>매물수순</option>
+				  <option value="review-count" <%="review-count".equals(sort)?"selected":"" %>>리뷰수순</option>
 				</select>
 	        </div>
         </form>

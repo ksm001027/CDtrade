@@ -77,7 +77,7 @@
                     <br>
                     <!-- 탭 버튼 -->
                     <div class="tab-buttons">
-                    <input type="hidden" name="isOpened" id="isOpenedInput" value="t">
+                    <input type="hidden" name="isOpened" id="isOpenedInput" value="<%= sale != null ? sale.getIsOpened() : "f" %>">
                         <button type="button" class="tab-button active">미개봉</button>
                         <button type="button" class="tab-button">중고</button>
                     </div>
@@ -125,9 +125,7 @@
                             <button type="button" class="condition-tag">사인반</button>
                             <button type="button" class="condition-tag">테두리 터짐</button>
                         </div>
-                        <textarea class="description-input" name="description" placeholder="내용을 입력해주세요.">
-                        	<%= sale != null ? sale.getDescription() : "" %>
-                        </textarea>
+                        <textarea class="description-input" name="description" placeholder="내용을 입력해주세요."><%= sale != null ? sale.getDescription().trim() : "" %></textarea>
                         
                     </div>
 
@@ -510,6 +508,7 @@
             const countEl = document.querySelector(".photo-count");
             const listEl = document.querySelector(".photo-list");
             const hiddenInput = document.getElementById("photoLinksInput"); // 이거 중요
+            
             hiddenInput.value = photoLinks.join(",");
             listEl.innerHTML = "";
 
