@@ -111,4 +111,22 @@
 			user_no = #{userNo}
 	</update>
 	
+	<select id="findUserEmail" parameterType="map" resultType="string">
+		select user_email 
+		from users 
+		where user_name = #{name} and user_tel = #{tel} and user_is_active = 't'
+	</select>
+	
+	<select id="verifyUserForPasswordReset" parameterType="map" resultType="int">
+		select count(*) 
+		from users 
+		where user_email = #{email} and user_tel = #{tel} and user_is_active = 't'
+	</select>
+	
+	<update id="updatePassword" parameterType="map">
+		update users 
+		set user_password = #{newPassword} 
+		where user_email = #{email}
+	</update>
+	
 </mapper>
