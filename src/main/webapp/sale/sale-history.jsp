@@ -37,8 +37,9 @@
     <div class="container">
         <div class="sale-history-title">판매내역</div>
         <div class="sale-history-tabs">
-            <button class="sale-history-tab active" data-status="onSale"><span class="sale-history-tab-count">1</span>판매중</button>
-            <button class="sale-history-tab" data-status="completed"><span class="sale-history-tab-count">2</span>판매완료</button>
+            <button class="sale-history-tab active" data-status="all"><span class="sale-history-tab-count">1</span>전체</button>
+            <button class="sale-history-tab" data-status="onSale"><span class="sale-history-tab-count">2</span>판매중</button>
+            <button class="sale-history-tab" data-status="completed"><span class="sale-history-tab-count">3</span>판매완료</button>
         </div>
         <div class="sale-history-search-row">
             <div class="sale-history-search">
@@ -80,8 +81,8 @@ let currentPage = 1;         // 현재 페이지
 function updateTabCounts() {
     const keyword = "";  // 항상 전체 개수 기준
     const period = "all"; // 기간 필터 제거
-
-    ["onSale", "completed"].forEach(status => {
+    const status = $(this).data("status"); // 'all', 'onSale', 'completed'
+    ["all","onSale", "completed"].forEach(status => {
         $.ajax({
             url: "fetchSaleHistory.jsp",
             type: "GET",
@@ -133,7 +134,7 @@ $(document).ready(function () {
         $(".sale-history-tab").removeClass("active");
         $(this).addClass("active");
 
-        const status = $(this).text().includes("판매중") ? "onSale" : "completed";
+        const status = $(this).data("status");
         const keyword = $("#searchKeyword").val();
         $.ajax({
             url: "fetchSaleHistory.jsp",
@@ -152,12 +153,9 @@ $(document).ready(function () {
                 const totalCount = data.totalCount;
                 const totalPages = Math.ceil(totalCount / 10);
 
-                if (status === "onSale") {
-                    $(".sale-history-tab[data-status='onSale'] .sale-history-tab-count").text(data.totalCount);
-                } else {
-                    $(".sale-history-tab[data-status='completed'] .sale-history-tab-count").text(data.totalCount);
-                }
-
+                $(".sale-history-tab[data-status='" + status + "'] .sale-history-tab-count").text(totalCount);
+                
+                
                 if (!sales || sales.length === 0) {
                     tbody.append(`<tr><td colspan="4" style="text-align:center;">판매내역이 없습니다.</td></tr>`);
                     $(".sale-history-pagination").empty();
@@ -257,8 +255,14 @@ $(document).ready(function () {
 
     	        // 판매중 or 판매완료 구분
     	        const tabText = $(this).text().trim();
-    	        const status = tabText.includes("판매중") ? "onSale" : "completed";
-
+    	        const status = "all";
+    	        
+    	        if (tabText.includes("판매중")){
+    	        	
+    	         	status = "onSale"; 
+    	         } else if(tabText.includes("판매완료")) {
+    	        	 status = "completed";
+    	         }
     	        // 서버에 ajax 요청
     	        $.ajax({
     	            url: "fetchSaleHistory.jsp",
@@ -269,17 +273,13 @@ $(document).ready(function () {
     	            		size: 10},
     	            dataType: "json", 
     	            success: function(data) {
+    	            	$(".sale-history-tab[data-status='" + status + "'] .sale-history-tab-count").text(data.totalCount);
     	                const tbody = $(".sale-history-table tbody");
     	                tbody.empty();
 
     	                const sales = data.data; // ✅ 여기서 배열 추출
 
-    	                // ✅ 탭 카운트 업데이트
-    	                if (status === "onSale") {
-    	                    $(".sale-history-tab[data-status='onSale'] .sale-history-tab-count").text(sales.length);
-    	                } else {
-    	                    $(".sale-history-tab[data-status='completed'] .sale-history-tab-count").text(sales.length);
-    	                }
+    	                
 
     	                if (!sales || sales.length === 0) {
     	                    tbody.append(`<tr><td colspan="4" style="text-align:center;">판매내역이 없습니다.</td></tr>`);

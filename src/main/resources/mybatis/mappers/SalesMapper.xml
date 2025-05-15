@@ -4,9 +4,30 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.cdtrade.mapper.SalesMapper">
-
-
-
+	<select id="getRecentCompletedSales" resultType="Sale">
+	    SELECT s.sale_no AS no,
+        s.sale_photo_path AS photoPath,
+        s.sale_price AS price,
+        a.album_title AS "album.title",
+        a.artist_name AS "album.artistName" 
+	    FROM sales s
+	    JOIN albums a ON s.album_no = a.album_no
+	    WHERE s.sale_is_sold = 't'
+	    ORDER BY s.sale_updated_at DESC
+	    FETCH FIRST 30 ROWS ONLY
+	</select>
+	<select id="getRecentOnSaleProducts" resultType="Sale">
+	    SELECT s.sale_no AS no,
+        s.sale_photo_path AS photoPath,
+        s.sale_price AS price,
+        a.album_title AS "album.title",
+        a.artist_name AS "album.artistName"
+	    FROM sales s
+	    JOIN albums a ON s.album_no = a.album_no
+	    WHERE s.sale_is_sold = 'f'
+	    ORDER BY s.sale_created_at DESC
+	    FETCH FIRST 6 ROWS ONLY
+	</select>
 
 	<update id="increaseViewCount" parameterType="int">
 	    UPDATE sales 
@@ -282,6 +303,19 @@
 			  , a.album_updated_at		as	albumUpdatedAt
 			  , a.release_price			as	releasePrice
 			  , a.recent_order_price	as	recentOrderPrice
+			  , s.sale_no					as no,
+		       s.sale_description			as description,
+		       s.sale_photo_path			as photoPath,
+		       s.sale_price					as price,
+		       s.sale_is_opened				as isOpened,
+		       s.sale_is_sold 				as isSold,
+		       s.view_count					as viewCount,
+		       s.sale_updated_at			as updatedAt,
+		       s.sale_created_at			as createdAt,
+		       a.album_no					as "album.no",
+		       a.album_title				as "album.title",
+		       a.artist_name				as "album.artistName",
+		       a.release_date				as "album.releaseDate"
 		from
 			sales s, albums a
 		where
