@@ -9,8 +9,7 @@
     pageEncoding="UTF-8"%>
 <%
 	int reviewNo = StringUtils.strToInt(request.getParameter("reviewNo"));
-	// int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-	int userNo = 1;
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	MyCollectionMapper myCollectionMapper = MybatisUtils.getMapper(MyCollectionMapper.class);
 	

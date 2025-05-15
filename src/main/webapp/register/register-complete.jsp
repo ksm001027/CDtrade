@@ -20,7 +20,7 @@
         </div>
         <div class="auth-actions">
             <a href="../login/login-form.jsp" class="auth-btn">로그인 하러 가기</a>
-            <a href="index.jsp" class="auth-btn">메인 페이지로 이동</a>
+            <a href="../main.jsp" class="auth-btn">메인 페이지로 이동</a>
         </div>
     </div>
 </body>

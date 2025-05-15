@@ -1,5 +1,7 @@
 package kr.co.cdtrade.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 import kr.co.cdtrade.vo.User;
@@ -21,4 +23,11 @@ public interface UserMapper {
 	void updateUser(User user);
 
 	void updateAccountNumber(@Param("userNo") int userNo, @Param("accountNumber") String accountNumber);
+	
+	String findUserEmail(Map<String, Object> params);
+	
+	int verifyUserForPasswordReset(Map<String, Object> params);
+	
+	void updatePassword(Map<String, Object> params);
+	
 }

@@ -12,8 +12,11 @@
 <%
 	String mode = request.getParameter("mode");
 	int albumNo = StringUtils.strToInt(request.getParameter("ano"));
-	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
-	
+	int saleNo = 0; 
+	String snoParam = request.getParameter("sno");
+	if (snoParam != null){
+	saleNo = StringUtils.strToInt(request.getParameter("sno"));
+	}
 	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
 	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
 	
@@ -288,6 +291,11 @@
 			updatePhotoList(); // ✅ 사진 링크를 form에 반영하기 위한 핵심 코드
 			
 			let inputPrice = Number($("#price-input").val()); 
+			
+			if (photoLinks.length === 0) {
+		        alert("상품 사진을 최소 1장 이상 첨부해주세요.");
+		        return;
+		    }
 			
 			if (isNaN(inputPrice) || inputPrice <= 0) {
 				alert("판매 희망가를 올바르게 입력해주세요.");

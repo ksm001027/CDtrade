@@ -7,7 +7,7 @@
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-    int userNo = 1; // 테스트용, 실제 사용 시 세션에서 받아와야 함.
+    int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");; // 테스트용, 실제 사용 시 세션에서 받아와야 함.
 
     String status = request.getParameter("status");
     String isSold = (status != null && "completed".equals(status)) ? "t" : "f";

@@ -23,8 +23,8 @@
     <div class="mypage-menu-section">
         <div class="mypage-menu-section-title">쇼핑 정보</div>
         <ul class="mypage-menu-list">
-            <li><a href="../order/order-form.jsp">구매 내역</a></li>
-            <li><a href="../sale/sale-form.jsp">판매 내역</a></li>
+            <li><a href="../order/order-history.jsp">구매 내역</a></li>
+            <li><a href="../sale/sale-history.jsp">판매 내역</a></li>
             <li><a href="../wishlist/wish-list.jsp">그.. 위시리스트♥</a></li>
             <li><a href="../mycollection/mycollection.jsp">마이 컬렉션</a></li>
         </ul>
@@ -50,9 +50,9 @@
 
 <!-- 회원탈퇴 모달 -->
 <div class="modal-backdrop" id="deleteModal">
-	<div class="modal show">
+	<div class="modal-content">
 		<div>
-			<h2 class="modal-title">두익이네</h2>
+			<div class="modal-title">두익이네</div>
 			<p class="modal-desc">회원탈퇴시 기존에 저장된 정보가<br>모두 소멸하게 되며 복구할 수 없게 됩니다.</p>
 			<p class="modal-desc"><strong>해당 계정으로 재가입이 불가능합니다.</strong></p>
 			<p class="modal-desc">그래도 탈퇴하시겠습니까?</p>
