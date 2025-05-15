@@ -6,7 +6,7 @@
 <mapper namespace="kr.co.cdtrade.mapper.SaleMapper">
 
 	<select id="getSaleAvgPriceByAlbumNo">
-		select AVG(sale_price)
+		select NVL(AVG(sale_price),0)
 	  	from sales
 	  	where album_no = #{albumNo}
 	  		and sale_is_sold = 'f'

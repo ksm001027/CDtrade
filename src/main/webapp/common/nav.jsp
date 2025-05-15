@@ -51,9 +51,9 @@
    if (loginedUserNo != null) {
 %>
                 <ul class="navbar-menu">
-                   <li><a href="../mycollection/mycollection.jsp">마이컬렉션</a></li>
+                   <li><a href="/CDtrade/mycollection/mycollection.jsp">마이컬렉션</a></li>
                </ul>
-                <a href="../mypage/mypage.jsp" class="navbar-profile">
+                <a href="/CDtrade/mypage/mypage.jsp" class="navbar-profile">
                     <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="profile">
                 </a>
 <%

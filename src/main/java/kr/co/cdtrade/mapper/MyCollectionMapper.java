@@ -17,7 +17,7 @@ public interface MyCollectionMapper {
     // 마이컬렉션 아이템 삭제
     void deleteCollectionItem(@Param("colNo") int colNo);
 
- 
+
     // 리뷰번호로 마이컬렉션 아이템 삭제
     void deleteCollectionItemByReviewNo(@Param("reviewNo") int reviewNo);
 
