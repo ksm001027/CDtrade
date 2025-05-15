@@ -88,6 +88,17 @@
 			and s.user_no = u.user_no 
 	</select>
 	
+	<select id="getSalesByUserNo" parameterType="map" resultType="Sale">
+		select
+			s.sale_no					as no,
+			s.sale_is_sold				as isSold
+		from
+			sales s, users u
+		where
+			s.user_no = #{user.no}				
+			and s.user_no = u.user_no
+	</select>
+	
 	<insert id="insertSale" parameterType="Sale">
 		<selectKey keyProperty="no" resultType="int" order="BEFORE">
 			select SEQ_SALE_NO.nextval from dual
