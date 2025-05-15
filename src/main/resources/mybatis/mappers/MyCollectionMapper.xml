@@ -119,6 +119,9 @@
 			<when test="sortOption == 'priceLow'">
 				ORDER BY NVL(a.AVG_SALE_PRICE, 0) ASC
 			</when>
+			<when test="sortOption == 'rating'">
+				ORDER BY NVL(r.REVIEW_RATING, 0) desc
+			</when>
 			<otherwise>
 				ORDER BY c.COL_CREATED_AT DESC
 			</otherwise>

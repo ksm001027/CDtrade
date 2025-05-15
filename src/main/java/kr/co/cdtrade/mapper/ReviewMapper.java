@@ -95,7 +95,8 @@ public interface ReviewMapper {
      */
     List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo,
             @Param("offset") int offset,
-            @Param("rows") int rows);
+            @Param("rows") int rows,
+            @Param("sort") String sort);
 
     /**
      * 특정 앨범에 특정 유저가 남긴 리뷰를 조회한다
@@ -130,5 +131,13 @@ public interface ReviewMapper {
      * @return
      */
     int getRowsByAlbumNo(int albumNo);
+    
+    /**
+     * 특정 유저가 남긴 리뷰 목록을 정렬기준에 따라 조회한다 
+     * @param userNo
+     * @return
+     */
+    List<Review> getReviewsByUserNoSortRating(@Param("userNo") int userNo,
+            @Param("minRating") Double minRating);
 
 }
