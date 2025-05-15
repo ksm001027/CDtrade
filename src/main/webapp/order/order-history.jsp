@@ -61,7 +61,7 @@
     <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-    	let status = "complete";
+    	status = "complete";
     	let period = "all";
     function logic(){
     	$.ajax({
