@@ -19,10 +19,20 @@
      	//List<Address> addresses = addressMapper.getAllAddressByUserNo(userNo);   
      	int delivery = 'f';
      	int deliveryFee = 2800;
-     	int saleNo = 4;
-     	int userNo = 1;
+     	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
+     	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
      	Sale sale = saleMapper.getSaleByNo(saleNo);
      	Address address = addressMapper.getBasicAddressByUserNo(userNo);   
+     	
+     	if (address == null) {
+%>     		
+<script type="text/javascript">
+	alert("배송지 정보가 없습니다. 배송지 등록 페이지로 이동합니다.")
+	location.href="../delivery/delivery-form.jsp";
+</script>
+<%
+            return;
+        }
 %>
 <!DOCTYPE html>   
 <html lang="ko">   
@@ -57,7 +67,7 @@
                 <div class="order-form-title">결제</div>
                 <div class="order-form-section">
                     <div class="order-product-info">
-                        <img src="<%=sale.getPhotoPath() %>" alt="Blonde">
+                        <img src="<%=sale.getPhotoPath().split(",")[0] %>" alt="Blonde">
                         <div class="order-product-detail">
 <% 
 	if (sale.getIsOpened().equals("f")) {    
