@@ -57,7 +57,7 @@
 	*/
 	
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
-	int userNo = StringUtils.strToInt((String) session.getAttribute("LOGINED_USER_NO"), 0);
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	// 앨범 상세 정보 조회 
 	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
