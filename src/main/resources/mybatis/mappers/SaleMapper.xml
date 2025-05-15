@@ -4,6 +4,15 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.cdtrade.mapper.SaleMapper">
+
+	<select id="getSaleAvgPriceByAlbumNo">
+		select AVG(sale_price)
+	  	from sales
+	  	where album_no = #{albumNo}
+	  		and sale_is_sold = 'f'
+	</select>
+
+
 	<!-- 
 		Sales getSalesByNo(int no);
 	 -->
@@ -25,6 +34,12 @@
 	 		and S.USER_NO = U.USER_NO
 	 
 	 </select>
+	 
+	 <update id="updateSaleIsSold" parameterType="Order">
+	 	update Sales
+	 		set sale_is_sold = 't'
+	 		where sale_no = #{no}
+	 </update>
 
 	
 </mapper>

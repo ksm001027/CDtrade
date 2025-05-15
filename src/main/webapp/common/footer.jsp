@@ -18,9 +18,9 @@
                 <p>운영시간 평일 10:00 - 19:00 (토,일,공휴일 휴무)<br>점심시간 평일 13:00 - 14:00</p>
                 <a class="faq-button" href="#">자주 묻는 질문</a>
                 <div class="social-icons">
-                    <img src="chat.png" alt="채팅">
+                    <!-- <img src="chat.png" alt="채팅">
                     <img src="insta.png" alt="인스타">
-                    <img src="blog.png" alt="블로그">
+                    <img src="blog.png" alt="블로그"> -->
                 </div>
             </div>
         </footer>
@@ -37,7 +37,11 @@
             <button onclick="toggleModal()">확인</button>
         </div>
     </div>
+    -->
+
     <script>
+        
+
         function toggleModal() {
             document.getElementById('bizModal').classList.toggle('show');
         }

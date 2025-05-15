@@ -9,8 +9,7 @@
      trimDirectiveWhitespaces="true"%>
 <%
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
-	// int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-	int userNo = 1;
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	WishItemMapper wishItemMapper = MybatisUtils.getMapper(WishItemMapper.class);
 	WishItem item = new WishItem();

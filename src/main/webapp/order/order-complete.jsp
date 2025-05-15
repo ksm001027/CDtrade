@@ -6,9 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
    int orderNo = StringUtils.strToInt(request.getParameter("ono"));
-
    OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
-   
    Order order = orderMapper.getOrderByNo(orderNo);       
 %>
 <!DOCTYPE html>
@@ -66,8 +64,8 @@
                 </tr>
             </table>   
             <hr>
-            <button class="complete-btn">구매내역으로 이동하기</button>
-            <button class="complete-btn">메인으로 돌아가기</button>
+            <button class="complete-btn" onclick="location.href='order-history.jsp'">구매내역으로 이동하기</button>
+            <button class="complete-btn" onclick="location.href='../main.jsp'">메인으로 돌아가기</button>
         </div>
     </div>
     <%@include file="../common/footer.jsp" %>
