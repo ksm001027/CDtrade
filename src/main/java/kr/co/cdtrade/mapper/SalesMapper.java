@@ -9,11 +9,11 @@ import kr.co.cdtrade.vo.Sale;
 import kr.co.cdtrade.vo.User;
 
 public interface SalesMapper {
-	
-	
-	
+
+
+
 	void increaseViewCount(int saleNo);
-	
+
 	void updateSaleBySaleNo(Sale sale);
 
 	void deleteSaleBySaleNo(int saleNo);

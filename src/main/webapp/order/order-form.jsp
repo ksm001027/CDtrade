@@ -9,20 +9,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>     
 <%   
-     //String userNo = (String) session.getAttribute("LOGINED_USER_NO");
-     	        
-          
      	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
      	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
-     	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);   
-     	
-     	//List<Address> addresses = addressMapper.getAllAddressByUserNo(userNo);   
-     	int delivery = 'f';
+     	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);     
      	int deliveryFee = 2800;
-     	int saleNo = 4;
-     	int userNo = 1;
+     	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
+     	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
      	Sale sale = saleMapper.getSaleByNo(saleNo);
      	Address address = addressMapper.getBasicAddressByUserNo(userNo);   
+
+     	if (address == null) {
+%>     		
+<script type="text/javascript">
+	alert("배송지 정보가 없습니다. 배송지 등록 페이지로 이동합니다.")
+	location.href="../delivery/delivery-form.jsp";
+</script>
+<%
+            return;
+        }
 %>
 <!DOCTYPE html>   
 <html lang="ko">   
@@ -41,14 +45,11 @@
     <input type="hidden" name="deliveryFee" value=<%=deliveryFee %> />
     <input type="hidden" name="paymentMethod" value="무통장" />
     <input type="hidden" name="status" value="완료" />
-    <input type="hidden" name="addrNo" id="input-addr-no" value="1" />
+    <input type="hidden" name="addrNo" id="input-addr-no" value="<%=address.getNo() %>" />
     <input type="hidden" name="saleNo" value="<%=saleNo %>" /> 
     <input type="hidden" name="albumNo" value="<%=sale.getAlbumNo()%>" />
-    <input type="hidden" name="userNo" value="2" />
+    <input type="hidden" name="userNo" value="<%=userNo %>" />
     </form>
-
-
-
 
     <div class="container">
         <div class="order-form-layout">
@@ -57,7 +58,7 @@
                 <div class="order-form-title">결제</div>
                 <div class="order-form-section">
                     <div class="order-product-info">
-                        <img src="<%=sale.getPhotoPath() %>" alt="Blonde">
+                        <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle()%>">
                         <div class="order-product-detail">
 <% 
 	if (sale.getIsOpened().equals("f")) {    
@@ -185,25 +186,33 @@
                 배송지 추가
                 <button class="address-modal-close" id="closeAddressAdd">&times;</button>
             </div>
-            <form class="address-add-form">
+            <form class="address-add-form" action="address-add.jsp" method="post">
                 <label class="address-add-label">배송지명</label>
-                <input class="address-add-input" type="text" placeholder="배송지명을 입력하세요">
+                <input class="address-add-input" type="text" name="addrName" placeholder="배송지명을 입력하세요">
                 <label class="address-add-label">수령인</label>
-                <input class="address-add-input" type="text" placeholder="수령인을 입력하세요">
+                <input class="address-add-input" type="text" name="receiverName" placeholder="수령인을 입력하세요">
                 <label class="address-add-label">수령인 전화번호</label>
-                <input class="address-add-input" type="text" placeholder="숫자만 입력해주세요">
+                <input class="address-add-input" type="text" name="receiverTel" placeholder="숫자만 입력해주세요">
+                <div class="form-text-receiverTel"></div>
+                
                 <label class="address-add-label">배송지주소</label>
                 <div class="address-add-row">
-                    <input class="address-add-input" type="text" placeholder="우편번호">
-                    <button class="address-search-btn" type="button">주소지 검색</button>
+                    <input class="address-add-input" type="text" name="zipCode" placeholder="우편번호">
+                    <button class="address-search-btn" type="button" data-modal="add">주소지 검색</button>
                 </div>
-                <input class="address-add-input" type="text" placeholder="배송지 주소">
-                <input class="address-add-input" type="text" placeholder="상세 주소">
-            </form>
+                <input class="address-add-input" type="text" name="addrBasic" placeholder="배송지 주소">
+                <input class="address-add-input" type="text" name="addrDetail" placeholder="상세 주소">
+                
+                <!-- 기본 배송지 설정 체크박스 -->
+            	<label>
+                	<input type="checkbox" name="isDefaultAddress" value="t"> 기본배송지로 설정
+            	</label>
+            
             <div class="address-modal-footer">
-                <button class="address-modal-btn" id="closeAddressAdd2">닫기</button>
-                <button class="address-modal-btn">저장</button>
+                <button class="address-modal-btn" type="button" id="closeAddressAdd2">닫기</button>
+                <button class="address-modal-btn" type="submit">저장</button>
             </div>
+           </form>
         </div>
     </div>
     <!-- <!-- 결제 확인 모달 -->
@@ -228,7 +237,6 @@
             검수 기준1<br>검수 기준2<br>
             <br><br><br><br><br><br><br><br><br>
             </div>
-            
         </div>
     </div>
     
@@ -241,14 +249,15 @@
             <div class="modal-desc">
             이용 정책1<br>이용 정책2<br>
             <br><br><br><br><br><br><br><br><br>
-            </div>
-            
+            </div>          
         </div>
     </div>
     
     <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
+    
+        
         // 배송지 선택 모달 닫기
         document.getElementById('closeAddressSelect').onclick = function () {
             document.getElementById('addressSelectModal').classList.remove('show');
@@ -384,7 +393,75 @@
         });
     				
     </script>
-   
+    
+<!-- 다음 우편번호 오픈 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script>
+	// 배송지 추가/수정 모달 각각에서 "주소지 검색" 버튼 클릭 시 동작
+	document.querySelectorAll('.address-search-btn').forEach(btn => {
+		btn.addEventListener('click', function() {
+			const modalType = this.dataset.modal; // 'add' 또는 'edit'
+
+			new daum.Postcode({
+				oncomplete: function(data) {
+					const zonecode = data.zonecode;
+					const roadAddress = data.roadAddress;
+
+					let zipInput, addrBasicInput, addrDetailInput;
+
+					if (modalType === 'add') {
+						zipInput = document.querySelector('#addressAddModal input[name="zipCode"]');
+						addrBasicInput = document.querySelector('#addressAddModal input[name="addrBasic"]');
+						addrDetailInput = document.querySelector('#addressAddModal input[name="addrDetail"]');
+					} else if (modalType === 'edit') {
+						zipInput = document.querySelector('#editAddressModal input[name="zipCode"]');
+						addrBasicInput = document.querySelector('#editAddressModal input[name="addrBasic"]');
+						addrDetailInput = document.querySelector('#editAddressModal input[name="addrDetail"]');
+					}
+
+					if (zipInput && addrBasicInput && addrDetailInput) {
+						zipInput.value = zonecode;
+						addrBasicInput.value = roadAddress;
+						addrDetailInput.focus(); // 상세주소로 커서 이동
+					}
+				}
+			}).open();
+		});
+	});
+</script>    
+    
+<script type="text/javascript">
+	let telRegExp = /^010-\d{4}-\d{4}$/;
+	
+	$("input[name='receiverTel']").keyup(function() {
+		let value = $(this).val();
+		let $message = $("#tel-validation-message");
+	
+		if (!telRegExp.test(value)) {
+			$message.text("올바른 전화번호 형식을 입력하세요. (예: 010-1234-5678)");
+		} else {
+			$message.text("");
+		}
+	});
+	
+	$(".address-add-form, .address-edit-form").on("submit", function(e) {
+		let tel = $(this).find("input[name='receiverTel']").val();
+		if (!telRegExp.test(tel)) {
+			alert("전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)");
+			$(this).find("input[name='receiverTel']").focus();
+			e.preventDefault();
+			return false;
+		}
+	});
+</script>    
+    
+    
+    
+    
+    
+    
+    
 </body>
 
 </html>
