@@ -63,7 +63,7 @@
             </table>
             <hr>
             <button class="complete-btn" onclick="location.href='sale-detail.jsp?sno=<%=sale.getNo()%>'">판매글 확인하기</button>
-            <button class="complete-btn" onclick="location.href='sale-detail.jsp?sno=<%=sale.getNo()%>'">메인으로 돌아가기</button>
+            <button class="complete-btn" onclick="location.href='../main.jsp?'">메인으로 돌아가기</button>
         </div>
     </div>
     <%@include file="../../common/footer.jsp" %>

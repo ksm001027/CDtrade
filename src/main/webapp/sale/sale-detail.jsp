@@ -226,6 +226,12 @@
 					<button class="purchase-button"
 						onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='delete-sale.jsp?sno=<%=sale.getNo()%>'">상품
 						삭제</button>
+					<% } else { 
+						if ("t".equals(sale.getIsSold())) {%>
+							<button class="purchase-button"
+									onclick="location.href='../main.jsp'">
+							메인으로 돌아가기
+							</button>
 					<% } else { %>
 					<button class="purchase-button"
 						onclick="<%= (userNo == null) 
@@ -233,7 +239,9 @@
 				        : "location.href=\'../order/order-form.jsp?sno=" + sale.getNo() + "\';" %>">
 						즉시 구매
 					</button>
-					<% } %>
+					<% } 
+					}%>
+					
 				</div>
 		
 
