@@ -46,11 +46,11 @@
             </div>
             <div class="mypage-summary-card">
                 <div class="mypage-summary-title">구매내역</div>
-                <a class="mypage-summary-more" href="#">더보기 &gt;</a>
+                <a class="mypage-summary-more" href="../order/order-history.jsp">더보기 &gt;</a>
                 <div class="mypage-summary-list">
                     <div class="mypage-summary-item">
                         <div class="mypage-summary-count">0</div>
-                        <div class="mypage-summary-label">가격제시</div>
+                        <div class="mypage-summary-label">전체</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
@@ -66,11 +66,11 @@
             </div>
             <div class="mypage-summary-card">
                 <div class="mypage-summary-title">판매내역</div>
-                <a class="mypage-summary-more" href="#">더보기 &gt;</a>
+                <a class="mypage-summary-more" href="../sale/sale-history.jsp">더보기 &gt;</a>
                 <div class="mypage-summary-list">
                     <div class="mypage-summary-item">
                         <div class="mypage-summary-count">0</div>
-                        <div class="mypage-summary-label">판매중</div>
+                        <div class="mypage-summary-label">전체</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
@@ -111,7 +111,7 @@
 					url: 'delete-user.jsp',
 					success: function() {
 						alert('회원탈퇴가 완료되었습니다.');
-						window.location.href = '../login/logout.jsp'; // 세션 정리하고 index로 가게끔
+						window.location.href = '../login/login-form.jsp'; // 회원탈퇴 후 로그인 페이지로
 					},
 					error: function() {
 						alert('회원탈퇴 중 오류가 발생했습니다.');
@@ -120,6 +120,9 @@
 			});
 		});
 	</script>
+	
+	<%@ include file="../common/footer.jsp" %>
+	
 </body>
 
 </html>

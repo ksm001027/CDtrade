@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,8 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <%@include file="../../common/nav.jsp" %>
-
+    <%@include file="../common/nav.jsp" %>
+<%
+    Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
+    if (userNo == null) {
+        response.sendRedirect("../login/login-form.jsp");
+        return;
+    }
+%>
 
 
 
@@ -216,7 +221,7 @@ $(document).ready(function () {
 });
 </script>
 
-=======
+
 	<%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
      <script type="text/javascript">

@@ -27,7 +27,7 @@
 	int minReviewCount = 5;
 	
 	// 한번에 가져오는 데이터의 개수 
-	int rows = 2;
+	int rows = 20;
 	
 	// 베스트앨범 전체 데이터 개수 (###선) 
 	int totalRows = 20;

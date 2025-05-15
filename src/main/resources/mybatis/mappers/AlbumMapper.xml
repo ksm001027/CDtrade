@@ -27,7 +27,7 @@
 		from
 			albums
 		<if test="keyword != null and keyword != ''">
-			where album_title like '%' || #{keyword} || '%'
+			where upper(album_title) like '%' || upper(#{keyword}) || '%'
 		</if>
 	</select>
 	
@@ -57,7 +57,7 @@
 			where review_count >= #{minReviewCount}
 		</if>
 		<if test="keyword != null and keyword != ''">
-			where album_title like '%' || #{keyword} || '%'
+			where upper(album_title) like '%' || upper(#{keyword}) || '%'
 		</if>
 		<choose>
 	 		<when test="sort == 'newest'">
@@ -71,6 +71,12 @@
 	 		</when>
 	 		<when test="sort == 'rating'">
 	 			order by avg_rating desc nulls last
+	 		</when>
+	 		<when test="sort == 'stock'">
+	 			order by stock_quantity desc nulls last
+	 		</when>
+	 		<when test="sort == 'review-count'">
+	 			order by review_count desc nulls last
 	 		</when>
 	 	</choose>
 	 	offset #{offset} rows
