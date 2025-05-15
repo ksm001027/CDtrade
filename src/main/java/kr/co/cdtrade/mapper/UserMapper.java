@@ -32,4 +32,5 @@ public interface UserMapper {
 	
 	Map<String, Object> getMypageSummary(@Param("userNo") int userNo);
 
+
 }

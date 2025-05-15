@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
 <body>
+
+	<%@ include file="../common/nav.jsp" %>
+
     <div class="auth-container">
         <img src="img/logo.png" alt="로고" class="auth-logo">
 
@@ -22,9 +25,9 @@
         <div class="auth-links">
             <a href="../register/register-form.jsp">회원가입</a>
             <span>|</span>
-            <a href="find-id.jsp">아이디 찾기</a>
+            <a href="../account/find-email.jsp">이메일 찾기</a>
             <span>|</span>
-            <a href="find-password.jsp">비밀번호 찾기</a>
+            <a href="../account/find-password.jsp">비밀번호 찾기</a>
         </div>
     </div>
     
@@ -43,8 +46,10 @@
 	    <div class="modal-title">로그인 실패</div>
 	    <div class="modal-desc"><%= message %></div>
 	    <a href="login-form.jsp" class="modal-btn">확인</a>
-	    
 	  </div>
 	</div>
+	
+	<%@ include file="../common/footer.jsp" %>
+	
 </body>
 </html>

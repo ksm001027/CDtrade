@@ -129,16 +129,4 @@
 		where user_email = #{email}
 	</update>
 	
-	<select id="getMypageSummary" parameterType="int" resultType="map">
-		select 
-			nvl((select count(*) from orders where user_no = #{userNo}), 0) as allOrderCount
-			, nvl((select count(*) from orders where user_no = #{userNo} and order_status = 'progress'), 0) as progressOrderCount
-			, nvl((select count(*) from orders where user_no = #{userNo} and order_status = 'complete'), 0) as completeOrderCount
-			, nvl((select count(*) from sales where user_no = #{userNo}), 0) as allSaleCount
-			, nvl((select count(*) from sales where user_no = #{userNo} and sale_is_sold = 'f'), 0) as saleInProgressCount
-			, nvl((select count(*) from sales where user_no = #{userNo} and sale_is_sold = 't'), 0) as saleCompletedCount
-		from dual
-	</select>
-	
-	
 </mapper>
