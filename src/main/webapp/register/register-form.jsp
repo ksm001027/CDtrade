@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../resources/css/common.css">
 </head>
 <body>
+<%@ include file="../common/nav.jsp" %>
 
 <%
 	if ("email".equals(fail)) {
@@ -43,6 +44,7 @@
             <input class="auth-input" type="password" name="password" id="user-password" placeholder="비밀번호 입력">
             <label class="auth-label">비밀번호 확인</label>
             <input class="auth-input" type="password" name="passwordConfirm" id="user-password-confirm" placeholder="비밀번호 재입력">
+            <div class="form-text" id="form-text-password"></div>
             <label class="auth-label">닉네임</label>
             <input class="auth-input" type="text" name= "nickname" id="user-nickname" placeholder="중복 불가 닉네임">
             <div class="form-text" id="form-text-nickname"></div>
@@ -91,6 +93,7 @@
 				return false;
 			}
 			
+			
 			if ($("#user-nickname").val() == "") { 
 				alert("닉네임은 필수 입력값입니다.");
 				$("#user-nickname").focus();
@@ -117,6 +120,21 @@
 			
 			return true;
 		})
+		
+			$("#user-password-confirm").keyup(function() {
+				let $div = $("#form-text-password").empty()
+												   .removeClass("text-danger")
+												   .removeClass("text-success");
+				
+				let password = $("#user-password").val();
+				let confirm = $(this).val();
+				
+				if (password !== confirm) {
+					$div.addClass("text-danger").text("비밀번호가 일치하지 않습니다.");
+				} else {
+					$div.addClass("text-success").text("비밀번호가 일치합니다.");
+				}
+			});
 		
 		$("#user-email").keyup(function() {
 			let $div = $("#form-text-email").empty()
@@ -223,6 +241,9 @@
 			});
 		})
     </script>
+    
+    <%@ include file="../common/footer.jsp" %>
+    
 </body>
 </html>
 
