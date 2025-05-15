@@ -34,7 +34,7 @@
 %>
                </ul>
              </li>
-                <li><a href="<%=request.getContextPath() %>/review-list.jsp">최신리뷰</a></li>
+                <li><a href="<%=request.getContextPath() %>/review/review-list.jsp">최신리뷰</a></li>
                 <li><a href="<%=request.getContextPath() %>/sale/sale-list.jsp">판매상품</a></li>
             </ul>
             <div class="navbar-actions">  

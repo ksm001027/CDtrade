@@ -154,7 +154,7 @@
                 <h2>Information</h2>
                 <table class="info-table">
                     <tr><th>발매일</th><td><%=formattedReleaseDate%></td></tr>
-                    <tr><th>전체평점</th><td><%=album.getRating()%></td></tr>
+                    <tr><th>전체평점</th><td><%=album.avgRating()%></td></tr> 
                     <tr>
                         <th>장르</th>
                         <td>
