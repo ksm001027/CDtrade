@@ -5,7 +5,19 @@
 
 <mapper namespace="kr.co.cdtrade.mapper.SalesMapper">
 
-
+<update id="updateSaleBySaleNo" parameterType="int">
+    UPDATE sales
+    SET 
+        sale_description = #{description},
+        sale_photo_path = #{photoPath},
+        sale_price = #{price},
+        sale_is_opened = #{isOpened},
+        sale_updated_at = SYSDATE,
+        album_no = #{album.no},
+        user_no = #{user.no}
+    WHERE 
+        sale_no = #{no}
+</update>
 
 <select id="getSalesByIsSoldAndUserNo" parameterType="map" resultType="Sale">
     select 
@@ -21,8 +33,10 @@
         a.album_title			AS "album.title"
     from sales s, albums a
     where s.user_no = #{userNo}
-      and s.sale_is_sold = #{isSold}
       and a.album_no = s.album_no
+		<if test="isSold != null and isSold != ''">
+		      AND s.sale_is_sold = #{isSold}
+		</if>
       <if test="period != null and period != 'all'">
         <choose>
             <when test="period == '1w'">
@@ -42,6 +56,7 @@
       </if>
     order by s.sale_created_at desc
     offset #{offset} rows fetch next #{rows} rows only   
+
 
 </select>
 
@@ -151,8 +166,19 @@
 	<if test="albumNo != null">
 		AND a.album_no = #{albumNo}
 	</if>
-
-
+	<if test="period != null">
+    <choose>
+        <when test="period == '1w'">
+            AND s.sale_created_at >= SYSDATE - 7
+        </when>
+        <when test="period == '1m'">
+            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+        </when>
+        <when test="period == '3m'">
+            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+        </when>
+    </choose>
+</if>
 	
 	<choose>
 		<when test="sort == 'newest'">
@@ -190,6 +216,20 @@
 	    <if test="albumNo != null">
 	    	AND s.album_no = #{albumNo}
 	    </if>
+	    <if test="period != null">
+		    <choose>
+		        <when test="period == '1w'">
+		            AND s.sale_created_at >= SYSDATE - 7
+		        </when>
+		        <when test="period == '1m'">
+		            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+		        </when>
+		        <when test="period == '3m'">
+		            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+		        </when>
+		    </choose>
+		</if>
+	    
 
 </select>
 	
@@ -244,7 +284,12 @@
 	from
 		users u, sales s
 	where
-		user_no = #{no}
-		u.user_no = s.user_no
+		s.sale_no = #{no}
+		and u.user_no = s.user_no
 </select>
+
+<delete id="deleteSaleBySaleNo" parameterType="int">
+ delete from sales
+ where sale_no = #{saleNo}
+</delete>
 </mapper>

@@ -3,10 +3,6 @@ package kr.co.cdtrade.mapper;
 import java.util.List;
 import java.util.Map;
 
-
-import org.apache.ibatis.annotations.Param;
-
-
 import kr.co.cdtrade.vo.Album;
 import kr.co.cdtrade.vo.Genre;
 import kr.co.cdtrade.vo.Sale;
@@ -14,6 +10,9 @@ import kr.co.cdtrade.vo.User;
 
 public interface SalesMapper {
 
+	void updateSaleBySaleNo(int saleNo);
+
+	void deleteSaleBySaleNo(int saleNo);
 
 	List<Sale> getSalesByIsSoldAndUserNo(Map<String, Object> param);
 
