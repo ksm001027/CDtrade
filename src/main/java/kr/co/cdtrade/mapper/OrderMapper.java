@@ -10,6 +10,7 @@ import kr.co.cdtrade.vo.Order;
 public interface OrderMapper {
 	List<Order> getOrdersByAlbumNo(@Param("albumNo") int albumNo, @Param("offset") int offset, @Param("rows") int rows);
 
+	int getOrderAvgPriceByAlbumNo(int no);
 	int getTotalRows(Map<String, Object> condition);
 	void insertOrder(Order order);
 	Order getOrderByNo(int no);

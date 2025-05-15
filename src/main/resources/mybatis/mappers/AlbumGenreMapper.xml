@@ -65,6 +65,12 @@
 	 		<when test="sort == 'rating'">
 	 			order by a.avg_rating desc nulls last
 	 		</when>
+	 		<when test="sort == 'stock'">
+	 			order by stock_quantity desc nulls last
+	 		</when>
+	 		<when test="sort == 'review-count'">
+	 			order by review_count desc nulls last
+	 		</when>
 	 	</choose>
 		offset #{offset} rows
 	 	fetch next #{rows} rows only

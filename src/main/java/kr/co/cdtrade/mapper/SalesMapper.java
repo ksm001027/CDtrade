@@ -11,11 +11,13 @@ import kr.co.cdtrade.vo.Sale;
 import kr.co.cdtrade.vo.User;
 
 public interface SalesMapper {
+
 	List<Sale> getRecentCompletedSales();
 	List<Sale> getRecentOnSaleProducts();
 	
+
 	void increaseViewCount(int saleNo);
-	
+
 	void updateSaleBySaleNo(Sale sale);
 
 	void deleteSaleBySaleNo(int saleNo);
