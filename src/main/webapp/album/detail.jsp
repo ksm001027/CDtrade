@@ -57,8 +57,7 @@
 	*/
 	
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
-	// int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-	int userNo = 1;
+	int userNo = StringUtils.strToInt((String) session.getAttribute("LOGINED_USER_NO"), 0);
 	
 	// 앨범 상세 정보 조회 
 	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
@@ -187,6 +186,9 @@
                         <h1 class="detail-title"><%= album.getTitle() %></h1>
                         <p class="artist-name"><%= album.getArtistName() %></p>
                     </div>
+<%
+	if (userNo != 0){
+%>
                     <button class="icon-button" id="wishlist-btn" data-wish-no="<%=wishItem != null ? wishItem.getNo() : ""%>">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -197,6 +199,9 @@
                         </svg>
                         <span class="bookmark-count" id="wish-count"><%= totalWishRows %></span>
                     </button>
+<%
+	}
+%>
                 </div>
 <%
 	// 0.5 단위로 평균 평점에 따라 별 색상 다르게 표시 
@@ -258,9 +263,13 @@
                             <dd><%= recentPrice == 0? "-" : StringUtils.commaWithNumber(recentPrice)+"원" %></dd>
                         </div>
                     </dl> 
-
+<%
+	if (userNo != 0){
+%>
                     <a href="../sale/sale-form.jsp?ano=<%=albumNo %>" class="purchase-btn">판매</a>
-
+<%
+	}
+%>
                     <div class="recent-trades">
                         <div class="section-header">
                         	<h3>최근거래</h3>
@@ -383,6 +392,9 @@
 	                <div> 
 	                	<h2>앨범리뷰</h2>
 	                	<br>
+<%
+		if (userNo != 0){
+%>
 	                 	<div class="stars">
 	                        <span class="review-form-star" data-order="1">★</span>
 	                        <span class="review-form-star" data-order="2">★</span>
@@ -390,6 +402,9 @@
 	                        <span class="review-form-star" data-order="4">★</span>
 	                        <span class="review-form-star" data-order="5">★</span>
 	                    </div>
+<%
+		}
+%>
 	                    <input type="hidden" value="0" name="rating" id="rating-input">
 	                    <input type="hidden" value="<%= albumNo %>" name="albumNo">
 	                </div>
@@ -397,11 +412,16 @@
 	                    <div class="review-count">전체 <%= totalReviewRows %>개</div>
 	                </div>
 	            </div>
-	
+<%
+		if (userNo != 0){
+%>
 	            <div class="review-write">
 	                <textarea placeholder="리뷰를 작성하고 앨범을 마이컬렉션에 추가해보세요" class="review-textarea" name="content"></textarea>
 	                <button class="review-submit" type="button" id="review-form-btn">등록</button>
 	            </div>
+<%
+		}
+%>
 	        </form>
 	     </div>
 <!-- 
