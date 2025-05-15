@@ -38,7 +38,7 @@ if (ajaxParam != null && ajaxParam.equals("true")) {
 		for (Review review : moreReviews) {
 %>
 <div class="review-block"
-	onclick="location.href='album-detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
+    onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
 	<div class="review-album-cover">
 		<img
 			src="${pageContext.request.contextPath}/<%=review.getAlbum().getCoverImageUrl()%>"
@@ -202,7 +202,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 				for (Review review : reviews) {
 			%>
 			<div class="review-block"
-				onclick="location.href='album-detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
+    		onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
 				<div class="review-album-cover">
 					<img src="<%=review.getAlbum().getCoverImageUrl()%>" alt="앨범 커버"
 						onerror="this.src='/CDtrade/resources/images/default-album.jpg'">

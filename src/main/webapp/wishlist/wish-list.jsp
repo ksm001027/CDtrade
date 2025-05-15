@@ -7,28 +7,15 @@
 <%@ page import="java.util.List"%>
 <%@include file="../common/nav.jsp" %>
 <%
-// 디버깅 출력 추가
-System.out.println("===== 위시리스트 디버깅 시작 =====");
+User loginUser = (User) session.getAttribute("LOGINED_USER");
 
-// 임시 로그인 처리 (개발용) - 마이컬렉션과 동일한 처리
-User tempUser = new User();
-tempUser.setNo(21); // 위시리스트 데이터가 있는 사용자 ID로 설정
-tempUser.setName("테스트 사용자");
-tempUser.setNickname("CD매니아");
-
-// 개발 단계에서는 임시 사용자 정보 세션에 저장
-session.setAttribute("loginUser", tempUser);
-
-// 세션에서 로그인 사용자 정보 가져오기
-User loginUser = (User) session.getAttribute("loginUser");
-
-// 로그인 확인 - 임시 사용자를 설정했으므로 항상 통과
+//로그인 상태 확인
 if (loginUser == null) {
-    System.out.println("로그인 사용자 정보가 없습니다.");
-    // 실제 환경에서는 로그인 페이지로 리다이렉트
-    // response.sendRedirect(request.getContextPath() + "/login/loginForm.jsp");
-    // return;
+// 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+response.sendRedirect("../login/login-form.jsp?from=mycollection");
+return;
 }
+
 
 // 정렬 옵션 파라미터 가져오기
 String sortOption = request.getParameter("sort");
@@ -157,7 +144,7 @@ System.out.println("===== 위시리스트 디버깅 종료 =====");
         %>
         <div class="empty-wishlist">
             <p>위시리스트에 추가된 앨범이 없습니다.</p>
-            <a href="${pageContext.request.contextPath}/album/list" class="btn-primary">앨범 둘러보기</a>
+            <a href="${pageContext.request.contextPath}/album/best-album-list.jsp" class="btn-primary">앨범 둘러보기</a>
         </div>
         <%
         }

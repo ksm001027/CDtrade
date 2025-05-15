@@ -4,7 +4,7 @@
 <%@ page import="kr.co.cdtrade.vo.User"%>
 
 <%
-User loginUser = (User)session.getAttribute("loginUser");
+User loginUser = (User)session.getAttribute("LOGINED_USER");
 
 if (loginUser == null) {
     response.setContentType("text/plain");
