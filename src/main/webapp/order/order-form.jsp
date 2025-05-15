@@ -9,18 +9,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>     
 <%   
-     //String userNo = (String) session.getAttribute("LOGINED_USER_NO");
-     	        
-          
      	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
      	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
      	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);     
-     	int delivery = 'f';
      	int deliveryFee = 2800;
-     	int saleNo = 4;
-     	int userNo = 1;
+     	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
+     	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
      	Sale sale = saleMapper.getSaleByNo(saleNo);
      	Address address = addressMapper.getBasicAddressByUserNo(userNo);   
+
+     	if (address == null) {
+%>     		
+<script type="text/javascript">
+	alert("배송지 정보가 없습니다. 배송지 등록 페이지로 이동합니다.")
+	location.href="../delivery/delivery-form.jsp";
+</script>
+<%
+            return;
+        }
 %>
 <!DOCTYPE html>   
 <html lang="ko">   
@@ -39,10 +45,10 @@
     <input type="hidden" name="deliveryFee" value=<%=deliveryFee %> />
     <input type="hidden" name="paymentMethod" value="무통장" />
     <input type="hidden" name="status" value="완료" />
-    <input type="hidden" name="addrNo" id="input-addr-no" value="1" />
+    <input type="hidden" name="addrNo" id="input-addr-no" value="<%=address.getNo() %>" />
     <input type="hidden" name="saleNo" value="<%=saleNo %>" /> 
     <input type="hidden" name="albumNo" value="<%=sale.getAlbumNo()%>" />
-    <input type="hidden" name="userNo" value="2" />
+    <input type="hidden" name="userNo" value="<%=userNo %>" />
     </form>
 
     <div class="container">
@@ -250,6 +256,8 @@
     <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
+    
+        
         // 배송지 선택 모달 닫기
         document.getElementById('closeAddressSelect').onclick = function () {
             document.getElementById('addressSelectModal').classList.remove('show');

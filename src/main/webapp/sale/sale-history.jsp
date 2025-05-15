@@ -11,7 +11,7 @@
     <%@include file="../../common/nav.jsp" %>
 
 
-    <%@include file="../common/nav.jsp" %>
+
 
     <title>판매내역</title>
     <link rel="stylesheet" href="../resources/css/common.css">
@@ -73,17 +73,18 @@
 let selectedPeriod = "all";  // 기본값
 let currentPage = 1;         // 현재 페이지
 function updateTabCounts() {
-    const keyword = $("#searchKeyword").val();
-    
+    const keyword = "";  // 항상 전체 개수 기준
+    const period = "all"; // 기간 필터 제거
+
     ["onSale", "completed"].forEach(status => {
         $.ajax({
             url: "fetchSaleHistory.jsp",
             type: "GET",
             data: {
                 status: status,
-                period: selectedPeriod,
+                period: period,
                 page: 1,
-                size: 1, // 개수만 확인할 목적이므로 1개만 요청
+                size: 1,
                 keyword: keyword
             },
             dataType: "json",
@@ -93,6 +94,7 @@ function updateTabCounts() {
         });
     });
 }
+
 
 // 기간 버튼 클릭 처리
 $(".period-btn").click(function () {
@@ -122,12 +124,12 @@ $("#searchKeyword").on("keyup", function (e) {
 $(document).ready(function () {
 	updateTabCounts();
     $(".sale-history-tab").click(function () {
+    	
         $(".sale-history-tab").removeClass("active");
         $(this).addClass("active");
 
         const status = $(this).text().includes("판매중") ? "onSale" : "completed";
         const keyword = $("#searchKeyword").val();
-
         $.ajax({
             url: "fetchSaleHistory.jsp",
             type: "GET",
@@ -186,16 +188,21 @@ $(document).ready(function () {
 
                 // 페이지 버튼 생성
                 const pagination = $(".sale-history-pagination").empty();
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = $("<button>")
-                        .addClass("sale-history-pagination-btn")
-                        .toggleClass("active", i === currentPage)
-                        .text(i)
-                        .on("click", function () {
-					        currentPage = i;
-					        $(".sale-history-tab.active").trigger("click");
-					    });
-                    pagination.append(btn);
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = $("<button>")
+                            .addClass("sale-history-pagination-btn")
+                            .toggleClass("active", i === currentPage)
+                            .text(i)
+                            .on("click", function () {
+                                // 페이지 번호 보정
+                                currentPage = Math.min(i, totalPages);
+                                $(".sale-history-tab.active").trigger("click");
+                            });
+                        pagination.append(btn);
+                    }
+                } else {
+                    $(".sale-history-pagination").empty();
                 }
             },
             error: function () {
@@ -238,6 +245,8 @@ $(document).ready(function () {
 
     	    // 탭 클릭시
     	    $(".sale-history-tab").click(function() {
+    	    	currentPage = 1;
+    	    	
     	        $(".sale-history-tab").removeClass("active");
     	        $(this).addClass("active");
 

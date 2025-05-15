@@ -45,11 +45,15 @@
     </select>
 
     <!-- 위시리스트 아이템 추가 -->
-    <insert id="addWishItem" parameterType="WishItem">
+    <insert id="addWishItem">
+    	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+    		select SEQ_WISH_NO.NEXTVAL from dual
+    	</selectKey>
+    	
         INSERT INTO WISH_ITEMS (
             WISH_NO, WISH_CREATED_AT, WISH_UPDATED_AT, USER_NO, ALBUM_NO
         ) VALUES (
-            SEQ_WISH_NO.NEXTVAL, SYSDATE, SYSDATE,
+            #{no}, SYSDATE, SYSDATE,
             #{user.no}, #{album.no}
         )
     </insert>
@@ -109,6 +113,17 @@
         SELECT COUNT(*)
         FROM WISH_ITEMS
         WHERE USER_NO = #{userNo}
+    </select>
+    
+    <!-- 
+    	int getTotalRows(Map<String, Object> condition);
+     -->
+    <select id="getTotalRows" parameterType="map">
+    	select count(*)
+    	from wish_items
+    	<if test="albumNo != null">
+    		where album_no = #{albumNo}
+    	</if>
     </select>
 
 </mapper>

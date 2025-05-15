@@ -6,13 +6,12 @@
 <%@ page import="kr.co.cdtrade.vo.Address" %>
 
 <%
-	/* Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
+	Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	if (userNo == null) {
 		response.sendRedirect("../login/login-form.jsp");
 		return;
-	} */
+	} 
 	
-	int userNo = 1;
 	User user = new User();
 	user.setNo(userNo);
 

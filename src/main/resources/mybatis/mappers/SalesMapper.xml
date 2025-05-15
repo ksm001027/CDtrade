@@ -7,244 +7,298 @@
 
 
 
-<select id="getSalesByIsSoldAndUserNo" parameterType="map" resultType="Sale">
-    select 
-        s.sale_no 				AS no,
-        s.sale_description 		AS description,
-        s.sale_photo_path 		AS photoPath,
-        s.sale_price 			AS price,
-        s.sale_is_opened 		AS isOpened,
-        s.sale_is_sold 			AS isSold,
-        s.sale_created_at 		AS createdAt,
-        s.sale_updated_at 		AS updatedAt,
-        a.album_no				AS "album.no",
-        a.album_title			AS "album.title"
-    from sales s, albums a
-    where s.user_no = #{userNo}
-      and s.sale_is_sold = #{isSold}
-      and a.album_no = s.album_no
-      <if test="period != null and period != 'all'">
-        <choose>
-            <when test="period == '1w'">
-                AND s.sale_created_at >= SYSDATE - 7
-            </when>
-            <when test="period == '1m'">
-                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
-            </when>
-            <when test="period == '3m'">
-                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
-            </when>
-        </choose>
 
-      </if>
-      <if test="keyword != null and keyword != ''">
-        AND (a.album_title LIKE #{keyword} OR a.artist_name LIKE #{keyword})
-      </if>
-    order by s.sale_created_at desc
-    offset #{offset} rows fetch next #{rows} rows only   
-
-</select>
-
-<select id="getSaleByUserNo" resultType="Sale">
-	select 
-		s.sale_no					as no,
-	    s.sale_description			as description,
-	    s.sale_photo_path			as photoPath,
-	    s.sale_price				as price,
-	    s.sale_is_opened			as isOpened,
-	    s.sale_is_sold 				as isSold,
-	    s.view_count				as viewCount,
-	    s.sale_updated_at			as updatedAt,
-	    s.sale_created_at			as createdAt,
-	    u.user_no					as "users.no"
-	from 
-		sales s, users u
-	where
-		s.user_no = #{user.no}
-		and s.user_no = u.user_no 
-</select>
-
-<insert id="insertSale" parameterType="Sale">
-	<selectKey keyProperty="no" resultType="int" order="BEFORE">
-		select SEQ_SALE_NO.nextval from dual
-	</selectKey>
+	<update id="increaseViewCount" parameterType="int">
+	    UPDATE sales 
+	    SET view_count = NVL(view_count, 0) + 1 
+	    WHERE sale_no = #{saleNo}
+	</update>
 	
-	insert into Sales
-		(sale_no
-	   , sale_description
-	   , sale_photo_path
-	   , sale_price
-	   , sale_is_opened 
-	   , sale_created_at
-	   , album_no
-	   , user_no
-	    )
-    values 
-	    (#{no}
-	  , #{description}
-	  , #{photoPath}
-	  , #{price}
-	  , #{isOpened}
-	  , sysdate
-	  , #{album.no}
-	  , #{user.no}
-	    )
-</insert>
+	<update id="updateSaleBySaleNo" parameterType="sale">
+	    UPDATE sales
+	    SET 
+	        sale_description = #{description},
+	        sale_photo_path = #{photoPath},
+	        sale_price = #{price},
+	        sale_is_opened = #{isOpened},
+	        sale_updated_at = SYSDATE,
+	        album_no = #{album.no},
+	        user_no = #{user.no}
+	    WHERE 
+	        sale_no = #{no}
+	</update>
 	
-<select id="getSaleBySaleNo" resultType="Sale">
-	select 
-		   sale_no					as no
-  		 , sale_description			as description
-   		 , sale_photo_path			as photoPath
-   		 , sale_price				as price
-   		 , sale_is_opened			as isOpened
-   		 , sale_is_sold 			as isSold
-   		 , view_count				as viewCount
-   		 , sale_updated_at			as updatedAt
-   		 , sale_created_at			as createdAt
-   		 , a.album_no				as "album.no"
-   		 , a.album_title			as "album.title"
-	     , a.artist_name			as "album.artistName"
-	     , a.release_date			as "albums.releaseDate"
-	     
-	from
-		sales s, albums a
-	where
-		sale_no = #{no}
-		and s.album_no = a.album_no
+	<select id="getSalesByIsSoldAndUserNo" parameterType="map" resultType="Sale">
+	    select 
+	        s.sale_no 				AS no,
+	        s.sale_description 		AS description,
+	        s.sale_photo_path 		AS photoPath,
+	        s.sale_price 			AS price,
+	        s.sale_is_opened 		AS isOpened,
+	        s.sale_is_sold 			AS isSold,
+	        s.sale_created_at 		AS createdAt,
+	        s.sale_updated_at 		AS updatedAt,
+	        a.album_no				AS "album.no",
+	        a.album_title			AS "album.title"
+	    from sales s, albums a
+	    where s.user_no = #{userNo}
+	      and a.album_no = s.album_no
+			<if test="isSold != null and isSold != ''">
+			      AND s.sale_is_sold = #{isSold}
+			</if>
+	      <if test="period != null and period != 'all'">
+	        <choose>
+	            <when test="period == '1w'">
+	                AND s.sale_created_at >= SYSDATE - 7
+	            </when>
+	            <when test="period == '1m'">
+	                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+	            </when>
+	            <when test="period == '3m'">
+	                AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+	            </when>
+	        </choose>
+	
+	      </if>
+	      <if test="keyword != null and keyword != ''">
+	        AND (a.album_title LIKE #{keyword} OR a.artist_name LIKE #{keyword})
+	      </if>
+	    order by s.sale_created_at desc
+	    offset #{offset} rows fetch next #{rows} rows only   
+	
+	
+	</select>
+	
+	<select id="getSaleByUserNo" resultType="Sale">
+		select 
+			s.sale_no					as no,
+		    s.sale_description			as description,
+		    s.sale_photo_path			as photoPath,
+		    s.sale_price				as price,
+		    s.sale_is_opened			as isOpened,
+		    s.sale_is_sold 				as isSold,
+		    s.view_count				as viewCount,
+		    s.sale_updated_at			as updatedAt,
+		    s.sale_created_at			as createdAt,
+		    u.user_no					as "users.no"
+		from 
+			sales s, users u
+		where
+			s.user_no = #{user.no}
+			and s.user_no = u.user_no 
+	</select>
+	
+	<insert id="insertSale" parameterType="Sale">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select SEQ_SALE_NO.nextval from dual
+		</selectKey>
 		
-</select>
-
-
-
-<select id="getSales" parameterType="map" resultType="Sale">
-	select s.sale_no					as no,
-	       s.sale_description			as description,
-	       s.sale_photo_path			as photoPath,
-	       s.sale_price					as price,
-	       s.sale_is_opened				as isOpened,
-	       s.sale_is_sold 				as isSold,
-	       s.view_count					as viewCount,
-	       s.sale_updated_at			as updatedAt,
-	       s.sale_created_at			as createdAt,
-	       a.album_no					as "album.no",
-	       a.album_title				as "album.title",
-	       a.artist_name			as "album.artistName",
-	       a.release_date			as "album.releaseDate"
-	from
-		sales s, albums a, users u
-	where
-		s.album_no = a.album_no 
-		and s.user_no = u.user_no
-	<if test="isOpened != null and isOpened != ''">
-		AND s.sale_is_opened = #{isOpened}
-	</if>
-	<if test="isSold != null and isSold != ''">
-		AND s.sale_is_sold = #{isSold}
-	</if>
-	<if test="keyword != null and keyword != ''">
-	    AND (
-	        a.album_title LIKE #{keyword}
-	        OR a.artist_name LIKE #{keyword}
-	    )
-	</if>
-	<if test="albumNo != null">
-		AND a.album_no = #{albumNo}
-	</if>
-
-
+		insert into Sales
+			(sale_no
+		   , sale_description
+		   , sale_photo_path
+		   , sale_price
+		   , sale_is_opened 
+		   , sale_created_at
+		   , album_no
+		   , user_no
+		    )
+	    values 
+		    (#{no}
+		  , #{description}
+		  , #{photoPath}
+		  , #{price}
+		  , #{isOpened}
+		  , sysdate
+		  , #{album.no}
+		  , #{user.no}
+		    )
+	</insert>
+		
+	<select id="getSaleBySaleNo" resultType="Sale">
+		select 
+			   sale_no					as no
+	  		 , sale_description			as description
+	   		 , sale_photo_path			as photoPath
+	   		 , sale_price				as price
+	   		 , sale_is_opened			as isOpened
+	   		 , sale_is_sold 			as isSold
+	   		 , view_count				as viewCount
+	   		 , sale_updated_at			as updatedAt
+	   		 , sale_created_at			as createdAt
+	   		 , a.album_no				as "album.no"
+	   		 , a.album_title			as "album.title"
+		     , a.artist_name			as "album.artistName"
+		     , a.release_date			as "albums.releaseDate"
+		     
+		from
+			sales s, albums a
+		where
+			sale_no = #{no}
+			and s.album_no = a.album_no
+			
+	</select>
 	
-	<choose>
-		<when test="sort == 'newest'">
-			order by s.sale_created_at desc
-		</when>
-		<when test="sort == 'price-asc'">
-			order by s.sale_price asc
-		</when>
-		<when test="sort == 'price-desc'">
-			order by s.sale_price desc
-		</when>
-	</choose>
-	offset #{offset} rows
-	fetch next #{rows} rows only
-</select>
-
-<select id="getTotalRows" parameterType="map">
-	 	select
-	 		count(*)
-	 	from
-	 		Sales s
-	 	where
-	 		1=1
-	 	<if test="isOpened != null and isOpened != ''">
-	    	AND s.sale_is_opened = #{isOpened}
-	    </if>
-	    <if test="isSold != null and isSold != ''">
-	   		AND s.sale_is_sold = #{isSold}
-	    </if>
-
-		<if test="userNo != null">
-		    AND s.user_no = #{userNo}
+	
+	
+	<select id="getSales" parameterType="map" resultType="Sale">
+		select s.sale_no					as no,
+		       s.sale_description			as description,
+		       s.sale_photo_path			as photoPath,
+		       s.sale_price					as price,
+		       s.sale_is_opened				as isOpened,
+		       s.sale_is_sold 				as isSold,
+		       s.view_count					as viewCount,
+		       s.sale_updated_at			as updatedAt,
+		       s.sale_created_at			as createdAt,
+		       a.album_no					as "album.no",
+		       a.album_title				as "album.title",
+		       a.artist_name			as "album.artistName",
+		       a.release_date			as "album.releaseDate"
+		from
+			sales s, albums a, users u
+		where
+			s.album_no = a.album_no 
+			and s.user_no = u.user_no
+		<if test="isOpened != null and isOpened != ''">
+			AND s.sale_is_opened = #{isOpened}
 		</if>
-
-	    <if test="albumNo != null">
-	    	AND s.album_no = #{albumNo}
-	    </if>
-
-</select>
+		<if test="isSold != null and isSold != ''">
+			AND s.sale_is_sold = #{isSold}
+		</if>
+		<if test="keyword != null and keyword != ''">
+		    AND (
+		        a.album_title LIKE #{keyword}
+		        OR a.artist_name LIKE #{keyword}
+		    )
+		</if>
+		<if test="albumNo != null">
+			AND a.album_no = #{albumNo}
+		</if>
+		<if test="period != null">
+	    <choose>
+	        <when test="period == '1w'">
+	            AND s.sale_created_at >= SYSDATE - 7
+	        </when>
+	        <when test="period == '1m'">
+	            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+	        </when>
+	        <when test="period == '3m'">
+	            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+	        </when>
+	    </choose>
+	</if>
+		
+		<choose>
+			<when test="sort == 'newest'">
+				order by s.sale_created_at desc
+			</when>
+			<when test="sort == 'price-asc'">
+				order by s.sale_price asc
+			</when>
+			<when test="sort == 'price-desc'">
+				order by s.sale_price desc
+			</when>
+		</choose>
+		offset #{offset} rows
+		fetch next #{rows} rows only
+	</select>
 	
-<select id="getGenresBySaleNo" parameterType="int" resultType="Genre">
-    select
-    	g.genre_name		as name
-      , g.genre_no			as no
-    from
-    	sales s, albums a, genres g, albums_genres ag
-    where
-    	sale_no = #{no}
-    	and s.album_no = a.album_no
-    	and a.album_no = ag.album_no
-    	and g.genre_no = ag.genre_no
-</select>
-
-<select id="getAlbumBySaleNo" parameterType="int" resultType="Album">
-	select
-			a.album_no				as	no
-		  , a.album_title			as	title
-		  , a.artist_name			as	artistName
-		  , a.release_date			as	releaseDate
-		  , a.cover_image_url		as	coverImageUrl
-		  , a.avg_rating			as	avgRating
-		  , a.review_count			as	reviewCount
-		  , a.stock_quantity		as	stockQuantity
-		  , a.avg_order_price		as	avgOrderPrice
-		  , a.avg_sale_price		as	avgSalePrice
-	      , a.album_created_at		as	albumCreatedAt
-		  , a.album_updated_at		as	albumUpdatedAt
-		  , a.release_price			as	releasePrice
-		  , a.recent_order_price	as	recentOrderPrice
-	from
-		sales s, albums a
-	where
-		sale_no = #{no}
-		and s.album_no = a.album_no
-</select>
+	<select id="getTotalRows" parameterType="map">
+		 	select
+		 		count(*)
+		 	from
+		 		Sales s
+		 	where
+		 		1=1
+		 	<if test="isOpened != null and isOpened != ''">
+		    	AND s.sale_is_opened = #{isOpened}
+		    </if>
+		    <if test="isSold != null and isSold != ''">
+		   		AND s.sale_is_sold = #{isSold}
+		    </if>
 	
-<select id="getUserBySaleNo" parameterType="int" resultType="User">
-	select
-		u.user_no         	 as no
-      , u.user_email         as email
-      , u.user_password      as password
-      , u.user_name          as name
-      , u.user_nickname      as nickname
-      , u.user_tel           as tel
-      , u.user_is_active     as isActive
-      , u.user_created_at    as createdAt
-      , u.user_updated_at    as updatedAt
-      , u.account_number     as accountNumber
-	from
-		users u, sales s
-	where
-		user_no = #{no}
-		u.user_no = s.user_no
-</select>
+			<if test="userNo != null">
+			    AND s.user_no = #{userNo}
+			</if>
+	
+		    <if test="albumNo != null">
+		    	AND s.album_no = #{albumNo}
+		    </if>
+		    <if test="period != null">
+			    <choose>
+			        <when test="period == '1w'">
+			            AND s.sale_created_at >= SYSDATE - 7
+			        </when>
+			        <when test="period == '1m'">
+			            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -1)
+			        </when>
+			        <when test="period == '3m'">
+			            AND s.sale_created_at >= ADD_MONTHS(SYSDATE, -3)
+			        </when>
+			    </choose>
+			</if>
+		    
+	
+	</select>
+		
+	<select id="getGenresBySaleNo" parameterType="int" resultType="Genre">
+	    select
+	    	g.genre_name		as name
+	      , g.genre_no			as no
+	    from
+	    	sales s, albums a, genres g, albums_genres ag
+	    where
+	    	sale_no = #{no}
+	    	and s.album_no = a.album_no
+	    	and a.album_no = ag.album_no
+	    	and g.genre_no = ag.genre_no
+	</select>
+	
+	<select id="getAlbumBySaleNo" parameterType="int" resultType="Album">
+		select
+				a.album_no				as	no
+			  , a.album_title			as	title
+			  , a.artist_name			as	artistName
+			  , a.release_date			as	releaseDate
+			  , a.cover_image_url		as	coverImageUrl
+			  , a.avg_rating			as	avgRating
+			  , a.review_count			as	reviewCount
+			  , a.stock_quantity		as	stockQuantity
+			  , a.avg_order_price		as	avgOrderPrice
+			  , a.avg_sale_price		as	avgSalePrice
+		      , a.album_created_at		as	albumCreatedAt
+			  , a.album_updated_at		as	albumUpdatedAt
+			  , a.release_price			as	releasePrice
+			  , a.recent_order_price	as	recentOrderPrice
+		from
+			sales s, albums a
+		where
+			sale_no = #{no}
+			and s.album_no = a.album_no
+	</select>
+		
+	<select id="getUserBySaleNo" parameterType="int" resultType="User">
+		select
+			u.user_no         	 as no
+	      , u.user_email         as email
+	      , u.user_password      as password
+	      , u.user_name          as name
+	      , u.user_nickname      as nickname
+	      , u.user_tel           as tel
+	      , u.user_is_active     as isActive
+	      , u.user_created_at    as createdAt
+	      , u.user_updated_at    as updatedAt
+	      , u.account_number     as accountNumber
+		from
+			users u, sales s
+		where
+			s.sale_no = #{no}
+			and u.user_no = s.user_no
+	</select>
+	
+	<delete id="deleteSaleBySaleNo" parameterType="int">
+	 delete from sales
+	 where sale_no = #{saleNo}
+	</delete>
 </mapper>

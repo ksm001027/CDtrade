@@ -10,8 +10,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%  
-	// String userId = (String) session.getAttribute("LOGINED_USER_ID");
-	int userNo = 1;
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	String status = request.getParameter("status");
 	String period = request.getParameter("period");

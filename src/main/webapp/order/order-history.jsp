@@ -127,7 +127,6 @@
 			url: "order-history-ajax.jsp",
 			dataType: "json",  
 			success: function(result){		
-				completeCountValue = Object.keys(result).length;
 				$("#completeCount").text(Object.keys(result).length);
 			}});
     };
@@ -143,14 +142,29 @@
 			url: "order-history-ajax.jsp",
 			dataType: "json",  
 			success: function(result){				
-				continueCountValue =  Object.keys(result).length;
 				$("#continueCount").text(Object.keys(result).length);
-				$("#allCount").text(completeCountValue+continueCountValue);
+			}});
+    };
+    
+    function allCount(){
+    	$.ajax({
+			type: "get",
+			data: {
+				status: "all",
+				period: "all",
+				keyword: keyword
+			},
+			url: "order-history-ajax.jsp",
+			dataType: "json",  
+			success: function(result){				
+				$("#allCount").text(Object.keys(result).length);
 			}});
     };
     
     completeCount();  
     continueCount();
+    allCount();
+    
     logic();
      
      $("#tmp1").click(function() {

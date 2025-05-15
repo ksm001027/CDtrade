@@ -4,13 +4,8 @@
 <%@ page import="kr.co.cdtrade.vo.User"%>
 
 <%
-User loginUser = (User)session.getAttribute("loginUser");
-
-if (loginUser == null) {
-    response.setContentType("text/plain");
-    out.print("unauthorized");
-    return;
-}
+//int userNo = (int) session.getAttribute("LOGINED_USER_NO");
+int userNo = 1;
 
 String wishNoParam = request.getParameter("wishNo");
 if (wishNoParam == null || wishNoParam.isEmpty()) {

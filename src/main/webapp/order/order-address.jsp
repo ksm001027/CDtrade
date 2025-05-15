@@ -6,8 +6,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%  
-	// String userNo = (String) session.getAttribute("LOGINED_USER_No");
-	int userNo = 1;
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
    
 	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);
 	List<Address> addressList = addressMapper.getAllAddressByUserNo(userNo);  

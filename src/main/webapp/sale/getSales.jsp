@@ -34,29 +34,6 @@
         obj.addProperty("isOpened", sale.getIsOpened());
         obj.addProperty("albumTitle", albumTitle);
         obj.addProperty("albumNo", sale.getAlbum().getNo());
-
-        jsonArray.add(obj);
-    }
-
-    JsonArray jsonArray = new JsonArray(); 
-    Gson gson = new Gson();
-    out.print(gson.toJson(sales));
-    JsonArray jsonArray = new JsonArray();
-    for (Sale sale : sales) {
-        if (sale.getAlbum() == null) continue;  // ✅ 앨범 정보 없는 경우 생략 
-
-        String albumTitle = sale.getAlbumTitle();
-        // ✅ 서버에서 문자열 자르기 처리
-        if (albumTitle.length() > maxTitleLength) {
-            albumTitle = albumTitle.substring(0, maxTitleLength) + "...";
-        }
-        
-        JsonObject obj = new JsonObject();
-        obj.addProperty("photoPath", sale.getPhotoPath());
-        obj.addProperty("price", String.format("%,d", sale.getPrice()));
-        obj.addProperty("isOpened", sale.getIsOpened());
-        obj.addProperty("albumTitle", albumTitle);
-        obj.addProperty("albumNo", sale.getAlbum().getNo());
         obj.addProperty("saleNo", sale.getNo());
 
         jsonArray.add(obj);

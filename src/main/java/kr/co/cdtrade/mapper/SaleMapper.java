@@ -7,6 +7,6 @@ public interface SaleMapper {
 	int getSaleAvgPriceByAlbumNo(int no);
 	Sale getSaleByNo(int no);
 	void updateSaleIsSold(int no);
-	
+
 
 }

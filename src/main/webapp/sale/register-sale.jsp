@@ -1,3 +1,4 @@
+<%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
 <%@page import="kr.co.cdtrade.vo.User"%>
 <%@page import="org.apache.ibatis.session.SqlSession"%>
@@ -11,7 +12,7 @@
 
  
 <%
-	int userNo = 1;/* (int) userNoAttr; */
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO"); 
 	int albumNo = StringUtils.strToInt(request.getParameter("ano"));
 	String description = request.getParameter("description");
 	String photoPath = request.getParameter("photoPath");
@@ -28,6 +29,7 @@
 
 	
 	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
+	AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
 	
 	Sale sale = new Sale();
 	sale.setPrice(price);
@@ -39,7 +41,7 @@
 
 	
 	salesMapper.insertSale(sale);
-	
+	albumMapper.updateAlbumStats(albumNo);
 	
 	response.sendRedirect("sale-complete.jsp?sno=" + sale.getNo());
 	

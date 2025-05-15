@@ -9,7 +9,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	//String userNo = (String) session.getAttribute("LOGINED_USER_NO");
 
 	int no = StringUtils.strToInt(request.getParameter("no"));
 	int price = StringUtils.strToInt(request.getParameter("price"));
@@ -19,7 +18,7 @@
 	int addrNo = StringUtils.strToInt(request.getParameter("addrNo"));
 	int saleNo = StringUtils.strToInt(request.getParameter("saleNo"));
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
-	int userNo = StringUtils.strToInt(request.getParameter("userNo"));
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	Order order = new Order();   
 	order.setNo(no);  
@@ -40,7 +39,7 @@
 	saleMapper.updateSaleIsSold(saleNo);
 	int avgSalePrice = saleMapper.getSaleAvgPriceByAlbumNo(albumNo);
 	Map<String, Object> condition = new HashMap<>();
-	condition.put("avgOrderPrice", avgOrderPrice); 
+	condition.put("avgOrderPrice", avgOrderPrice);  
 	condition.put("avgSalePrice", avgSalePrice); 
 	condition.put("recentOrderPrice", price); 
 	condition.put("albumNo", albumNo); 

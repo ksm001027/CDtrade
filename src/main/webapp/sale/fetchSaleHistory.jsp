@@ -5,45 +5,44 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
 <%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	//int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
-
-    int userNo = 1;
+    int userNo = 1; // 테스트용, 실제 사용 시 세션에서 받아와야 함.
 
     String status = request.getParameter("status");
-    String isSold = "completed".equals(status) ? "t" : "f";
+    String isSold = (status != null && "completed".equals(status)) ? "t" : "f";
     String period = request.getParameter("period");
-
     String keyword = request.getParameter("keyword");
-
 
     int pageNo = Integer.parseInt(request.getParameter("page"));
     int size = Integer.parseInt(request.getParameter("size"));
-    int offset = (pageNo - 1) * size;
 
-    // ✅ 여기에서 param 객체 생성해서 Mapper 호출
+    // ✅ Mapper 호출 준비
+    SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
+
+    // ✅ Param 설정
     Map<String, Object> param = new HashMap<>();
     param.put("userNo", userNo);
     param.put("isSold", isSold);
+    param.put("period", (period != null && !"all".equals(period)) ? period : null);
+    param.put("keyword", (keyword != null && !keyword.trim().isEmpty()) ? "%" + keyword.trim() + "%" : null);
+
+    int totalCount = salesMapper.getTotalRows(param);
+    int totalPages = (int) Math.ceil(totalCount / (double) size);
+
+    // ✅ 페이지 번호 보정
+    if (pageNo < 1) pageNo = 1;
+    if (pageNo > totalPages && totalPages > 0) pageNo = totalPages;
+
+    int offset = (pageNo - 1) * size;
+
     param.put("offset", offset);
     param.put("rows", size);
-    param.put("period", period);
 
-    
-    if (keyword != null && !keyword.trim().isEmpty()) {
-        keyword = "%" + keyword.trim() + "%";
-    } else {
-        keyword = null;
-    }
-    param.put("keyword", keyword);
+    // ✅ 데이터 조회
+    List<Sale> salesList = salesMapper.getSalesByIsSoldAndUserNo(param);
 
-
-    SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
-    List<Sale> salesList = salesMapper.getSalesByIsSoldAndUserNo(param);  // 여기를 바꿨음!
-    int totalCount = salesMapper.getTotalRows(param); // 필요 시 여기도 수정 필요
-
+    // ✅ JSON 응답 생성
     Map<String, Object> result = new HashMap<>();
     result.put("data", salesList);
     result.put("totalCount", totalCount);
