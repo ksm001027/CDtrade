@@ -9,9 +9,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	/*
-		    
-	*/ 
+	//String userNo = (String) session.getAttribute("LOGINED_USER_NO");
+
 	int no = StringUtils.strToInt(request.getParameter("no"));
 	int price = StringUtils.strToInt(request.getParameter("price"));
 	int deliveryFee = StringUtils.strToInt(request.getParameter("deliveryFee"));
@@ -22,10 +21,6 @@
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
 	int userNo = StringUtils.strToInt(request.getParameter("userNo"));
 	
-   
-	
-	//String userNo = (String) session.getAttribute("LOGINED_USER_NO");
-	 
 	Order order = new Order();   
 	order.setNo(no);  
 	order.setPrice(price);
@@ -36,12 +31,10 @@
 	order.setAlbumNo(albumNo);
 	order.setuserNo(userNo);  
 	 
-	//System.out.println("저장 전: " + order.getNo());
 	
 	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
-	orderMapper.insertOrder(order);		// 주문정보 저장
+	orderMapper.insertOrder(order);		
 	int avgOrderPrice = orderMapper.getOrderAvgPriceByAlbumNo(albumNo);
-	//System.out.println("저장 후: " + order.getNo());
 	
 	SaleMapper saleMapper = MybatisUtils.getMapper(SaleMapper.class);
 	saleMapper.updateSaleIsSold(saleNo);

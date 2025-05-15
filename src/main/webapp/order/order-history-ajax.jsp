@@ -16,7 +16,6 @@
 	String status = request.getParameter("status");
 	String period = request.getParameter("period");
 	String keyword = request.getParameter("keyword");
-	//String sort = "완료";
 	Map<String, Object> condition = new HashMap<>();
 	condition.put("status", status); 
 	condition.put("period", period); 

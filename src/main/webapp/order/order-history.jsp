@@ -27,9 +27,9 @@
     <div class="container">
         <div class="sale-history-title">구매내역</div>
         <div class="sale-history-tabs">
-            <button class="sale-history-tab active" id="tmp1"><span class="sale-history-tab-count">2</span>전체</button>
-            <button class="sale-history-tab" id="tmp2"><span class="sale-history-tab-count">0</span>진행중</button>
-            <button class="sale-history-tab" id="tmp3"><span class="sale-history-tab-count">2</span>구매완료</button>
+            <button class="sale-history-tab active" id="tmp1"><span class="sale-history-tab-count" id="allCount"></span>전체</button>
+            <button class="sale-history-tab" id="tmp2"><span class="sale-history-tab-count" id="continueCount"></span>진행중</button>
+            <button class="sale-history-tab" id="tmp3"><span class="sale-history-tab-count" id="completeCount"></span>구매완료</button>
         </div>
         <div class="sale-history-search-row">
             <div class="sale-history-search">
@@ -64,7 +64,8 @@
     	let status = "all";
     	let period = "1w";
     	let keyword = $("#search").val();
-    	
+    	let completeCountValue = 0;
+    	let continueCountValue = 0;
     function updatekeyword(){
     	keyword = $("#search").val();
     }	
@@ -100,9 +101,9 @@
 	                    		<td style="font-weight:bold;">\${item?.price.toLocaleString()}원</td>
 	                    		<td>\${item?.createdAt}</td>
 	                		</tr>`
-					
 					$("#address-list").append(tr);
 				}
+				//console.log(Object.keys(result).length);
 			}});
     };
     
@@ -115,7 +116,41 @@
         }
     });
     
+    function completeCount(){
+    	$.ajax({
+			type: "get",
+			data: {
+				status: "complete",
+				period: "all",
+				keyword: keyword
+			},
+			url: "order-history-ajax.jsp",
+			dataType: "json",  
+			success: function(result){		
+				completeCountValue = Object.keys(result).length;
+				$("#completeCount").text(Object.keys(result).length);
+			}});
+    };
     
+    function continueCount(){
+    	$.ajax({
+			type: "get",
+			data: {
+				status: "continue",
+				period: "all",
+				keyword: keyword
+			},
+			url: "order-history-ajax.jsp",
+			dataType: "json",  
+			success: function(result){				
+				continueCountValue =  Object.keys(result).length;
+				$("#continueCount").text(Object.keys(result).length);
+				$("#allCount").text(completeCountValue+continueCountValue);
+			}});
+    };
+    
+    completeCount();  
+    continueCount();
     logic();
      
      $("#tmp1").click(function() {
