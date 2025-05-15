@@ -4,8 +4,7 @@
 <%@ page import="kr.co.cdtrade.vo.User"%>
 
 <%
-//int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-int userNo = 1;
+int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 
 String wishNoParam = request.getParameter("wishNo");
 if (wishNoParam == null || wishNoParam.isEmpty()) {
