@@ -217,7 +217,6 @@
 						</tr>
 					</table>
 				</div>
-
 				<div class="button-group">
 					<% if (userNo != null && userNo == seller.getNo()) { %>
 					<button class="purchase-button"
@@ -235,7 +234,7 @@
 					</button>
 					<% } %>
 				</div>
-		
+
 
 	<%@include file="../common/footer.jsp"%>
 

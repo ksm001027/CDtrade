@@ -30,9 +30,9 @@ public interface WishItemMapper {
 
     // 총 위시리스트 아이템 개수 조회
     int countByUserId(@Param("userNo") int userNo);
-    
+
     /*
-      앨범번호에 따른 위시리스트 개수 조회 
+      앨범번호에 따른 위시리스트 개수 조회
     */
     int getTotalRows(Map<String, Object> condition);
 }

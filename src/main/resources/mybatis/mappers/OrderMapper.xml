@@ -5,6 +5,13 @@
 
 <mapper namespace="kr.co.cdtrade.mapper.OrderMapper">
 
+	<select id="getOrderAvgPriceByAlbumNo">
+		select AVG(order_price)
+	  	from orders
+	  	where album_no = #{albumNo}
+	</select>
+
+
 	<!-- 
 		List<Order> getOrdersByAlbumNo(@Param("albumNo") int albumNo, @Param("offset") int offset, @Param("rows") int rows);
 	 -->
@@ -138,6 +145,9 @@
             		<otherwise>
             		</otherwise>
         		</choose>
+        		<if test="keyword != null and keyword != ''">
+        			AND (a.album_title LIKE #{keyword} OR a.artist_name LIKE #{keyword})
+      			</if>
 	</select>
 
 

@@ -10,7 +10,7 @@ import kr.co.cdtrade.vo.Order;
 public interface AlbumMapper {
 
 	void updateAlbumStats(int albumNo);
-	
+
 	void insertAlbum(Album album);
 
 	Album getAlbumByNo(int albumNo);
@@ -54,6 +54,7 @@ public interface AlbumMapper {
 
 	List<Genre> getGenreNameByAlbumNo(int albumNo);
 
+	void updateAlbumPrice(Map<String, Object> condition);
 
 }
 
