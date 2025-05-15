@@ -97,72 +97,86 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="detail-container">
-        <!-- 상품 이미지 -->
-        <div class="detail-image">
-            <div class="slider-container">
-                <div class="slider" id="slider">
-                    <% 
+	<div class="container">
+		<div class="detail-container">
+			<!-- 상품 이미지 -->
+			<div class="detail-image">
+				<div class="slider-container">
+					<div class="slider" id="slider">
+						<% 
                     String[] photoPaths = sale.getPhotoPath().split(",");
                     for (int i = 0; i < photoPaths.length; i++) { 
                     %>
-                        <div class="slide">
-                            <img src="<%=photoPaths[i].trim()%>" alt="상품 이미지">
-                        </div>
-                    <% } %>
-                </div>
-                <% if (photoPaths.length > 1) { %>
-                    <button class="nav-btn prev" onclick="moveSlide(-1)">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="nav-btn next" onclick="moveSlide(1)">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="dots">
-                        <% for (int i = 0; i < photoPaths.length; i++) { %>
-                            <span class="dot <%= i == 0 ? "active" : "" %>" onclick="goToSlide(<%=i%>)"></span>
-                        <% } %>
-                    </div>
-                <% } %>
-            </div>
-        </div>
-
-        <!-- 상품 정보 -->
-        <div class="detail-info">
-            <div class="detail-header">
-                <div>
-                    <h1 class="detail-title"><%=sale.getAlbumTitle()%></h1>
-                    <p class="artist-name"><%=sale.getArtistName()%></p>
-                </div>
-                <button class="share-button">
-                    <i class="fas fa-share-alt"></i>
-                </button>
-            </div>
-            <div class="detail-price">
-                <span class="price-label">즉시 구매가</span>
-                <span class="price-value"><%=String.format("%,d", sale.getPrice())%>원</span>
-            </div>
-            <div class="detail-badge-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-	            <div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉"%></div>
-				<div class="product-views" style="color: #888; font-size: 0.9em; margin: 5px 0;">
-			        <div class="product-views">조회수: <%=sale.getViewCount()%>회</div>
-					<div class="product-count">매물수: <%=album.getStockQuantity()%>개</div>
-			    </div>
+						<div class="slide">
+							<img src="<%=photoPaths[i].trim()%>" alt="상품 이미지">
+						</div>
+						<% } %>
+					</div>
+					<% if (photoPaths.length > 1) { %>
+					<button class="nav-btn prev" onclick="moveSlide(-1)">
+						<i class="fas fa-chevron-left"></i>
+					</button>
+					<button class="nav-btn next" onclick="moveSlide(1)">
+						<i class="fas fa-chevron-right"></i>
+					</button>
+					<div class="dots">
+						<% for (int i = 0; i < photoPaths.length; i++) { %>
+						<span class="dot <%= i == 0 ? "active" : "" %>"
+							onclick="goToSlide(<%=i%>)"></span>
+						<% } %>
+					</div>
+					<% } %>
+				</div>
 			</div>
-            <div class="product-description">
-                <%=sale.getDescription()%>
-            </div>
 
-            <div class="info-section">
-                <h2>Information</h2>
-                <table class="info-table">
-                    <tr><th>발매일</th><td><%=formattedReleaseDate%></td></tr>
-                    <tr><th>전체평점</th><td><%=album.getAvgRating()%></td></tr>
-                    <tr>
-                        <th>장르</th>
-                        <td>
-                            <%
+			<!-- 상품 정보 -->
+			<div class="detail-info">
+				<div class="detail-header">
+					<div>
+						<h1 class="detail-title"><%=sale.getAlbumTitle()%></h1>
+						<p class="artist-name"><%=sale.getArtistName()%></p>
+					</div>
+					<button class="share-button">
+						<i class="fas fa-share-alt"></i>
+					</button>
+				</div>
+				<div class="detail-price">
+					<span class="price-label">즉시 구매가</span> <span class="price-value"><%=String.format("%,d", sale.getPrice())%>원</span>
+				</div>
+				<div class="detail-badge-container"
+					style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+					<div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉"%></div>
+					<div class="product-views"
+						style="color: #888; font-size: 0.9em; margin: 5px 0;">
+						<div class="product-views">
+							조회수:
+							<%=sale.getViewCount()%>회
+						</div>
+						<div class="product-count">
+							매물수:
+							<%=album.getStockQuantity()%>개
+						</div>
+					</div>
+				</div>
+				<div class="product-description">
+					<%=sale.getDescription()%>
+				</div>
+
+				<div class="info-section">
+					<h2>Information</h2>
+					<table class="info-table">
+						<tr>
+							<th>발매일</th>
+							<td><%=formattedReleaseDate%></td>
+						</tr>
+						<tr>
+							<th>전체평점</th>
+							<td><%=album.getAvgRating()%></td>
+						</tr>
+						<tr>
+							<th>장르</th>
+							<td>
+								<%
                             if (sale.getGenres() != null && !sale.getGenres().isEmpty()) {
                                 for (int i = 0; i < sale.getGenres().size(); i++) {
                                     out.print(sale.getGenres().get(i).getName());
@@ -172,12 +186,12 @@
                                 out.print("장르 정보 없음");
                             }
                             %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Cat.No / BARCODE</th>
-                        <td>
-                            <%
+							</td>
+						</tr>
+						<tr>
+							<th>Cat.No / BARCODE</th>
+							<td>
+								<%
                             if (sale.getGenres() != null && !sale.getGenres().isEmpty()) {
                                 for (int i = 0; i < sale.getGenres().size(); i++) {
                                     out.print(sale.getGenres().get(i).getNo());
@@ -187,29 +201,45 @@
                                 out.print("장르 번호 없음");
                             }
                             %>
-                        </td>
-                    </tr>
-                    <tr><th>발매가</th><td><%=String.format("%,d", album.getReleasePrice())%></td></tr>
-                    <tr><th>최근 거래가</th><td><%=String.format("%,d", album.getRecentOrderPrice())%></td></tr>
-                    <tr><th>평균 판매가</th><td><%=String.format("%,d", album.getAvgSalePrice())%></td></tr>
-                </table>
-            </div>
+							</td>
+						</tr>
+						<tr>
+							<th>발매가</th>
+							<td><%=String.format("%,d", album.getReleasePrice())%></td>
+						</tr>
+						<tr>
+							<th>최근 거래가</th>
+							<td><%=String.format("%,d", album.getRecentOrderPrice())%></td>
+						</tr>
+						<tr>
+							<th>평균 판매가</th>
+							<td><%=String.format("%,d", album.getAvgSalePrice())%></td>
+						</tr>
+					</table>
+				</div>
 
-            <div class="button-group">
-                <% if (userNo == seller.getNo()) { %>
-                    <button class="purchase-button" onclick="location.href='sale-form.jsp?ano=<%=sale.getAlbumNo()%>&sno=<%=sale.getNo()%>&mode=edit'">상품 수정</button>
-                    <button class="purchase-button" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='delete-sale.jsp?sno=<%=sale.getNo()%>'">상품 삭제</button>
-                <% } else { %>
-                    <button class="purchase-button" onclick="location.href='../order/order-form.jsp?sno=<%=sale.getNo()%>'">즉시 구매</button>
-                <% } %>
-            </div>
-        </div>
-    </div>
-</div>
+				<div class="button-group">
+					<% if (userNo != null && userNo == seller.getNo()) { %>
+					<button class="purchase-button"
+						onclick="location.href='sale-form.jsp?ano=<%=sale.getAlbumNo()%>&sno=<%=sale.getNo()%>&mode=edit'">상품
+						수정</button>
+					<button class="purchase-button"
+						onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='delete-sale.jsp?sno=<%=sale.getNo()%>'">상품
+						삭제</button>
+					<% } else { %>
+					<button class="purchase-button"
+						onclick="<%= (userNo == null) 
+				        ? "if(confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) location.href=\'../login/login-form.jsp\';" 
+				        : "location.href=\'../order/order-form.jsp?sno=" + sale.getNo() + "\';" %>">
+						즉시 구매
+					</button>
+					<% } %>
+				</div>
+		
 
-<%@include file="../common/footer.jsp"%>
+	<%@include file="../common/footer.jsp"%>
 
-<script>
+	<script>
     const slider = document.getElementById('slider');
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.querySelector('.prev');
@@ -251,7 +281,7 @@
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 </body>
