@@ -106,7 +106,7 @@
 					url: 'delete-user.jsp',
 					success: function() {
 						alert('회원탈퇴가 완료되었습니다.');
-						window.location.href = '../login/login-form.jsp'; // 세션 정리하고 index로 가게끔
+						window.location.href = '../login/login-form.jsp'; // 회원탈퇴 후 로그인 페이지로
 					},
 					error: function() {
 						alert('회원탈퇴 중 오류가 발생했습니다.');

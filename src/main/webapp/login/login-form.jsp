@@ -12,9 +12,9 @@
 	<%@ include file="../common/nav.jsp" %>
 
     <div class="auth-container">
-        <img src="img/logo.png" alt="로고" class="auth-logo">
+        <img src="../resources/image/music-monkey.png" alt="로고" class="auth-logo">
 
-        <div class="auth-title">☆두익이네☆<br>로그인</div>
+        <div class="auth-title">원숭이와 춤을<br>로그인</div>
 
         <form class="auth-form" action="login.jsp" method="post">
             <input type="email" name="email" class="auth-input" placeholder="이메일" required>

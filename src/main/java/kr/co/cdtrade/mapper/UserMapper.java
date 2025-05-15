@@ -30,7 +30,4 @@ public interface UserMapper {
 	
 	void updatePassword(Map<String, Object> params);
 	
-	Map<String, Object> getMypageSummary(@Param("userNo") int userNo);
-
-
 }
