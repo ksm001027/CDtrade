@@ -17,6 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@include file="../common/nav.jsp" %>
     <title>구매내역</title>
     <link rel="stylesheet" href="../resources/css/common.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,8 +28,8 @@
         <div class="sale-history-title">구매내역</div>
         <div class="sale-history-tabs">
             <button class="sale-history-tab active" id="tmp1"><span class="sale-history-tab-count">2</span>전체</button>
-            <button class="sale-history-tab"><span class="sale-history-tab-count">0</span>진행중</button>
-            <button class="sale-history-tab"><span class="sale-history-tab-count">2</span>구매완료</button>
+            <button class="sale-history-tab" id="tmp2"><span class="sale-history-tab-count">0</span>진행중</button>
+            <button class="sale-history-tab" id="tmp3"><span class="sale-history-tab-count">2</span>구매완료</button>
         </div>
         <div class="sale-history-search-row">
             <div class="sale-history-search">
@@ -57,17 +58,22 @@
             </tbody>    
         </table>   
     </div>
-    
+    <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-    
-   
+    	let status = "complete";
+    	let period = "all";
+    function logic(){
     	$.ajax({
-			type: "get",		
+			type: "get",
+			data: {
+				status: status,
+				period: period
+			},
 			url: "order-history-ajax.jsp",
 			dataType: "json",  
 			success: function(result){
-				//let $div = $("#address-list").empty();
+				let $div = $("#address-list").empty();
 				for (let item of result){
 					let tr = `
 			               <tr>
@@ -76,7 +82,7 @@
 	                            		<img src="\${item?.album?.coverImageUrl}" alt="\${item?.album?.title}">
 	                            		<div>
 	                                		<span class="badge">
-	                                		\${item?.sale?.isOpened}
+	                                		\${item?.sale?.isOpened == 't' ? '개봉' : '미개봉'}
 	                                		</span>      
 	                                		\${item?.album?.title}
 	                            		</div>
@@ -90,7 +96,15 @@
 					$("#address-list").append(tr);
 				}
 			}});
-				
+    };
+    
+     logic();
+     
+     $("#tmp2").click(function() {
+    	 let $div = $("#address-list").empty();
+    	 let status = "continue";
+    	 logic();
+     });
     </script>
 </body>
 

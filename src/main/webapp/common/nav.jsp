@@ -18,7 +18,7 @@
 <body>
     <nav class="main-navbar">
         <div class="navbar-inner">
-            <a href="#" class="navbar-logo"><span class="logo-1">원숭이와 </span> <span class="logo-2">춤을</span></a>
+            <a href="<%=request.getContextPath() %>/main.jsp" class="navbar-logo"><span class="logo-1">원숭이와 </span> <span class="logo-2">춤을</span></a>
             <ul class="navbar-menu">
                 <li><a href="<%=request.getContextPath() %>/album/best-album-list.jsp">베스트</a></li>
                 <li class="dropdown">
@@ -38,7 +38,7 @@
                 <li><a href="<%=request.getContextPath() %>/sale/sale-list.jsp">판매상품</a></li>
             </ul>
             <div class="navbar-actions">  
-               <form action="../album/keyword-album-list.jsp" method="get" id="search-btn">
+               <form action="<%=request.getContextPath() %>/album/keyword-album-list.jsp" method="get" id="search-btn">
                   <div class="navbar-search">
                      <div id="search-icon">
                          <i class="fas fa-search"></i>

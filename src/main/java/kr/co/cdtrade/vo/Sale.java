@@ -8,14 +8,12 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-<<<<<<< HEAD
-=======
+
 
 @Setter 
 @Getter
-@NoArgsConstructor
->>>>>>> 9310b48cb85084af94d497c2dbced5dcda49f86e
 @Alias("Sale")
+@NoArgsConstructor
 public class Sale {
 
 	private int no;
@@ -26,7 +24,7 @@ public class Sale {
 	private String isSold;
 	private int viewCount;
 	private Date createdAt;
-	private Date updatedAt;
+	private Date updatedAt;   
 	private User user;
 	private Album album;
 	private List<Genre> genres;
@@ -66,4 +64,3 @@ public class Sale {
 	}
 
 }
-

@@ -305,10 +305,7 @@ hr {
     margin-right: auto;
 }
 
-.section-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
+
 
 .section-header {
     display: flex;
@@ -3318,4 +3315,69 @@ hr {
 /* 드롭다운 활성화 */
 .dropdown:hover .dropdown-menu {
   display: block;
+<<<<<<< HEAD
+=======
+}
+
+.product-card-2 {
+	display: flex;
+	gap: 0.5rem;
+    width: calc((100% - 2rem) / 3);
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card-2 .product-image {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    aspect-ratio: 1;
+    background: #f8f9fa;
+}
+
+.product-card-2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
+.card-info{
+	width: 60%;
+}
+
+.main-sesction-header{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-sesction-header a{
+	text-decoration: none;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.card-genre{
+	width: calc((100% - 6rem) / 7);
+	cursor: pointer;
+}
+
+.card-genre img{
+	width: 100%;
+	aspect-ratio: 1 / 1; /* 1:1 비율로 정사각형 유지 */
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.card-genre p{
+	display: block;
+    width: 100%;
+    font-weight: 300;
+    font-size: 16px;
+    word-spacing: -2px;
+    line-height: 28px;
+    color: #868e96;
+    text-align: center;
+>>>>>>> c4fec16f18b7a6c42560c02591e6cbf7b4310fc7
 }
