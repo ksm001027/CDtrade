@@ -62,8 +62,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
 
-    	let status = "complete";
-    	let period = "all";
     	let status = "all";
     	let period = "1w";
     	let keyword = $("#search").val();
