@@ -200,7 +200,7 @@
                     <button class="purchase-button" onclick="location.href='sale-form.jsp?ano=<%=sale.getAlbumNo()%>&sno=<%=sale.getNo()%>&mode=edit'">상품 수정</button>
                     <button class="purchase-button" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='delete-sale.jsp?sno=<%=sale.getNo()%>'">상품 삭제</button>
                 <% } else { %>
-                    <button class="purchase-button" onclick="location.href='order-form.jsp?sno=<%=sale.getNo()%>'">즉시 구매</button>
+                    <button class="purchase-button" onclick="location.href='../order/order-form.jsp?sno=<%=sale.getNo()%>'">즉시 구매</button>
                 <% } %>
             </div>
         </div>
