@@ -22,8 +22,7 @@
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
 	String content = request.getParameter("content");
 	String isAddMyCollection = request.getParameter("isAddMyCollection") ;
-	// int userNo = (int) session.getAttribute("LOGINED_USER_NO");
-	int userNo = 1;
+	int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 	
 	Review review = new Review();
 	review.setRating(rating);

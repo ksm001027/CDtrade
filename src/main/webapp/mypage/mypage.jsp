@@ -1,3 +1,7 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="kr.co.cdtrade.vo.Order"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
 <%@page import="kr.co.cdtrade.vo.User"%>
 <%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
 <%@page import="kr.co.cdtrade.mapper.UserMapper"%>
@@ -12,6 +16,7 @@
 	
 	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
 	User user = userMapper.getUserByNo(userNo);
+	
 %>
 
 <%@ include file="../common/nav.jsp" %>

@@ -27,7 +27,7 @@
 		from
 			albums
 		<if test="keyword != null and keyword != ''">
-			where album_title like '%' || #{keyword} || '%'
+			where upper(album_title) like '%' || upper(#{keyword}) || '%'
 		</if>
 	</select>
 	
@@ -57,7 +57,7 @@
 			where review_count >= #{minReviewCount}
 		</if>
 		<if test="keyword != null and keyword != ''">
-			where album_title like '%' || #{keyword} || '%'
+			where upper(album_title) like '%' || upper(#{keyword}) || '%'
 		</if>
 		<choose>
 	 		<when test="sort == 'newest'">
@@ -71,6 +71,12 @@
 	 		</when>
 	 		<when test="sort == 'rating'">
 	 			order by avg_rating desc nulls last
+	 		</when>
+	 		<when test="sort == 'stock'">
+	 			order by stock_quantity desc nulls last
+	 		</when>
+	 		<when test="sort == 'review-count'">
+	 			order by review_count desc nulls last
 	 		</when>
 	 	</choose>
 	 	offset #{offset} rows
@@ -171,6 +177,16 @@
 			and ag.genre_no = g.genre_no
 	</select>
 	
+	
+	<update id="updateAlbumPrice" parameterType="Album">
+	 	update albums
+	 		set avg_order_price = #{avgOrderPrice}
+	 			,avg_sale_price = #{avgSalePrice}
+	 			,stock_quantity = stock_quantity - 1
+	 			,recent_order_price = #{recentOrderPrice}
+	 			
+	 		where album_no = #{albumNo}
+	 </update>
 
 	<select id="getOrderbyAlbumNo" resultType="Order">
 		select

@@ -9,7 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter 
+
+@Setter
 @Getter
 @NoArgsConstructor
 @Alias("Sale")
