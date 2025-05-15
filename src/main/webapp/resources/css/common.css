@@ -3318,3 +3318,4 @@ hr {
 /* 드롭다운 활성화 */
 .dropdown:hover .dropdown-menu {
   display: block;
+}
