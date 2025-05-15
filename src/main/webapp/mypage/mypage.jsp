@@ -1,7 +1,9 @@
-<%@page import="java.util.HashMap"%>
+<%@page import="kr.co.cdtrade.vo.Sale"%>
+<%@page import="kr.co.cdtrade.mapper.SalesMapper"%>
 <%@page import="kr.co.cdtrade.vo.Order"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.cdtrade.mapper.OrderMapper"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="kr.co.cdtrade.vo.User"%>
 <%@page import="kr.co.cdtrade.utils.MybatisUtils"%>
 <%@page import="kr.co.cdtrade.mapper.UserMapper"%>
@@ -17,6 +19,46 @@
 	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
 	User user = userMapper.getUserByNo(userNo);
 	
+	Map<String, Object> condition = new HashMap<>();
+	condition.put("status", "");
+	condition.put("period", "");
+	condition.put("userNo", userNo);
+	
+	OrderMapper orderMapper = MybatisUtils.getMapper(OrderMapper.class);
+	List<Order> orders = orderMapper.getOrderByUserNo(condition);
+	
+	int orderCompleteCount = 0;
+	int orderProgressCount = 0;
+	
+	for (Order order : orders) {
+		String status = order.getStatus();
+		
+		if ("완료".equals(status)) {
+			orderCompleteCount++;
+		} else if ("진행중".equals(status)) {
+			orderProgressCount++;
+		}
+	}
+	
+	int orderTotalCount = orders.size();
+	
+	SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
+	List <Sale> sales = salesMapper.getSalesByUserNo(userNo);
+	
+	int salesCompleteCount = 0;
+	int salesProgressCount = 0;
+	
+	for (Sale sale : sales) {
+		String status = sale.getIsSold();
+		
+		if ("t".equals(status)) {
+			salesCompleteCount++;
+		} else if ("f".equals(status)) {
+			salesProgressCount++;
+		}
+	}		
+	
+	int salesTotalCount = sales.size();
 %>
 
 <%@ include file="../common/nav.jsp" %>
@@ -49,17 +91,17 @@
                 <a class="mypage-summary-more" href="../order/order-history.jsp">더보기 &gt;</a>
                 <div class="mypage-summary-list">
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
+                        <div class="mypage-summary-count"><%= orderTotalCount %></div>
                         <div class="mypage-summary-label">전체</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
+                        <div class="mypage-summary-count"><%= orderProgressCount %></div>
                         <div class="mypage-summary-label">진행중</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
+                        <div class="mypage-summary-count"><%= orderCompleteCount %></div>
                         <div class="mypage-summary-label">구매완료</div>
                     </div>
                 </div>
@@ -69,17 +111,17 @@
                 <a class="mypage-summary-more" href="../sale/sale-history.jsp">더보기 &gt;</a>
                 <div class="mypage-summary-list">
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
+                        <div class="mypage-summary-count"><%= salesTotalCount %></div>
                         <div class="mypage-summary-label">전체</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
-                        <div class="mypage-summary-label">진행중</div>
+                        <div class="mypage-summary-count"><%= salesProgressCount %></div>
+                        <div class="mypage-summary-label">판매중</div>
                     </div>
                     <div class="mypage-summary-divider"></div>
                     <div class="mypage-summary-item">
-                        <div class="mypage-summary-count">0</div>
+                        <div class="mypage-summary-count"><%= salesCompleteCount %></div>
                         <div class="mypage-summary-label">판매완료</div>
                     </div>
                 </div>
