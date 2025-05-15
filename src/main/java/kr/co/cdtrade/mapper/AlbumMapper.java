@@ -9,6 +9,8 @@ import kr.co.cdtrade.vo.Order;
 
 public interface AlbumMapper {
 
+	void updateAlbumStats(int albumNo);
+	
 	void insertAlbum(Album album);
 
 	Album getAlbumByNo(int albumNo);

@@ -14,6 +14,8 @@
 	User seller = saleMapper.getUserBySaleNo(saleNo);
     Sale sale = saleMapper.getSaleBySaleNo(saleNo);
 
+    saleMapper.increaseViewCount(saleNo);
+    
     List<Genre> genres = saleMapper.getGenresBySaleNo(saleNo);
     sale.setGenres(genres);
 
@@ -23,8 +25,7 @@
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     String formattedReleaseDate = album.getReleaseDate() != null ? dateFormat.format(album.getReleaseDate()) : "발매일 정보 없음";
-	int userNo = 1;
-    /* Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO"); */
+    Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO"); 
 %>
 
 <!DOCTYPE html>
@@ -138,14 +139,17 @@
                     <i class="fas fa-share-alt"></i>
                 </button>
             </div>
-
             <div class="detail-price">
                 <span class="price-label">즉시 구매가</span>
                 <span class="price-value"><%=String.format("%,d", sale.getPrice())%>원</span>
             </div>
-
-            <div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉"%></div>
-
+            <div class="detail-badge-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+	            <div class="detail-badge"><%="t".equals(sale.getIsOpened()) ? "중고" : "미개봉"%></div>
+				<div class="product-views" style="color: #888; font-size: 0.9em; margin: 5px 0;">
+			        <div class="product-views">조회수: <%=sale.getViewCount()%>회</div>
+					<div class="product-count">매물수: <%=album.getStockQuantity()%>개</div>
+			    </div>
+			</div>
             <div class="product-description">
                 <%=sale.getDescription()%>
             </div>
@@ -154,7 +158,7 @@
                 <h2>Information</h2>
                 <table class="info-table">
                     <tr><th>발매일</th><td><%=formattedReleaseDate%></td></tr>
-                    <tr><th>전체평점</th><td><%=album.getRating()%></td></tr>
+                    <tr><th>전체평점</th><td><%=album.getAvgRating()%></td></tr>
                     <tr>
                         <th>장르</th>
                         <td>
@@ -186,7 +190,8 @@
                         </td>
                     </tr>
                     <tr><th>발매가</th><td><%=String.format("%,d", album.getReleasePrice())%></td></tr>
-                    <tr><th>판매가</th><td><%=String.format("%,d", sale.getPrice())%></td></tr>
+                    <tr><th>최근 거래가</th><td><%=String.format("%,d", album.getRecentOrderPrice())%></td></tr>
+                    <tr><th>평균 판매가</th><td><%=String.format("%,d", album.getAvgSalePrice())%></td></tr>
                 </table>
             </div>
 
