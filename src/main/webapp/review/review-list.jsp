@@ -41,9 +41,9 @@ if (ajaxParam != null && ajaxParam.equals("true")) {
     onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
 	<div class="review-album-cover">
 		<img
-			src="${pageContext.request.contextPath}/<%=review.getAlbum().getCoverImageUrl()%>"
+			src="<%=review.getAlbum().getCoverImageUrl()%>"
 			alt="앨범 커버"
-			onerror="this.src='${pageContext.request.contextPath}/resources/images/default-album.jpg'">
+			onerror="this.src='/CDtrade/resources/images/default-album.jpg'">
 	</div>
 	<div class="review-content">
 		<div class="review-album-info">

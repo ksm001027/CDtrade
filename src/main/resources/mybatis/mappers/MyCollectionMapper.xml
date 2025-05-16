@@ -21,6 +21,7 @@
 			<result property="coverImageUrl" column="COVER_IMAGE_URL" />
 			<result property="releaseDate" column="RELEASE_DATE" />
 			<result property="avgRating" column="AVG_RATING" />
+			<result property="avgSalePrice" column="AVG_SALE_PRICE" />
 		</association>
 
 		<association property="review" javaType="Review">
@@ -33,17 +34,21 @@
 	<!-- 사용자 ID로 마이컬렉션 아이템 조회 (INNER JOIN을 LEFT JOIN으로 변경) -->
 	<select id="getItemsByUserId" resultMap="MyCollectionItemMap">
 		SELECT
-		c.COL_NO, c.COL_CREATED_AT, c.COL_UPDATED_AT,
-		c.USER_NO, u.USER_NAME, u.USER_NICKNAME,
-		c.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE,
-		a.AVG_RATING,
+		c.COL_NO,
+		c.COL_CREATED_AT, c.COL_UPDATED_AT,
+		c.USER_NO, u.USER_NAME,
+		u.USER_NICKNAME,
+		c.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME,
+		a.COVER_IMAGE_URL, a.RELEASE_DATE,
+		a.AVG_RATING, a.AVG_SALE_PRICE,
 		c.REVIEW_NO, r.REVIEW_RATING, r.REVIEW_CONTENT
 		FROM
 		MYCOLLECTION_ITEMS c
 		LEFT JOIN
 		USERS u ON c.USER_NO = u.USER_NO
 		LEFT JOIN
-		ALBUMS a ON c.ALBUM_NO = a.ALBUM_NO
+		ALBUMS a ON
+		c.ALBUM_NO = a.ALBUM_NO
 		LEFT JOIN
 		REVIEWS r ON c.REVIEW_NO = r.REVIEW_NO
 		WHERE
@@ -54,8 +59,10 @@
 
 	<!-- 마이컬렉션 아이템 추가 (변경 없음) -->
 	<insert id="addCollectionItem" parameterType="MyCollectionItem">
-		INSERT INTO MYCOLLECTION_ITEMS (
-		COL_NO, COL_CREATED_AT, COL_UPDATED_AT, USER_NO, ALBUM_NO, REVIEW_NO
+		INSERT INTO
+		MYCOLLECTION_ITEMS (
+		COL_NO, COL_CREATED_AT, COL_UPDATED_AT, USER_NO,
+		ALBUM_NO, REVIEW_NO
 		) VALUES (
 		SEQ_COL_NO.NEXTVAL, SYSDATE, SYSDATE,
 		#{user.no}, #{album.no}, #{review.no}
@@ -67,34 +74,33 @@
 		DELETE FROM MYCOLLECTION_ITEMS
 		WHERE COL_NO = #{colNo}
 	</delete>
-	
-	<!-- 
-		void deleteCollectionItemByReviewNo(@Param("reviewNo") int reviewNo);
-	 -->
-	 <delete id="deleteCollectionItemByReviewNo">
-	 	DELETE FROM MYCOLLECTION_ITEMS
-		WHERE REVIEW_NO = #{reviewNo}
-	 </delete>
+
+	<!-- void deleteCollectionItemByReviewNo(@Param("reviewNo") int reviewNo); -->
+	<delete id="deleteCollectionItemByReviewNo">
+		DELETE FROM MYCOLLECTION_ITEMS
+		WHERE REVIEW_NO =
+		#{reviewNo}
+	</delete>
 
 	<!-- 특정 앨범이 사용자의 컬렉션에 있는지 확인 (변경 없음) -->
 	<select id="findByUserAndAlbum" resultMap="MyCollectionItemMap">
 		SELECT
-		COL_NO, COL_CREATED_AT, COL_UPDATED_AT, USER_NO, ALBUM_NO, REVIEW_NO
+		COL_NO,
+		COL_CREATED_AT, COL_UPDATED_AT, USER_NO, ALBUM_NO, REVIEW_NO
 		FROM
 		MYCOLLECTION_ITEMS
 		WHERE
 		USER_NO = #{userNo} AND ALBUM_NO = #{albumNo}
 	</select>
 
-	<!-- 정렬 옵션에 따른 마이컬렉션 아이템 조회 (INNER JOIN을 LEFT JOIN으로 변경) -->
-	<!-- 정렬 옵션에 따른 마이컬렉션 아이템 조회 -->
+	<!-- 정렬 옵션에 따른 마이컬렉션 아이템 조회 수정 -->
 	<select id="getItemsByUserIdSorted"
 		resultMap="MyCollectionItemMap">
 		SELECT
 		c.COL_NO, c.COL_CREATED_AT, c.COL_UPDATED_AT,
 		c.USER_NO, u.USER_NAME, u.USER_NICKNAME,
 		c.ALBUM_NO, a.ALBUM_TITLE, a.ARTIST_NAME, a.COVER_IMAGE_URL, a.RELEASE_DATE,
-		a.AVG_RATING,
+		a.AVG_RATING, a.RELEASE_PRICE, a.AVG_SALE_PRICE,
 		c.REVIEW_NO, r.REVIEW_RATING, r.REVIEW_CONTENT
 		FROM
 		MYCOLLECTION_ITEMS c
@@ -114,10 +120,10 @@
 				ORDER BY NVL(a.AVG_RATING, 0) DESC, NVL(a.REVIEW_COUNT, 0) DESC
 			</when>
 			<when test="sortOption == 'priceHigh'">
-				ORDER BY NVL(a.AVG_SALE_PRICE, 0) DESC
+				ORDER BY NVL(a.RELEASE_PRICE, 0) DESC
 			</when>
 			<when test="sortOption == 'priceLow'">
-				ORDER BY NVL(a.AVG_SALE_PRICE, 0) ASC
+				ORDER BY NVL(a.RELEASE_PRICE, 0) ASC
 			</when>
 			<otherwise>
 				ORDER BY c.COL_CREATED_AT DESC
@@ -128,7 +134,8 @@
 	<!-- 총 컬렉션 아이템 개수 조회 (변경 없음) -->
 	<select id="countByUserId" resultType="int">
 		SELECT COUNT(*)
-		FROM MYCOLLECTION_ITEMS
+		FROM
+		MYCOLLECTION_ITEMS
 		WHERE USER_NO = #{userNo}
 	</select>
 

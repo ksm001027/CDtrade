@@ -60,14 +60,14 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 	<div class="mycollection-header">
 		<div class="list-header">
 			<div class="total-items">
-				<i class="fas fa-check-circle" style="font-size: 1rem;"></i> 총 <b><%=totalItems%></b>개
+				<b>전체 <%=totalItems%></b>개
 			</div>
 			<button class="sort-button" id="sortButton">
 				<span> <%
  if ("newest".equals(sortOption)) {
  	out.print("신규등록순");
  } else if ("popular".equals(sortOption)) {
- 	out.print("인기순");
+ 	out.print("별점순");
  } else if ("priceHigh".equals(sortOption)) {
  	out.print("높은가격순");
  } else if ("priceLow".equals(sortOption)) {
@@ -90,7 +90,6 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 			onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=item.getAlbum().getNo()%>'">
 			<img class="mycollection-album-img"
 				src="<%=item.getAlbum().getCoverImageUrl()%>"
-				alt="<%=item.getAlbum().getTitle()%>"
 				onerror="this.src='/CDtrade/resources/images/default-album.jpg'">
 			<div class="mycollection-card-overlay">
 				<div class="review-block-rating">
@@ -112,10 +111,7 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 					<i class="fas fa-times"></i>
 				</button>
 			</div>
-			<div class="mycollection-card-info">
-				<h3 class="album-title"><%=item.getAlbum().getTitle()%></h3>
-				<p class="album-artist"><%=item.getAlbum().getArtistName()%></p>
-			</div>
+			
 		</div>
 		<%
 		}
@@ -175,6 +171,58 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 
 
 	<script>
+    $(document).ready(function() {
+        // 앨범 카드 클릭 이벤트
+        $('.mycollection-card').on('click', function() {
+            const albumNo = $(this).attr('data-albumno');
+            console.log("앨범 번호:", albumNo); // 디버깅용
+            if (albumNo) {
+                location.href = '${pageContext.request.contextPath}/album/detail.jsp?albumNo=' + albumNo;
+            }
+        });
+        
+        // 삭제 버튼 클릭 이벤트
+        $('.remove-btn').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const colNo = $(this).data('colno');
+            
+            if (confirm('컬렉션에서 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: 'delete-collection-item.jsp',
+                    type: 'POST',
+                    data: { colNo: colNo },
+                    success: function(response) {
+                        if (response.trim() === 'success') {
+                            // 성공 시 화면에서 해당 아이템 제거
+                            $('[data-colno="' + colNo + '"]').closest('.mycollection-card').fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // 남은 아이템이 없으면 메시지 표시
+                                if ($('.mycollection-card').length === 0) {
+                                    $('.mycollection-grid').html(`
+                                        <div class="no-collection-message">
+                                            <p>컬렉션에 추가된 앨범이 없습니다.</p>
+                                            <a href="${pageContext.request.contextPath}/album/best-album-list.jsp" class="btn-primary">앨범 둘러보기</a>
+                                        </div>
+                                    `);
+                                }
+                                
+                                // 총 아이템 수 업데이트
+                                $('.total-items b').text($('.mycollection-card').length);
+                            });
+                        } else {
+                            alert('삭제 중 오류가 발생했습니다.');
+                        }
+                    },
+                    error: function() {
+                        alert('서버 오류가 발생했습니다.');
+                    }
+                });
+            }
+        });
+        
         // 모달 관련 요소
         const sortButton = document.getElementById('sortButton');
         const sortModal = document.getElementById('sortModal');
@@ -207,47 +255,7 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
                 window.location.href = 'mycollection.jsp?sort=' + sortValue;
             });
         });
-        
-        // 컬렉션 아이템 제거 버튼 처리
-        $(document).on('click', '.remove-btn', function(e) {
-            e.stopPropagation(); // 부모 요소 클릭 이벤트 방지
-            
-            const colNo = $(this).data('colno');
-            
-            if (confirm('컬렉션에서 삭제하시겠습니까?')) {
-                $.ajax({
-                    url: 'delete-collection-item.jsp',
-                    type: 'POST',
-                    data: { colNo:  colNo },
-                    success: function(response) {
-                        if (response.trim() === 'success') {
-                            // 성공 시 화면에서 해당 아이템 제거
-                            $('[data-colno="' + colNo + '"]').closest('.mycollection-card').fadeOut(300, function() {
-                                $(this).remove();
-                                
-                                // 남은 아이템이 없으면 메시지 표시
-                                if ($('.mycollection-card').length === 0) {
-                                    $('.mycollection-grid').html(`
-                                        <div class="no-collection-message">
-                                            <p>컬렉션에 추가된 앨범이 없습니다.</p>
-                                            <a href="album-list.jsp" class="browse-albums-btn">앨범 둘러보기</a>
-                                        </div>
-                                    `);
-                                }
-                                
-                                // 총 아이템 수 업데이트
-                                $('.total-items b').text($('.mycollection-card').length);
-                            });
-                        } else {
-                            alert('삭제 중 오류가 발생했습니다.');
-                        }
-                    },
-                    error: function() {
-                        alert('서버 오류가 발생했습니다.');
-                    }
-                });
-            }
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
