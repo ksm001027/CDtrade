@@ -85,7 +85,9 @@
 			dataType: "json",  
 			success: function(result){
 				let $div = $("#address-list").empty();
+				
 				for (let item of result){
+					let createdDate = new Date(item?.createdAt);
 					let tr = `  
 			               <tr>
 	                    		<td>
@@ -101,7 +103,7 @@
 	                    		</td>
 	                    		<td><span class="sale-history-status">\${item?.status}</span></td>
 	                    		<td style="font-weight:bold;">\${item?.price.toLocaleString()}원</td>
-	                    		<td>\${item?.createdAt}</td>
+	                    		<td>\${createdDate.getFullYear()}.\${createdDate.getMonth()}.\${createdDate.getDate()}.</td>
 	                		</tr>`
 					$("#address-list").append(tr);
 				}
