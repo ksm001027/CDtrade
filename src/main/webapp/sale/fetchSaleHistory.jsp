@@ -10,6 +10,9 @@
     int userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
 
     String status = request.getParameter("status");
+    if (status == null || status.isEmpty()) {
+        status = "all"; // ✅ 기본값 설정
+    }
     String isSold = null;
     if ("onSale".equals(status)) {
         isSold = "f"; // 판매중
@@ -19,10 +22,15 @@
     // "all"일 때는 isSold를 그대로 null로 유지 (전체 조회)
     String period = request.getParameter("period");
     String keyword = request.getParameter("keyword");
-
-    int pageNo = Integer.parseInt(request.getParameter("page"));
-    int size = Integer.parseInt(request.getParameter("size"));
-
+	
+    int pageNo = 1;
+    int size = 10;
+    try{
+    	pageNo = Integer.parseInt(request.getParameter("page"));
+    	size = Integer.parseInt(request.getParameter("size"));
+    } catch (NumberFormatException e) {
+    	
+    }
     // ✅ Mapper 호출 준비
     SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
     
