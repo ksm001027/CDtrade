@@ -5,10 +5,11 @@
             <div class="footer-left">
                 <h4>이용약관 &nbsp;&nbsp;&nbsp; 개인정보처리방침</h4>
                 <div class="business-info">
-                    (주)원숭이와춤을&nbsp;&nbsp;&nbsp;&nbsp;대표: 김방구&nbsp;&nbsp;&nbsp;&nbsp;사업자등록번호: 419-81-02900
+                    (주)원숭이와춤을&nbsp;&nbsp;&nbsp;&nbsp;대표: 왕징판&nbsp;&nbsp;&nbsp;&nbsp;사업자등록번호: 041-01-00410
                     <a href="#" onclick="toggleModal()">사업자정보확인</a><br>
-                    사업장소재지: 서울 종로구 율곡로10길 105 디아망
-                    <p style="margin-top:10px;">© MONKEY SHOW Corp. | 1.0.0</p>
+                    통신판매업: 제 0410-서울특별시-0410 호<br>
+                    사업장소재지: 서울 종로구 율곡로10길 105 디아망타워 4층
+                    <p style="margin-top:10px;">© DUICK Corp. | 1.0.0</p>
                 </div>
             </div>
 
@@ -28,10 +29,10 @@
     <!-- 모달 -->
     <div class="modal" id="bizModal">
         <div class="modal-content">
-            <p><strong>(주)원숭이와춤을</strong> &nbsp;&nbsp;&nbsp;&nbsp;| 김방구</p>
-            <p>사업자등록번호 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 888888888</p>
-            <p>통신판매업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 디아망 </p>
-            <p>사업장소재지 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 서울 종로구 율곡로10길 105 디아망</p>
+            <p><strong>(주)원숭이와춤을</strong> &nbsp;&nbsp;&nbsp;&nbsp;| 왕징판</p>
+            <p>사업자등록번호 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 041-01-00410</p>
+            <p>통신판매업 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 제 0410-서울특별시-0410 호</p>
+            <p>사업장소재지 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 서울 종로구 율곡로10길 105 디아망타워 4층</p>
             <button onclick="toggleModal()">확인</button>
         </div>
     </div>

@@ -119,7 +119,7 @@ System.out.println("===== 위시리스트 디버깅 종료 =====");
             for (WishItem item : wishItems) {
         %>
         <div class="album-card">
-            <a href="${pageContext.request.contextPath}/album/detail?albumNo=<%=item.getAlbum().getNo()%>">
+            <a href="${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=item.getAlbum().getNo()%>">
                 <img src="<%=item.getAlbum().getCoverImageUrl()%>" 
                      alt="<%=item.getAlbum().getTitle()%>" 
                      class="album-image"
@@ -127,7 +127,7 @@ System.out.println("===== 위시리스트 디버깅 종료 =====");
             </a>
             <div class="album-info">
                 <h3 class="album-title">
-                    <a href="${pageContext.request.contextPath}/album/detail?albumNo=<%=item.getAlbum().getNo()%>">
+                    <a href="${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=item.getAlbum().getNo()%>">
                         <%=item.getAlbum().getArtistName()%> - <%=item.getAlbum().getTitle()%>
                     </a>
                 </h3>
