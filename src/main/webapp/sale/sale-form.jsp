@@ -47,7 +47,6 @@
 %>
 
 <body>
-<h1><%= "edit".equals(mode) ? "상품 수정" : "판매 등록" %></h1>
 
 <form action="<%= "edit".equals(mode) ? "update-sale.jsp" : "register-sale.jsp" %>" method="post" id="saleForm">
 	<input type="hidden" name="mode" value="<%= mode %>">
@@ -113,20 +112,16 @@
                         <h3 class="section-title">상품설명</h3>
                         <div class="condition-tags">
                             <button type="button" class="condition-tag">모서리 손상</button>
-                            <button type="button" class="condition-tag">잉크 구겨짐</button>
-                            <button type="button" class="condition-tag">뒷면 구겨짐</button>
+                            <button type="button" class="condition-tag">구성품 없음</button>
+                            <button type="button" class="condition-tag">구성품 포함</button>
                             <button type="button" class="condition-tag">단순개봉</button>
                             <button type="button" class="condition-tag">1회 청음</button>
-                        
-                            <button type="button" class="condition-tag">정품에 지장 없는 얼룩 스크래치</button>
+                            <button type="button" class="condition-tag">테두리 터짐</button>                        
+                            <button type="button" class="condition-tag">상품에 지장 없는 얼룩 스크래치</button>
                             <button type="button" class="condition-tag">미세한 오염</button>
                             <button type="button" class="condition-tag">접힘</button>
                             <button type="button" class="condition-tag">상태 확인차 개봉</button>
-                            <button type="button" class="condition-tag">구성품 없음</button>
                        
-                            <button type="button" class="condition-tag">구성품 포함</button>
-                            <button type="button" class="condition-tag">사인반</button>
-                            <button type="button" class="condition-tag">테두리 터짐</button>
                         </div>
                         <textarea class="description-input" name="description" placeholder="내용을 입력해주세요."><%= sale != null ? sale.getDescription().trim() : "" %></textarea>
                         
@@ -197,12 +192,12 @@
                         <h3 class="section-title">가격 정보</h3>
                         <div class="price-info">
                             <div class="price-row">
-                                <span class="price-label">평균판매가</span>
-                                <span><%=String.format("%,d", album.getAvgSalePrice())  %>원</span>
+                                <span class="price-label">발매가</span>
+                                <span><%=String.format("%,d", album.getReleasePrice())%>원</span>
                             </div>
                             <div class="price-row">
-                                <span class="price-label">구매평균가</span>
-                                <span><%=String.format("%,d", album.getAvgOrderPrice()) %>원</span>
+                                <span class="price-label">평균판매가</span>
+                                <span><%=String.format("%,d", album.getAvgSalePrice()) %>원</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label">수수료(판매가의 3%)</span>

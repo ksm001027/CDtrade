@@ -220,15 +220,17 @@
 	        </when>
 	    </choose>
 	</if>
+		order by 
+			case when s.sale_is_sold = 'f' then 0 else 1 end
 		<choose>
 			<when test="sort == 'newest'">
-				order by s.sale_created_at desc
+				,s.sale_created_at desc
 			</when>
 			<when test="sort == 'price-asc'">
-				order by s.sale_price asc
+				,s.sale_price asc
 			</when>
 			<when test="sort == 'price-desc'">
-				order by s.sale_price desc
+				,s.sale_price desc
 			</when>
 		</choose>
 		offset #{offset} rows

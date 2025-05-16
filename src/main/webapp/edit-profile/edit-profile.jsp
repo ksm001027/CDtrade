@@ -41,6 +41,7 @@
 	// 닉네임 중복 검사
 	String loginNickname = (String) session.getAttribute("LOGINED_USER_NICKNAME");
 	
+	
 	// 세션 닉네임 null이면 로그인 풀린 거니까 로그인 페이지로 이동
 	if (loginNickname == null) {
 		response.sendRedirect("../login/login-form.jsp");
@@ -64,7 +65,10 @@
 	updateUser.setName(name);
 	updateUser.setTel(tel);
 	
+	
 	userMapper.updateUser(updateUser);
+	
+	session.setAttribute("LOGINED_USER_NICKNAME", nickname);
 	
 	response.sendRedirect("../mypage/mypage.jsp");
 %>

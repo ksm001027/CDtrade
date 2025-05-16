@@ -3372,3 +3372,33 @@ hr {
     color: #868e96;
     text-align: center;
 }
+
+/* 판매 완료 상태를 나타내는 스타일 */
+.product-card.sold .product-image {
+    position: relative;
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.product-card.sold .sold-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none; /* 링크를 방해하지 않음 */
+}
+
+/* 기존 이미지 스타일이 적용되도록 유지 */
+.product-card.sold img {
+    transition: none;
+}

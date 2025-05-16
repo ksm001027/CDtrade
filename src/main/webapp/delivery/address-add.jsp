@@ -18,6 +18,14 @@
 	String addrNoStr = request.getParameter("addrNo");
 	String isDefault = request.getParameter("isDefaultAddress") != null ? "t" : "f";
 	
+	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);
+	
+	int addressCount = addressMapper.getAddressCountByUserNo(userNo);
+	
+	if (addressCount == 0) {
+		isDefault = "t";
+	}
+	
 	Address address = new Address();
 	address.setName(request.getParameter("addrName"));
 	address.setReceiverName(request.getParameter("receiverName"));
@@ -25,10 +33,9 @@
 	address.setAddrBasic(request.getParameter("addrBasic"));
 	address.setAddrDetail(request.getParameter("addrDetail"));
 	address.setZipCode(request.getParameter("zipCode"));
-	address.setIsDefaultAddress(request.getParameter("isDefaultAddress") != null ? "t" : "f");
+	address.setIsDefaultAddress(isDefault);
 	address.setUser(user);
 
-	AddressMapper addressMapper = MybatisUtils.getMapper(AddressMapper.class);
 	
 	if ("t".equals(isDefault)) {
 		// 기본배송지로 설정한 경우, 다른 배송지들은 전부 기본 해제

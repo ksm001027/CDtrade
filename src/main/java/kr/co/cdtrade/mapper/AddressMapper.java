@@ -17,4 +17,6 @@ public interface AddressMapper {
 	void updateAllAddressToNonDefault(int userNo);
 
 	void updateAddress(Address address);
+	
+	int getAddressCountByUserNo(int userNo);
 }

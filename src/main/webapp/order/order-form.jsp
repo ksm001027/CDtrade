@@ -21,7 +21,7 @@
      	if (address == null) {
 %>     		
 <script type="text/javascript">
-	alert("배송지 정보가 없습니다. 배송지 등록 페이지로 이동합니다.")
+	alert("기본배송지 정보가 없습니다. 배송지 등록 페이지로 이동합니다.")
 	location.href="../delivery/delivery-form.jsp";
 </script>
 <%
@@ -380,7 +380,7 @@
                                 		data-addr-zipcode="\${addr.zipCode}">
                                 	<label class="form-check-label" for="address1">
                                 		<div class="address-item">
-                                		<div><span class="address-name">\${addr.name}</span></div>
+                                		<div><span class="address-name">\${addr.name} \${addr.isDefaultAddress == 't' ? "(기본배송지)" : ''}</span></div>
                                         <div class="address-info">\${addr.zipCode}</div>
                                         <div class="address-info">\${addr.addrBasic} \${addr.addrDetail}</div>
                                         <div class="address-phone"> \${addr.receiverName}| \${addr.receiverTel}</div>                  
@@ -456,12 +456,6 @@
 		}
 	});
 </script>    
-    
-    
-    
-    
-    
-    
     
 </body>
 
