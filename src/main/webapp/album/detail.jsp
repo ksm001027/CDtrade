@@ -468,7 +468,7 @@
 	            </div>
 	
 	            <div class="review-write">
-	                <textarea placeholder="리뷰를 작성해주세요" class="review-textarea" name="content" ><%=myReview.getContent()%></textarea>
+	                <textarea placeholder="리뷰를 작성해주세요" class="review-textarea" name="content" ><%=myReview.getContent() == null ? "" : myReview.getContent()%></textarea>
 	                <button class="review-submit" type="submit" id="review-update-btn">수정</button>
 	                <button class="review-submit second" type="submit" id="review-delete-btn">삭제</button>
 	            </div>
