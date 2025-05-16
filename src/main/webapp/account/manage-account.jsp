@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="kr.co.cdtrade.vo.User" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8"%>
+<%@ page import="kr.co.cdtrade.mapper.UserMapper" %>
+<%@ page import="kr.co.cdtrade.utils.MybatisUtils" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,9 +15,17 @@
 <%@ include file="../common/nav.jsp" %>
 
 <%
-	User savedUser = (User) session.getAttribute("LOGINED_USER");
-	String accountNumber = (savedUser != null && savedUser.getAccountNumber() != null) ? savedUser.getAccountNumber() : "";
-	boolean isAccountRegistered = !accountNumber.isEmpty();
+	Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
+
+	if (userNo == null) {
+		response.sendRedirect("../login/login-form.jsp");
+		return;
+	}
+
+	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
+	String accountNumber = userMapper.getAccountNumberByUserNo(userNo);
+
+	boolean isAccountRegistered = (accountNumber != null && !accountNumber.trim().isEmpty());
 %>
 
 <div class="mypage-layout">
@@ -31,7 +41,7 @@
 				<option value="두익은행">두익은행</option>
 			</select>
 
-			<input class="account-input" type="text" name="accountNumber" placeholder="계좌번호를 입력하세요" value="<%= accountNumber %>" required>
+			<input class="account-input" type="text" name="accountNumber" placeholder="계좌번호를 입력하세요" value="<%= accountNumber != null ? accountNumber : "" %>" required>
 			<input class="account-input" type="text" name="accountHolder" placeholder="예금주명을 입력하세요" required>
 
 			<%
