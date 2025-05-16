@@ -229,7 +229,7 @@ System.out.println("===== 위시리스트 디버깅 종료 =====");
                                     $('.album-grid').html(`
                                         <div class="empty-wishlist">
                                             <p>위시리스트에 추가된 앨범이 없습니다.</p>
-                                            <a href="${pageContext.request.contextPath}/album/list" class="btn-primary">앨범 둘러보기</a>
+                                            <a href="${pageContext.request.contextPath}/album/best-album-list.jsp" class="btn-primary">앨범 둘러보기</a>
                                         </div>
                                     `);
                                 }

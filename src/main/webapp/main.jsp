@@ -10,7 +10,7 @@
     
 <%
     SalesMapper salesMapper = MybatisUtils.getMapper(SalesMapper.class);
-    List<Sale> recentSales = salesMapper.getRecentOnSaleProducts();
+    List<Sale> recentSales = salesMapper.getRecentOnSaleProducts(); 
     List<Sale> recentCompletedSales = salesMapper.getRecentCompletedSales();
     
     AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
