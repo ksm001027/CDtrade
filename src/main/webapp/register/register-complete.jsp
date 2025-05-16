@@ -9,7 +9,11 @@
 	<link rel="stylesheet" href="../resources/css/common.css">
 </head>
 <body>
+<%@ include file="../common/nav.jsp" %>
+
 	<div class="auth-container">
+		<img src="../resources/image/hi-monkey.png" alt="로고" class="auth-logo">
+	
         <div class="auth-title">회원가입이 완료되었습니다.</div>
         <div class="auth-complete-message">
             두익이네 오신 걸 환영합니다!<br>
@@ -19,9 +23,11 @@
             <br>
         </div>
         <div class="auth-actions">
-            <a href="../login/login-form.jsp" class="auth-btn">로그인 하러 가기</a>
-            <a href="../main.jsp" class="auth-btn">메인 페이지로 이동</a>
+            <a href="../login/login-form.jsp" class="auth-btn" style="text-decoration: none; color: white;">로그인 하러 가기</a>
+            <a href="../main.jsp" class="auth-btn" style="text-decoration: none; color: white;">메인 페이지로 이동</a>
         </div>
     </div>
+    
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

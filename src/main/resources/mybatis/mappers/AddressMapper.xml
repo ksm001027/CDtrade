@@ -104,4 +104,13 @@
 			, addr_updated_at = sysdate
 		where addr_no = #{no}
 	</update>
+	
+	<select id="getAddressCountByUserNo" resultType="int">
+		select count(*)
+		from 
+			addresses
+		where
+			user_no = #{userNo}
+	</select>
+	
 </mapper>
