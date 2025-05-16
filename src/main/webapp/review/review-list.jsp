@@ -184,7 +184,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 					<i class="fas fa-search search-icon"></i> <input type="text"
 						class="search-input" name="keyword"
 						value="<%=keyword != null ? keyword : ""%>"
-						placeholder="앨범명, 가수명, 소속사명 등">
+						placeholder="앨범, 아티스트 검색">
 				</form>
 			</div>
 		</div>
