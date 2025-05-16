@@ -186,7 +186,7 @@
                 배송지 추가
                 <button class="address-modal-close" id="closeAddressAdd">&times;</button>
             </div>
-            <form class="address-add-form" action="address-add.jsp" method="post">
+            <form class="address-add-form" action="order-address-add.jsp?sno=<%=saleNo%>" method="post">
                 <label class="address-add-label">배송지명</label>
                 <input class="address-add-input" type="text" name="addrName" placeholder="배송지명을 입력하세요">
                 <label class="address-add-label">수령인</label>
@@ -340,6 +340,7 @@
         	let detail = $radio.attr("data-addr-detail");
         	let recname = $radio.attr("data-addr-receiverName");
         	let rectel = $radio.attr("data-addr-tel");
+        	
         	
         	$("#input-addr-no").val(no);
         	$("#input-addr-name").val(name);

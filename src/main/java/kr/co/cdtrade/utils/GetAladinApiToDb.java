@@ -35,7 +35,7 @@ public class GetAladinApiToDb {
 	 * 		ㄴ mappingGenre메소드에 필요한 데이터 : toalbumDto 객체의 categoryName, Album 객체의 no
 	 */
 	public static void main(String[] args) throws IOException{
-		
+
 	  Map<String, Integer> musicMap = new HashMap<>();
 
         // Adding entries to the map
@@ -63,9 +63,9 @@ public class GetAladinApiToDb {
         musicMap.put("팝R&B/소울", 36386);
         musicMap.put("J-pop", 70547);
         musicMap.put("O.S.T", 63212);
-        
+
         for (Map.Entry<String, Integer> entry : musicMap.entrySet()) {
-        		
+
 	        	//  요청 보내기
 	        	URL url = new URL("http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbksm0010270919002"
 	        			+ "&QueryType=Bestseller"
@@ -75,24 +75,24 @@ public class GetAladinApiToDb {
 	        			+ "&output=js"
 	        			+ "&Version=20131101"
 	        			+ "&CategoryId="+entry.getValue());
-	        	
+
 	        	HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-	        	
+
 	        	connection.setRequestMethod("GET");
-	        	
+
 	        	int responseCode = connection.getResponseCode();
-	        	
+
 	        	// 응답코드가 200이면, 데이터 파싱하는 작업 수행하기
 	        	if(responseCode == HttpURLConnection.HTTP_OK) {
 	        		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 	        		String jsonData;
-	        		
-	        		
+
+
 	        		while((jsonData = reader.readLine()) != null) {
 	        			Gson gson = new Gson();
 	        			JsonObject jsonObject = JsonParser.parseString(jsonData).getAsJsonObject();
 	        			String itemsJson = jsonObject.get("item").toString();
-	        			
+
 	        			/*
 	        			 * Java에서는 제네릭 타입(예: List<ToAlbumDto>) 정보를 런타임에 유지하지 않는다.
 	        			 * 따라서 gson.fromJson(itemsJson, List<ToAlbumDto>.class)에서 Java의 클래스 객체(Class)는 제네릭 정보를 포함하지 않기 때문에 에러가 발생한다
@@ -105,16 +105,16 @@ public class GetAladinApiToDb {
 		        		System.out.println("요청장르" + entry.getKey());
 		        		System.out.println("앨범개수" + albumDtoList.size());
 		        		System.out.println("가져와진 장르이름" + albumDtoList.get(0).getCategoryName());
-	        			
+
 	        			AlbumMapper albumMapper = MybatisUtils.getMapper(AlbumMapper.class);
-	        			
+
 	        			// albumDto 객체로 받은 데이터를 album 객체로 변환하기 (날짜, 장르 변환도 포함)
 	        			// mybatis mapper를 이용해서 insert SQL 실행
 	        			for(ToAlbumDto albumDto : albumDtoList) {
 	        				Album album = albumDto.toAlbum();
-	        				
+
 	        				albumMapper.insertAlbum(album);
-	        				
+
 	        				// album-genre테이블에 데이터 삽입하는 작업 수행
 	        				GenreMappingUtils.mappingGenre(album.getNo(), albumDto.getCategoryName());
 	        			}
@@ -123,7 +123,7 @@ public class GetAladinApiToDb {
 	        		System.err.println("요청 실패 - 장르: " + entry.getKey() + ", 응답 코드: " + responseCode);
 	        	}
 	        	connection.disconnect();
-	        	
+
 	        	 // 요청 사이 지연 추가
 	            try {
 	                Thread.sleep(1000); // 1초 대기
