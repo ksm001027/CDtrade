@@ -104,7 +104,8 @@
 				<div class="slider-container">
 					<div class="slider" id="slider">
 						<% 
-                    String[] photoPaths = sale.getPhotoPath().split(",");
+					String photoPathStr = sale.getPhotoPath() != null ? sale.getPhotoPath() : "";	
+                    String[] photoPaths = photoPathStr.split(",");
                     for (int i = 0; i < photoPaths.length; i++) { 
                     %>
 						<div class="slide">
@@ -128,7 +129,6 @@
 					<% } %>
 				</div>
 			</div>
-
 			<!-- 상품 정보 -->
 			<div class="detail-info">
 				<div class="detail-header">
@@ -218,19 +218,20 @@
 					</table>
 				</div>
 				<div class="button-group">
-					<% if (userNo != null && userNo == seller.getNo()) { %>
+					<% 
+				        if (album.getStockQuantity() == 0) { 
+				    %>
+				        <button class="purchase-button"
+				            onclick="location.href='../main.jsp'">
+				            메인으로 돌아가기
+				        </button>
+					<% } else if (userNo != null && userNo == seller.getNo()) { %>
 					<button class="purchase-button"
 						onclick="location.href='sale-form.jsp?ano=<%=sale.getAlbumNo()%>&sno=<%=sale.getNo()%>&mode=edit'">상품
 						수정</button>
 					<button class="purchase-button"
 						onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='delete-sale.jsp?sno=<%=sale.getNo()%>'">상품
 						삭제</button>
-					<% } else { 
-						if ("t".equals(sale.getIsSold())) {%>
-							<button class="purchase-button"
-									onclick="location.href='../main.jsp'">
-							메인으로 돌아가기
-							</button>
 					<% } else { %>
 					<button class="purchase-button"
 						onclick="<%= (userNo == null) 
@@ -238,12 +239,11 @@
 				        : "location.href=\'../order/order-form.jsp?sno=" + sale.getNo() + "\';" %>">
 						즉시 구매
 					</button>
-					<% } 
-					}%>
-					
+					<% } %>
 				</div>
-
-
+			</div>
+		</div>
+	</div>
 	<%@include file="../common/footer.jsp"%>
 
 	<script>

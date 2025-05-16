@@ -129,6 +129,7 @@
         <div class="album-grid">
 <%
 	for(Sale sale : sales){
+		
 %>
             <!-- 앨범 카드 1 -->
 
