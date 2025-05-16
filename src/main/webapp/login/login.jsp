@@ -12,6 +12,8 @@
 	UserMapper userMapper = MybatisUtils.getMapper(UserMapper.class);
 	
 	User savedUser = userMapper.getUserByEmail(email);
+
+	session.setAttribute("LOGINED_USER", savedUser);
 	
 	if (savedUser == null) {
 		response.sendRedirect("login-form.jsp?fail=invalid");
