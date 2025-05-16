@@ -53,7 +53,7 @@
 	
 	albumMapper.updateAlbum(album);
 	
-	// 마이컬렉션에 데이터 추가하기 
+	// 마이컬렉션에 데이터 추가하기  
 	if("true".equals(isAddMyCollection)){
 		MyCollectionMapper myCollectionMapper = MybatisUtils.getMapper(MyCollectionMapper.class);
 		

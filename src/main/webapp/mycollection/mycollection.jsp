@@ -6,19 +6,16 @@
 <%@ page import="kr.co.cdtrade.vo.MyCollectionItem"%>
 <%@ page import="kr.co.cdtrade.vo.User"%>
 <%@ page import="java.util.List"%>
-<%@include file="../common/nav.jsp" %>
+<%@include file="../common/nav.jsp"%>
 <%
-// 임시 로그인 처리 (개발용)
-User tempUser = new User();
-tempUser.setNo(1); // 임시 사용자 ID
-tempUser.setName("테스트 사용자");
-tempUser.setNickname("CD매니아");
+User loginUser = (User) session.getAttribute("LOGINED_USER");
 
-// 개발 단계에서는 임시 사용자 정보 세션에 저장
-session.setAttribute("loginUser", tempUser);
-
-// 세션에서 로그인 사용자 정보 가져오기
-User loginUser = (User) session.getAttribute("loginUser");
+//로그인 상태 확인
+if (loginUser == null) {
+	// 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+	response.sendRedirect("../login/login-form.jsp?from=mycollection");
+	return;
+}
 
 // 정렬 옵션 파라미터 가져오기
 String sortOption = request.getParameter("sort");
@@ -90,7 +87,7 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 			for (MyCollectionItem item : myCollectionItems) {
 		%>
 		<div class="mycollection-card"
-			onclick="location.href='album-detail.jsp?albumNo=<%=item.getAlbum().getNo()%>'">
+			onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=item.getAlbum().getNo()%>'">
 			<img class="mycollection-album-img"
 				src="<%=item.getAlbum().getCoverImageUrl()%>"
 				alt="<%=item.getAlbum().getTitle()%>"
@@ -126,28 +123,30 @@ int totalItems = myCollectionMapper.countByUserId(loginUser.getNo());
 		%>
 		<div class="no-collection-message">
 			<p>컬렉션에 추가된 앨범이 없습니다.</p>
-			<a href="album-list.jsp" class="browse-albums-btn">앨범 둘러보기</a>
+			<a
+				href="${pageContext.request.contextPath}/album/best-album-list.jsp"
+				class="btn-primary">앨범 둘러보기</a>
 		</div>
 		<%
 		}
 		%>
 	</div>
-<%
-System.out.println("마이컬렉션 디버깅 시작");
-System.out.println("사용자 ID: " + loginUser.getNo());
-System.out.println("컬렉션 개수: " + totalItems);
+	<%
+	System.out.println("마이컬렉션 디버깅 시작");
+	System.out.println("사용자 ID: " + loginUser.getNo());
+	System.out.println("컬렉션 개수: " + totalItems);
 
-if (myCollectionItems != null) {
-    System.out.println("컬렉션 목록 크기: " + myCollectionItems.size());
-    for (MyCollectionItem item : myCollectionItems) {
-        System.out.println("아이템 ID: " + item.getNo() + 
-                           ", 앨범: " + (item.getAlbum() != null ? item.getAlbum().getTitle() : "null") + 
-                           ", 리뷰: " + (item.getReview() != null ? item.getReview().getNo() : "null"));
-    }
-} else {
-    System.out.println("컬렉션 목록이 null입니다.");
-}
-%>
+	if (myCollectionItems != null) {
+		System.out.println("컬렉션 목록 크기: " + myCollectionItems.size());
+		for (MyCollectionItem item : myCollectionItems) {
+			System.out.println(
+			"아이템 ID: " + item.getNo() + ", 앨범: " + (item.getAlbum() != null ? item.getAlbum().getTitle() : "null")
+					+ ", 리뷰: " + (item.getReview() != null ? item.getReview().getNo() : "null"));
+		}
+	} else {
+		System.out.println("컬렉션 목록이 null입니다.");
+	}
+	%>
 	<!-- 정렬 모달 -->
 	<div class="modal-backdrop" id="sortModal">
 		<div class="modal-content">
