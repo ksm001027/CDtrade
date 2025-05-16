@@ -18,7 +18,8 @@
         isSold = "f"; // 판매중
     } else if ("completed".equals(status)) {
         isSold = "t"; // 판매완료
-    } 
+    }
+    
     // "all"일 때는 isSold를 그대로 null로 유지 (전체 조회)
     String period = request.getParameter("period");
     String keyword = request.getParameter("keyword");
