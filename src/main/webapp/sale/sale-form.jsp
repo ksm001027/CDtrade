@@ -162,7 +162,7 @@
                         <div class="account-info-header">
                         <input type="hidden" name="accountNumber" id="accountNumberInput">
                             <h3 class="section-title">계좌 정보</h3>
-                            <button class="account-edit-btn" onclick="openModal()">계좌 변경</button>
+                            <button class="account-edit-btn" onclick="openModal()" disabled>계좌 변경</button>
                         </div>
                         <div class="account-info-content">
 						    <p><span id="main-bank"></span></p>

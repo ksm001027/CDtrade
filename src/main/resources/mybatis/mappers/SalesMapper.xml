@@ -220,7 +220,6 @@
 	        </when>
 	    </choose>
 	</if>
-		
 		<choose>
 			<when test="sort == 'newest'">
 				order by s.sale_created_at desc
@@ -270,7 +269,7 @@
 			        </when>
 			    </choose>
 			</if>
-		    
+		    ORDER BY s.sale_created_at DESC
 	
 	</select>
 		

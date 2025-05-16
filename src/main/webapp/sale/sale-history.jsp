@@ -134,7 +134,7 @@ $(document).ready(function () {
         $(".sale-history-tab").removeClass("active");
         $(this).addClass("active");
 
-        const status = $(this).data("status");
+        let status = $(this).data("status");
         const keyword = $("#searchKeyword").val();
         $.ajax({
             url: "fetchSaleHistory.jsp",
