@@ -133,7 +133,8 @@
 	<!-- 
 		 List<Review> searchReviewsByAlbumNo(@Param("albumNo") int albumNo, 
             @Param("offset") int offset, 
-            @Param("rows") int rows);
+            @Param("rows") int rows,
+             @Param("sort") String sort);
 	 -->
 	 <select id="searchReviewsByAlbumNo" resultType="Review">
 	 	 SELECT 
@@ -149,9 +150,14 @@
         FROM REVIEWS R
         JOIN USERS U ON R.USER_NO = U.USER_NO
         WHERE R.ALBUM_NO = #{albumNo}
-        ORDER BY R.REVIEW_CREATED_AT DESC
+        <if test="sort == 'rating'">
+	 			order by R.REVIEW_RATING DESC
+	 	</if>
+	 	<if test="sort == 'newest'">
+	 			ORDER BY R.REVIEW_CREATED_AT DESC
+	 	</if>
         OFFSET #{offset} ROWS FETCH NEXT #{rows} ROWS ONLY
-	 </select>
+	 </select> 
 	 
 	 <!-- 
 	 	Review getReviewByAlbumNoAndUserNo(@Param("albumNo") int albumNo, @Param("userNo") int userNo);
@@ -215,4 +221,31 @@
 	  		where album_no = #{albumNo}
 	      </select>
 	  
+	  <!-- 
+	  	 List<Review> getReviewsByUserNoSortRating(@Param("userNo") int userNo,
+            @Param("minRating") Double minRating);
+	   -->
+	   <select id="getReviewsByUserNoSortRating" resultType="Review">
+	   		SELECT 
+            R.REVIEW_NO as no,
+            R.REVIEW_RATING as rating,
+            R.REVIEW_CONTENT as content,
+            R.REVIEW_CREATED_AT as createdAt,
+            R.REVIEW_UPDATED_AT as updatedAt,
+            U.USER_NO as "user.no",
+            U.USER_NAME as "user.name",
+            U.USER_NICKNAME as "user.nickname",
+            A.ALBUM_NO as "album.no",
+            A.ALBUM_TITLE AS "album.title",
+            A.ARTIST_NAME AS "album.artistName",
+   			A.RELEASE_DATE AS "album.releaseDate",
+    		A.COVER_IMAGE_URL AS "album.coverImageUrl",
+    		A.AVG_RATING AS "album.avgRating"
+	        FROM REVIEWS R
+	        	JOIN USERS U ON R.USER_NO = U.USER_NO
+	        	JOIN ALBUMS A ON r.ALBUM_NO = A.ALBUM_NO
+	        WHERE U.USER_NO = #{userNo}
+	        	and R.REVIEW_RATING >= #{minRating}
+		 	order by R.REVIEW_RATING DESC
+	   </select>
 </mapper>
