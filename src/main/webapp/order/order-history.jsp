@@ -61,6 +61,7 @@
     <%@include file="../common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
+
     	let status = "all";
     	let period = "1w";
     	let keyword = $("#search").val();
@@ -71,6 +72,7 @@
     }	
     	
     
+
     function logic(){
     	$.ajax({
 			type: "get",
