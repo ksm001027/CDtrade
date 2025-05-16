@@ -129,4 +129,12 @@
 		where user_email = #{email}
 	</update>
 	
+	<select id="getAccountNumberByUserNo" resultType="String">
+		select account_number
+		from 
+			users
+		where
+			user_no = #{userNo}
+	</select>
+	
 </mapper>
