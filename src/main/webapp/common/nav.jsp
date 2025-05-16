@@ -69,21 +69,30 @@
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-       $("#search-btn input[name=keyword]").keyup(function(e){
-          if (e.key === 'Enter'){
-             $("#search-btn").trigger("submit");
-          }
-       })
-       
-       $("#search-icon").click(function(){
-          $input = $("#search-btn input[name=keyword]")
-          if($input.val() == ""){
-             $input.focus();
-          } else {
-             $("#search-btn").trigger("submit");
-          }
-       });
-       </script>
+		// Form 전송 직전에 무조건 공백 제거 (가장 확실한 방법)
+		$("#search-btn").on("submit", function() {
+			let $input = $("#search-btn input[name=keyword]");
+			$input.val($input.val().trim());
+		});
+	
+		// 엔터 키 입력 시
+		$("#search-btn input[name=keyword]").keyup(function(e) {
+			if (e.key === 'Enter') {
+				$("#search-btn").trigger("submit");
+			}
+		});
+	
+		// 검색 아이콘 클릭 시
+		$("#search-icon").click(function() {
+			let $input = $("#search-btn input[name=keyword]");
+			if ($input.val().trim() === "") {
+				$input.focus();
+			} else {
+				$("#search-btn").trigger("submit");
+			}
+		});
+	</script>
+
 </body>
 
 </html>
