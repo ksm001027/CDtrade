@@ -12,7 +12,7 @@
 	int rows = StringUtils.strToInt(request.getParameter("rows"));
 	
 	ReviewMapper reviewMapper = MybatisUtils.getMapper(ReviewMapper.class);
-	List<Review> reviews = reviewMapper.searchReviewsByAlbumNo(albumNo, offset, rows);
+	List<Review> reviews = reviewMapper.searchReviewsByAlbumNo(albumNo, offset, rows, "newest");
 	
 	Gson gson = new Gson();
 	String json = gson.toJson(reviews);

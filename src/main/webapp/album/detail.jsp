@@ -97,7 +97,7 @@
 	int reviewRows = 3;
 	
 	ReviewMapper reviewMapper = MybatisUtils.getMapper(ReviewMapper.class);
-	List<Review> reviews = reviewMapper.searchReviewsByAlbumNo(albumNo, reviewOffset, reviewRows);
+	List<Review> reviews = reviewMapper.searchReviewsByAlbumNo(albumNo, reviewOffset, reviewRows, "newest");
 	// 조뢰된 리뷰 목록 개수 
 	int nowReviewRows = reviews.size();
 	
