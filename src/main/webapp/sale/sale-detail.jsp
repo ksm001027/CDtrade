@@ -133,12 +133,13 @@
 			<div class="detail-info">
 				<div class="detail-header">
 					<div>
-						<h1 class="detail-title"><%=sale.getAlbumTitle()%></h1>
+					<h1 class="detail-title" style="margin: 0;">
+						<a href="../album/detail.jsp?albumNo=<%=sale.getAlbumNo()%>" style="color : inherit; text-decoration: none;">
+						<%=sale.getAlbumTitle()%>
+						</a>
+					</h1>
 						<p class="artist-name"><%=sale.getArtistName()%></p>
 					</div>
-					<button class="share-button">
-						<i class="fas fa-share-alt"></i>
-					</button>
 				</div>
 				<div class="detail-price">
 					<span class="price-label">즉시 구매가</span> <span class="price-value"><%=String.format("%,d", sale.getPrice())%>원</span>
@@ -151,10 +152,6 @@
 						<div class="product-views">
 							조회수:
 							<%=sale.getViewCount()%>회
-						</div>
-						<div class="product-count">
-							매물수:
-							<%=album.getStockQuantity()%>개
 						</div>
 					</div>
 				</div>
@@ -189,21 +186,6 @@
 							</td>
 						</tr>
 						<tr>
-							<th>Cat.No / BARCODE</th>
-							<td>
-								<%
-                            if (sale.getGenres() != null && !sale.getGenres().isEmpty()) {
-                                for (int i = 0; i < sale.getGenres().size(); i++) {
-                                    out.print(sale.getGenres().get(i).getNo());
-                                    if (i < sale.getGenres().size() - 1) out.print(", ");
-                                }
-                            } else {
-                                out.print("장르 번호 없음");
-                            }
-                            %>
-							</td>
-						</tr>
-						<tr>
 							<th>발매가</th>
 							<td><%=String.format("%,d", album.getReleasePrice())%></td>
 						</tr>
@@ -218,14 +200,7 @@
 					</table>
 				</div>
 				<div class="button-group">
-					<% 
-				        if (album.getStockQuantity() == 0) { 
-				    %>
-				        <button class="purchase-button"
-				            onclick="location.href='../main.jsp'">
-				            메인으로 돌아가기
-				        </button>
-					<% } else if (userNo != null && userNo == seller.getNo()) { %>
+					<%if (userNo != null && userNo == seller.getNo()) { %>
 					<button class="purchase-button"
 						onclick="location.href='sale-form.jsp?ano=<%=sale.getAlbumNo()%>&sno=<%=sale.getNo()%>&mode=edit'">상품
 						수정</button>

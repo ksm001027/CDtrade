@@ -44,7 +44,7 @@
         <div class="sale-history-search-row">
             <div class="sale-history-search">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchKeyword" placeholder="앨범명, 가수명, 소속사명 등">
+                <input type="text" id="searchKeyword" placeholder="앨범명, 가수명 등">
             </div>
             <div class="sale-history-periods">
                 <button class="period-btn active">기간 전체</button>
@@ -81,7 +81,7 @@ let currentPage = 1;         // 현재 페이지
 function updateTabCounts() {
     const keyword = "";  // 항상 전체 개수 기준
     const period = "all"; // 기간 필터 제거
-    const status = $(this).data("status"); // 'all', 'onSale', 'completed'
+    
     ["all","onSale", "completed"].forEach(status => {
         $.ajax({
             url: "fetchSaleHistory.jsp",
@@ -96,6 +96,9 @@ function updateTabCounts() {
             dataType: "json",
             success: function (data) {
                 $(".sale-history-tab[data-status='" + status + "'] .sale-history-tab-count").text(data.totalCount);
+            },
+            error: function () {
+            	console.eroor()
             }
         });
     });
@@ -115,7 +118,7 @@ $(".period-btn").click(function () {
 
     currentPage = 1;
     updateTabCounts();
-    $(".sale-history-tab.active").trigger("click");
+    $(".sale-history-tab[data-status='all']").trigger("click");
 });
 
 // 검색 엔터 처리
@@ -215,8 +218,7 @@ $(document).ready(function () {
     });
 
     // 페이지 로딩 시 기본 탭 자동 클릭
-    $(".sale-history-tab.active").trigger("click");
-});
+    $(".sale-history-tab[data-status='all']").trigger("click");});
 </script>
 
 
