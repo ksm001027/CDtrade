@@ -128,7 +128,6 @@
 					<% } %>
 				</div>
 			</div>
-
 			<!-- 상품 정보 -->
 			<div class="detail-info">
 				<div class="detail-header">
@@ -234,8 +233,9 @@
 					</button>
 					<% } %>
 				</div>
-
-
+			</div>
+		</div>
+	</div>
 	<%@include file="../common/footer.jsp"%>
 
 	<script>

@@ -341,6 +341,7 @@
         	let recname = $radio.attr("data-addr-receiverName");
         	let rectel = $radio.attr("data-addr-tel");
         	
+        	
         	$("#input-addr-no").val(no);
         	$("#input-addr-name").val(name);
         	$("#input-addr-zipcode").val(zipcode);
