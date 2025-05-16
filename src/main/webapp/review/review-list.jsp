@@ -7,9 +7,9 @@
 <%@ page import="kr.co.cdtrade.vo.Genre"%>
 <%@ page import="kr.co.cdtrade.vo.Review"%>
 <%@ page import="java.util.List"%>
-<!-- 네비게이션 바 -->
-<%@include file="../common/nav.jsp" %>
+
 <%
+
 // AJAX 요청인지 확인
 String ajaxParam = request.getParameter("ajax");
 if (ajaxParam != null && ajaxParam.equals("true")) {
@@ -38,7 +38,7 @@ if (ajaxParam != null && ajaxParam.equals("true")) {
 		for (Review review : moreReviews) {
 %>
 <div class="review-block"
-	onclick="location.href='album-detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
+    onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
 	<div class="review-album-cover">
 		<img
 			src="${pageContext.request.contextPath}/<%=review.getAlbum().getCoverImageUrl()%>"
@@ -116,12 +116,13 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>앨범리뷰 리스트</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="resources/css/common.css">
-<link rel="stylesheet" href="resources/css/review-styles.css">
+<link rel="stylesheet" href="../resources/css/common.css">
+<link rel="stylesheet" href="../resources/css/review-styles.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+	<%@include file="../common/nav.jsp" %>
 	<div class="review-list-layout">
 		<div class="review-list-header">
 			<div class="review-list-filter">
@@ -139,7 +140,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 						</div>
 						<div class="genre-modal-body">
 							<ul class="genre-list">
-								<li><a href="review-list.jsp"
+								<li><a href="review-list.jsp" id="genre-all"
 									class="genre-item <%=genreNo == 0 ? "active" : ""%>">전체</a></li>
 								<%
 								for (Genre genre : genres) {
@@ -201,7 +202,7 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 				for (Review review : reviews) {
 			%>
 			<div class="review-block"
-				onclick="location.href='album-detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
+    		onclick="location.href='${pageContext.request.contextPath}/album/detail.jsp?albumNo=<%=review.getAlbum().getNo()%>'">
 				<div class="review-album-cover">
 					<img src="<%=review.getAlbum().getCoverImageUrl()%>" alt="앨범 커버"
 						onerror="this.src='/CDtrade/resources/images/default-album.jpg'">
@@ -243,98 +244,89 @@ reviews = reviewMapper.getReviewsByPage(offset, rows);
 	</div>
 
 	<script>
-$(document).ready(function() {
-    let currentPage = 1;
-    let loading = false;
-    let allLoaded = false;
-    const totalRows = <%=totalRows%>;
-    const rowsPerPage = 10;
-    const totalPages = Math.ceil(totalRows / rowsPerPage);
-    const genreNo = <%=genreNo != 0 ? genreNo : "null"%>;
-    const keyword = '<%=keyword != null ? keyword : ""%>';
+    $(document).ready(function() {
+        let currentPage = 1;
+        let loading = false;
+        let allLoaded = false;
+        const totalRows = <%=totalRows%>;
+        const rowsPerPage = 10;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        const genreNo = <%=genreNo != 0 ? genreNo : "null"%>;
+        const keyword = '<%=keyword != null ? keyword : ""%>';
 
-    // 무한 스크롤 이벤트
-    $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500 && !loading && !allLoaded) {
-            loadMoreReviews();
-        }
-    });
-
-    function loadMoreReviews() {
-        loading = true;
-        currentPage++;
-
-        if (currentPage > totalPages) {
-            allLoaded = true;
-            return;
-        }
-
-        $('.loading').show();
-
-        $.ajax({
-            url: 'review-list.jsp',
-            type: 'GET',
-            data: {
-                page: currentPage,
-                genreNo: genreNo,
-                keyword: keyword,
-                ajax: 'true' // AJAX 요청임을 구분하기 위한 파라미터
-            },
-            success: function(response) {
-                if (response.trim() === '') {
-                    allLoaded = true;
-                } else {
-                    $('#review-container').append(response);
-                }
-                loading = false;
-                $('.loading').hide();
-            },
-            error: function() {
-                console.log('Error loading more reviews');
-                loading = false;
-                $('.loading').hide();
+        // 무한 스크롤 이벤트
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 500 && !loading && !allLoaded) {
+                loadMoreReviews();
             }
         });
-    }
 
-    // 장르 선택 모달 제어
-    $("#genre-selector").click(function() {
-        $("#genre-modal").addClass("show");
-    });
+        function loadMoreReviews() {
+            loading = true;
+            currentPage++;
 
-    $(".genre-modal-close").click(function() {
-        $("#genre-modal").removeClass("show");
-    });
+            if (currentPage > totalPages) {
+                allLoaded = true;
+                return;
+            }
 
-    $(window).click(function(event) {
-        if ($(event.target).is("#genre-modal")) {
-            $("#genre-modal").removeClass("show");
+            $('.loading').show();
+
+            $.ajax({
+                url: 'review-list.jsp',
+                type: 'GET',
+                data: {
+                    page: currentPage,
+                    genreNo: genreNo,
+                    keyword: keyword,
+                    ajax: 'true'  // AJAX 요청임을 구분하기 위한 파라미터
+                },
+                success: function(response) {
+                    if (response.trim() === '') {
+                        allLoaded = true;
+                    } else {
+                        $('#review-container').append(response);
+                    }
+                    loading = false;
+                    $('.loading').hide();
+                },
+                error: function() {
+                    console.log('Error loading more reviews');
+                    loading = false;
+                    $('.loading').hide();
+                }
+            });
         }
-    });
-    
-    // 장르 항목 클릭 이벤트 처리 추가
-    $(".genre-item").click(function(e) {
-        // 모달 닫기
-        $("#genre-modal").removeClass("show");
         
-        // 기본 이벤트는 그대로 실행 (링크 이동)
-        // 여기서는 명시적으로 아무것도 할 필요 없음, 링크 클릭 이벤트가 실행됨
-    });
-    
-    // 모바일에서 클릭 이벤트가 제대로 작동하지 않을 수 있어, 터치 이벤트도 추가
-    $(".genre-item").on("touchend", function(e) {
-        // 모달 닫기
-        $("#genre-modal").removeClass("show");
+        // 장르 선택 모달 제어
+        $("#genre-selector").click(function() {
+            $("#genre-modal").addClass("show");
+        });
         
-        // 지연 시간을 두어 모달이 먼저 닫히고 페이지 이동하도록 함
-        setTimeout(function() {
-            window.location.href = e.target.href;
-        }, 100);
+        $(".genre-modal-close").click(function() {
+            $("#genre-modal").removeClass("show");
+        });
         
-        // 기본 이벤트 중지 (두 번 실행되는 것 방지)
-        e.preventDefault();
+        $(window).click(function(event) {
+            if ($(event.target).is("#genre-modal")) {
+                $("#genre-modal").removeClass("show");
+            }
+        });
+        
+        // 장르 항목 클릭 이벤트 추가 - 명시적으로 링크 동작 처리
+        $(".genre-item").click(function(e) {
+            // 기본 동작 유지 (링크 이동)
+            // 모달 닫기
+            $("#genre-modal").removeClass("show");
+        });
+        
+        // 전체 장르 선택 시 명시적 처리 (추가 보장용)
+        $("#genre-all").click(function() {
+            window.location.href = "review-list.jsp";
+            $("#genre-modal").removeClass("show");
+            return false;  // 기본 이벤트 중지 (중복 방지)
+        });
     });
-});
-</script>
+	</script>
 </body>
 </html>

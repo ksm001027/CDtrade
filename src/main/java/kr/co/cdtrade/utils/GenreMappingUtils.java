@@ -108,23 +108,23 @@ public class GenreMappingUtils {
 
 		// "음반>" 을 제거하기
 		String genre = categoryName.substring(categoryName.indexOf(">") + 1); // "가요>댄스뮤직"
-		
-		
+
+
 		// J-POP 처리: "해외구매>J-POP"인 경우 마지막 ">" 이후 제거
 	    if (genre.startsWith("해외구매>J-POP")) {
 	    	System.out.println("장르 : "+ genre);
 	        genre = "해외구매>J-POP"; // "해외구매>J-POP"까지만 유지
 	    }
-	    
+
 	    // 장르가 특정 키워드로 시작하는 경우 처리
-	    if (genre.startsWith("재즈") || genre.startsWith("월드뮤직") || 
+	    if (genre.startsWith("재즈") || genre.startsWith("월드뮤직") ||
 	        genre.startsWith("클래식")) {
 	        int delimiterIndex = genre.indexOf(">");
 	        if (delimiterIndex != -1) {
 	            genre = genre.substring(0, delimiterIndex); // ">" 앞부분까지만 남기기
 	        }
 	    }
-		
+
 
 		AlbumGenreMapper albumGenreMapper = MybatisUtils.getMapper(AlbumGenreMapper.class);
 

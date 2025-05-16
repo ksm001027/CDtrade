@@ -21,7 +21,7 @@
 	String content = request.getParameter("content");
 	int albumNo = StringUtils.strToInt(request.getParameter("albumNo"));
 	
-	int reviewNo = StringUtils.strToInt(request.getParameter("reviewNo"));
+	int reviewNo = StringUtils.strToInt(request.getParameter("reviewNo")); 
 	
 	ReviewMapper reviewMapper = MybatisUtils.getMapper(ReviewMapper.class);
 	

@@ -218,7 +218,7 @@
 
 <% if (hasHalf) { %>
     					<span class="star half">★</span>
-<% } %>
+<% } %> 
 
 <% for (int i = 0; i < emptyStars; i++) { %>
     					<span class="star">★</span>

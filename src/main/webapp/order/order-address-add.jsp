@@ -1,3 +1,4 @@
+<%@page import="kr.co.cdtrade.utils.StringUtils"%>
 <%@page import="kr.co.cdtrade.vo.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -15,6 +16,7 @@
 	User user = new User();
 	user.setNo(userNo);
 
+	int saleNo = StringUtils.strToInt(request.getParameter("sno"));
 	String addrNoStr = request.getParameter("addrNo");
 	String isDefault = request.getParameter("isDefaultAddress") != null ? "t" : "f";
 	
@@ -42,6 +44,6 @@
 		addressMapper.insertAddress(address);
 	}
 	
-	response.sendRedirect("order-form.jsp");
+	response.sendRedirect("order-form.jsp?sno="+saleNo);
 %>
     
