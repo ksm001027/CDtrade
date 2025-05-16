@@ -353,10 +353,13 @@
 		for (Sale sale : sales) {
 %>
 	                <!-- 판매상품 블록 -->
-	                <div class="product-card">
+	                <div class="product-card <%="t".equals(sale.getIsSold()) ? "sold" : "" %>">
 	                	<a href="../sale/sale-detail.jsp?sno=<%=sale.getNo()%>">
 	                    <div class="product-image">
 	                        <img src="<%=sale.getPhotoPath() %>" alt="<%=sale.getAlbumTitle() %>">
+<% if ("t".equals(sale.getIsSold())) { %>
+                <div class="sold-overlay">판매완료</div>
+<% } %>
 	                    </div>
 	                    </a>
 	                    <h3 class="card-title"><%=sale.getAlbumTitle() %></h3>
@@ -992,11 +995,15 @@
 					const $saleList =  $("#sales-list").empty();
 					
 					for(const sale of sales){
+						const isSold = (sale.isSold == 't');
+						const soldContent = isSold ? "판매완료" : "";
+						const soldClass =  isSold ? "sold" : "";
 						const content = `
-			                <div class="product-card">
+			                <div class="product-card \${soldClass}">
 			                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
 				                    <div class="product-image">
 				                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+					                    <div class="sold-overlay">\${soldContent}</div>
 				                    </div>
 			                    </a>
 			                    <h3 class="card-title">\${sale.album.title}</h3>
@@ -1036,11 +1043,15 @@
 					const $saleList =  $("#sales-list").empty();
 					
 					for(const sale of sales){
+						const isSold = (sale.isSold == 't');
+						const soldContent = isSold ? "판매완료" : "";
+						const soldClass =  isSold ? "sold" : "";
 						const content = `
-			                <div class="product-card">
+			                <div class="product-card \${soldClass}">
 			                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
 				                    <div class="product-image">
 				                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+					                    <div class="sold-overlay">\${soldContent}</div>
 				                    </div>
 			                    </a>
 			                    <h3 class="card-title">\${sale.album.title}</h3>
@@ -1076,11 +1087,16 @@
 				const $saleList =  $("#sales-list").empty();
 				
 				for(const sale of sales){
+					
+					const isSold = (sale.isSold == 't');
+					const soldContent = isSold ? "판매완료" : "";
+					const soldClass =  isSold ? "sold" : "";
 					const content = `
-		                <div class="product-card">
+		                <div class="product-card \${soldClass}">
 		                	<a href="../sale/sale-detail.jsp?sno=\${sale.no}">
 			                    <div class="product-image">
 			                        <img src="\${sale.photoPath}" alt="\${sale.album.title}>">
+				                    <div class="sold-overlay">\${soldContent}</div>
 			                    </div>
 		                    </a>
 		                    <h3 class="card-title">\${sale.album.title}</h3>
