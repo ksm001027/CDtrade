@@ -68,7 +68,25 @@ public class GenreMappingUtils {
 	    Map.entry(14, "JPOP"),
 	    Map.entry(15, "OST")
 	);
-
+	
+	public static Map<String, String> GENRE_NAME_TO_IMAGE_URL = Map.ofEntries(
+			Map.entry("클래식", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("아이돌", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("댄스뮤직", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("락", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("RnB", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("발라드", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("기타", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("인디", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("일렉트로닉/하우스", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("재즈", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("포크", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("힙합", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("해외", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("JPOP", "https://storage.second-track.com/album/album-1707357027234311.png"),
+            Map.entry("OST", "https://storage.second-track.com/album/album-1707357027234311.png")
+		);
+	
 	/**
 	 * 알라딘 API에서 응답으로 받아온 장르와 우리 서비스의 장르를 매핑시켜주는 Map 상수 (예시 : "가요>발라드/R&B" : ["RnB", "발라드"])
 	 */

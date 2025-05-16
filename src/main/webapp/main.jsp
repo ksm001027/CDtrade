@@ -38,71 +38,25 @@
   	<div class="recommended-products">
            <div class="main-sesction-header">
 	            <h2 class="section-title">최근 판매 앨범</h2>
-	            <a href="sale/sale-list.jsp">더보기 ></a>
   			</div>
 
 			<div class="section-product-list">
-	            <div class="product-grid" id="sales-list">				
+	            <div class="product-grid" id="sales-list">	
+<%
+	for (Album album : albums){
+%>			
 	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
+	                	<a href="album/detail.jsp?albumNo=<%= album.getNo() %>">
 	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
+	                        <img src="<%= album.getCoverImageUrl() %>" alt="<%= album.getTitle() %>">
 	                    </div>
 	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
+	                    <h3 class="card-title"><%= album.getTitle() %></h3>
 	                    
 	                </div>
-	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
-	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-	                    </div>
-	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
-	                    
-	                </div>
-	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
-	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-	                    </div>
-	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
-	                    
-	                </div>	
-	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
-	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-	                    </div>
-	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
-	                    
-	                </div>	
-	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
-	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-	                    </div>
-	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
-	                    
-	                </div>	
-	                <div class="product-card">
-	                	<a href="../sale/sale-detail.jsp?sno=8">
-	                    <div class="product-image">
-	                        <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-	                    </div>
-	                    </a>
-	                    <h3 class="card-title">김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집</h3>
-	                    <p class="card-price">60,000원</p>
-	                    
-	                </div>	
+<%
+	}
+%>	
         </div>
   </div>
   
@@ -142,59 +96,22 @@
   		<div class="main-sesction-header">
             <h2 class="section-title">장르별 검색</h2>
   		</div>
-
 		<div class="section-product-list">
 			<div class="product-grid">
+<%
+   Map<String, Integer> genreMap2 = GenreMappingUtils.GENRE_NAME_TO_NO;
+   for (Map.Entry<String, Integer> entry : genreMap2.entrySet()) {
+%>   
 				<!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div>
-				<!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div><!-- 장르 카드 -->
-				<div class="card-genre">
-                     <img src="https://storage.second-track.com/album/album-1707357027234311.png" alt="김광석 - 인생 이야기 [180g 2LP] - 공연 멘트집+스페셜 엽서(6종)+커버 가사집">
-		             <p>인디</p>
-				</div>
+				<a href="album/genre-album-list.jsp?genreNo=<%=entry.getValue() %>" class="card-genre">
+                     <img src="<%= GenreMappingUtils.GENRE_NAME_TO_IMAGE_URL.get(entry.getKey()) %>" alt="<%=entry.getKey()%>">
+		             <p><%=entry.getKey()%></p>
+				</a>
+<%
+   };    
+%>
 			</div>
-	           
         </div>
-        
   </div>
   
 </body>

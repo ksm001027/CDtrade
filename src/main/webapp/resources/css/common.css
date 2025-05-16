@@ -3351,8 +3351,9 @@ hr {
 }
 
 .card-genre{
-	width: calc((100% - 6rem) / 7);
+	width: calc((100% - 7rem) / 8);
 	cursor: pointer;
+	text-decoration: none;
 }
 
 .card-genre img{

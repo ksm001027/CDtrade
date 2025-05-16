@@ -37,47 +37,60 @@
 	 -->
 	<select id="getAlbums" parameterType="map" resultType="Album">
 		select
-			album_no			as	no
-		  , album_title			as	title
-		  , artist_name			as	artistName
-		  , release_date		as	releaseDate
-		  , cover_image_url		as	coverImageUrl
-		  , avg_rating			as	avgRating
-		  , review_count		as	reviewCount
-		  , stock_quantity		as	stockQuantity
-		  , avg_order_price		as	avgOrderPrice
-		  , avg_sale_price		as	avgSalePrice
-	      , album_created_at	as	albumCreatedAt
-		  , album_updated_at	as	albumUpdatedAt
-		  , release_price		as	releasePrice
-		  , recent_order_price	as	recentOrderPrice
+			a.album_no			as	no
+		  , a.album_title			as	title
+		  , a.artist_name			as	artistName
+		  , a.release_date		as	releaseDate
+		  , a.cover_image_url		as	coverImageUrl
+		  , a.avg_rating			as	avgRating
+		  , a.review_count		as	reviewCount
+		  , a.stock_quantity		as	stockQuantity
+		  , a.avg_order_price		as	avgOrderPrice
+		  , a.avg_sale_price		as	avgSalePrice
+	      , a.album_created_at	as	albumCreatedAt
+		  , a.album_updated_at	as	albumUpdatedAt
+		  , a.release_price		as	releasePrice
+		  , a.recent_order_price	as	recentOrderPrice
 		from 
-			albums 
+			albums a
+		<if test="sort == 'recent-order'">
+			join (
+	            select album_no
+	            from (
+	                select album_no, MAX(order_created_at) as latest_order_date
+	                from orders
+	                group by album_no
+	                order by latest_order_date desc
+	                fetch first 8 rows only
+            	)
+        	) n on a.album_no = n.album_no
+		</if>
 		<if test="minReviewCount != null">
-			where review_count >= #{minReviewCount}
+			where a.review_count >= #{minReviewCount}
 		</if>
 		<if test="keyword != null and keyword != ''">
-			where upper(album_title) like '%' || upper(#{keyword}) || '%'
+			where upper(a.album_title) like '%' || upper(#{keyword}) || '%'
 		</if>
 		<choose>
 	 		<when test="sort == 'newest'">
-	 			order by release_date desc
+	 			order by a.release_date desc
 	 		</when>
 	 		<when test="sort == 'price-asc'">
-	 			order by avg_order_price asc nulls last
+	 			order by a.avg_order_price asc nulls last
 	 		</when>
 	 		<when test="sort == 'price-desc'">
-	 			order by avg_order_price desc nulls last
+	 			order by a.avg_order_price desc nulls last
 	 		</when>
 	 		<when test="sort == 'rating'">
-	 			order by avg_rating desc nulls last
+	 			order by a.avg_rating desc nulls last
 	 		</when>
 	 		<when test="sort == 'stock'">
-	 			order by stock_quantity desc nulls last
+	 			order by a.stock_quantity desc nulls last
 	 		</when>
 	 		<when test="sort == 'review-count'">
-	 			order by review_count desc nulls last
+	 			order by a.review_count desc nulls last
 	 		</when>
+	 		
 	 	</choose>
 	 	offset #{offset} rows
 	 	fetch next #{rows} rows only
