@@ -3309,8 +3309,6 @@ hr {
 /* 드롭다운 활성화 */
 .dropdown:hover .dropdown-menu {
   display: block;
-<<<<<<< HEAD
-=======
 }
 
 .product-card-2 {
@@ -3373,5 +3371,4 @@ hr {
     line-height: 28px;
     color: #868e96;
     text-align: center;
->>>>>>> c4fec16f18b7a6c42560c02591e6cbf7b4310fc7
 }
