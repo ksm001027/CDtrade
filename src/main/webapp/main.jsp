@@ -1,4 +1,4 @@
-<%@page import="kr.co.cdtrade.AlbumRecommendation"%>
+<%@page import="kr.co.cdtrade.AlbumRecommendation"%>    
 <%@page import="java.util.HashMap"%>
 <%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
@@ -24,7 +24,7 @@
     Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
     List<Album> recommendAlbums = null;
     if(userNo != null){    	
-	    recommendAlbums = AlbumRecommendation.RecommendAlbumByOtherUser(userNo);
+    	recommendAlbums = AlbumRecommendation.RecommendAlbumByOtherUser(userNo);
     }
 %>
 <!DOCTYPE html>
