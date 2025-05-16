@@ -1,3 +1,4 @@
+<%@page import="kr.co.cdtrade.AlbumRecommendation"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="kr.co.cdtrade.mapper.AlbumMapper"%>
 <%@page import="kr.co.cdtrade.vo.Album"%>
@@ -19,6 +20,12 @@
     albumCondition.put("rows", 8);
     albumCondition.put("sort", "recent-order");
     List<Album> albums = albumMapper.getAlbums(albumCondition);
+    
+    Integer userNo = (Integer) session.getAttribute("LOGINED_USER_NO");
+    List<Album> recommendAlbums = null;
+    if(userNo != null){    	
+	    recommendAlbums = AlbumRecommendation.RecommendAlbumByOtherUser(userNo);
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +120,42 @@
 			</div>
         </div>
   </div>
-  
+  <!-- 사용자별 추천 앨범  -->
+  <div class="recommended-products">
+           <div class="main-sesction-header">
+	            <h2 class="section-title">비슷한 사용자가 좋아한 앨범 추천</h2>
+  			</div>
+
+			<div class="section-product-list">
+<%
+		if (userNo == null){
+%> 
+				<a href="login/login-form.jsp" style="color:#666; font-size: 15px; padding-bottom: 20px;]"> 로그인하러 가기 > </a>
+<%
+		} else if(recommendAlbums == null || recommendAlbums.isEmpty()){
+%>				
+				<div style="color:#666; font-size: 15px; padding-bottom: 20px;]"> 마이컬렉션에 <%=AlbumRecommendation.TOP_RATED_ALBUMS_LIMIT %>개 이상의 앨범을 추가해주세요 </div>
+<%
+		} else {
+%>
+	            <div class="product-grid" id="sales-list">	
+<%
+			for (Album album : recommendAlbums){
+%>			
+	                <div class="product-card">
+	                	<a href="album/detail.jsp?albumNo=<%= album.getNo() %>">
+	                    <div class="product-image">
+	                        <img src="<%= album.getCoverImageUrl() %>" alt="<%= album.getTitle() %>">
+	                    </div>
+	                    </a>
+	                    <h3 class="card-title"><%= album.getTitle() %></h3>
+	                </div>
+<%
+			}
+		}
+%>	
+        </div>
+  </div>
   
   <%@ include file="common/footer.jsp" %>
   

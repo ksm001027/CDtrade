@@ -46,7 +46,7 @@ public class AlbumRecommendation {
 	public static double MIN_SIMILAR_USER_RATING = 3;
 	
 	// 추천 앨범 수 
-	public static int RECOMMEND_ALBUMS_LIMIT = 5;
+	public static int RECOMMEND_ALBUMS_LIMIT = 4;
 	
 	public static List<Album> RecommendAlbumByOtherUser(int userNo) {
 		List<Album> recommendAlbums = new ArrayList<Album>();
