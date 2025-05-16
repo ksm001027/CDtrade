@@ -34,6 +34,6 @@
 	session.setAttribute("LOGINED_USER_NO", savedUser.getNo());
 	session.setAttribute("LOGINED_USER_NICKNAME", savedUser.getNickname());
 	
-	response.sendRedirect("../mypage/mypage.jsp");
+	response.sendRedirect("../main.jsp");
 	
 %>
